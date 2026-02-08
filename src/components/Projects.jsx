@@ -1,82 +1,149 @@
+import { useState, useRef, useEffect } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
+
+gsap.registerPlugin(ScrollTrigger);
+
 const projects = [
     {
-        num: "01",
-        title: "Security Scanner",
-        description: "Automated vulnerability detection for web apps",
-        tech: "Python, Flask",
-        year: "2024",
+        id: 1,
+        title: "Security Core",
+        category: "System Architecture",
+        description: "Enterprise vulnerability detection engine with real-time reporting.",
+        src: "/img/gallery-1.webp", // Switched to WebP images for performance
+        tags: ["Python", "Redis", "Docker"]
     },
     {
-        num: "02",
+        id: 2,
+        title: "Bug Trac",
+        category: "SaaS Platform",
+        description: "Collaborative vulnerability management for security teams.",
+        src: "/img/gallery-2.webp",
+        tags: ["Next.js", "PostgreSQL", "Prisma"]
+    },
+    {
+        id: 3,
+        title: "Net Guard",
+        category: "Network Security",
+        description: "High-performance API Gateway with distributed rate limiting.",
+        src: "/img/gallery-3.webp",
+        tags: ["Go", "gRPC", "Redis"]
+    },
+    {
+        id: 4,
         title: "Portfolio v2",
-        description: "Minimal portfolio with smooth animations",
-        tech: "React, GSAP",
-        year: "2024",
+        category: "Interactive WebGL",
+        description: "Award-winning personal site with heavy GSAP integrations.",
+        src: "/img/gallery-4.webp",
+        tags: ["React", "Three.js", "GSAP"]
     },
     {
-        num: "03",
-        title: "API Gateway",
-        description: "Secure gateway with rate limiting",
-        tech: "Node.js, Redis",
-        year: "2023",
-    },
-    {
-        num: "04",
-        title: "Bug Tracker",
-        description: "Platform for tracking vulnerabilities",
-        tech: "Next.js, PostgreSQL",
-        year: "2023",
-    },
+        id: 5,
+        title: "Cipher Chat",
+        category: "Cryptography",
+        description: "End-to-end encrypted messaging protocol implementation.",
+        src: "/img/gallery-5.webp",
+        tags: ["Rust", "WASM", "Socket.io"]
+    }
 ];
 
-const Projects = () => {
+const ProjectRow = ({ project, setHoveredProject, index }) => {
     return (
-        <section id="projects" className="py-32 section-padding border-t border-[#1a1a1a]">
-            <div className="max-w-5xl">
-                {/* Section label */}
-                <p className="text-xs tracking-[0.3em] uppercase text-[#555] mb-12">
-                    Selected Work
-                </p>
+        <div
+            onMouseEnter={() => setHoveredProject(project)}
+            className="group relative flex w-full cursor-pointer items-center justify-between border-b border-white/10 py-12 transition-all duration-300 hover:bg-white/[0.02] px-4 md:px-10"
+        >
+            <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:gap-12">
+                <span className="font-mono text-xs text-zinc-600 md:text-sm">0{index + 1} //</span>
+                <h3 className="font-zentry text-4xl uppercase text-zinc-400 transition-colors duration-300 group-hover:text-white md:text-6xl">
+                    {project.title}
+                </h3>
+            </div>
 
-                {/* Project list */}
-                <div className="space-y-0">
-                    {projects.map((project) => (
-                        <div
-                            key={project.num}
-                            className="group py-8 border-b border-[#1a1a1a] flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-pointer hover:pl-4 transition-all duration-300"
-                        >
-                            {/* Left side */}
-                            <div className="flex items-start md:items-center gap-6">
-                                <span className="text-xs text-[#444] font-mono">{project.num}</span>
-                                <div>
-                                    <h3 className="text-xl md:text-2xl font-medium group-hover:text-white transition-colors">
-                                        {project.title}
-                                    </h3>
-                                    <p className="text-sm text-[#666] mt-1">{project.description}</p>
-                                </div>
-                            </div>
+            <div className="absolute right-10 top-1/2 -translate-y-1/2 opacity-0 transition-opacity duration-300 group-hover:opacity-100 hidden md:block">
+                <div className="flex flex-col items-end gap-2 text-right">
+                    <span className="font-mono text-xs text-white uppercase tracking-widest bg-white/10 px-2 py-1 rounded-sm">
+                        {project.category}
+                    </span>
+                    <p className="max-w-xs font-general text-xs text-zinc-500">
+                        {project.description}
+                    </p>
+                </div>
+            </div>
 
-                            {/* Right side */}
-                            <div className="flex items-center gap-8 md:gap-12">
-                                <span className="text-xs text-[#555]">{project.tech}</span>
-                                <span className="text-xs text-[#444]">{project.year}</span>
-                                <span className="text-sm text-[#555] group-hover:text-white group-hover:translate-x-1 transition-all">
-                                    →
-                                </span>
-                            </div>
-                        </div>
+            {/* Mobile only description */}
+            <p className="mt-4 max-w-[200px] text-right font-general text-xs text-zinc-500 md:hidden">
+                {project.category}
+            </p>
+        </div>
+    );
+};
+
+const Projects = () => {
+    const [hoveredProject, setHoveredProject] = useState(projects[0]);
+    const previewRef = useRef(null);
+    const containerRef = useRef(null);
+
+    useEffect(() => {
+        // Parallax effect for the preview image container
+        const ctx = gsap.context(() => {
+            gsap.to(previewRef.current, {
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: "top bottom",
+                    end: "bottom top",
+                    scrub: true,
+                },
+                y: 100,
+                ease: "none"
+            });
+        }, containerRef);
+
+        return () => ctx.revert();
+    }, []);
+
+    return (
+        <section ref={containerRef} id="projects" className="relative min-h-screen bg-[#0a0a0a] py-32 overflow-hidden z-10">
+
+            {/* Background Preview Image - Changes on Hover */}
+            <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center opacity-20 mix-blend-screen transition-opacity duration-500">
+                <div ref={previewRef} className="relative h-[60vh] w-[80vw] md:h-[80vh] md:w-[60vw]">
+                    <img
+                        key={hoveredProject.src} // Key change triggers fade if we add css animation, but keeping it simple for perf
+                        src={hoveredProject.src}
+                        alt="Project Preview"
+                        className="h-full w-full object-cover grayscale opacity-50 blur-sm transition-all duration-700 ease-in-out"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-[#0a0a0a]" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-transparent to-[#0a0a0a]" />
+                </div>
+            </div>
+
+            <div className="container relative z-10 mx-auto px-4">
+                <div className="mb-20 flex flex-col items-start border-b border-white/10 pb-8">
+                    <h2 className="font-general text-xs uppercase tracking-[0.3em] text-zinc-500 mb-2">
+                        System Log
+                    </h2>
+                    <h2 className="font-zentry text-6xl text-white uppercase md:text-8xl">
+                        Selected Works
+                    </h2>
+                </div>
+
+                <div className="flex flex-col">
+                    {projects.map((project, index) => (
+                        <ProjectRow
+                            key={project.id}
+                            project={project}
+                            index={index}
+                            setHoveredProject={setHoveredProject}
+                        />
                     ))}
                 </div>
 
-                {/* More link */}
-                <div className="mt-12">
-                    <a
-                        href="https://github.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm text-[#666] hover:text-white transition-colors"
-                    >
-                        View all on GitHub →
+                <div className="mt-20 flex justify-center">
+                    <a href="https://github.com" target="_blank" rel="noreferrer" className="group flex items-center gap-4 text-zinc-500 hover:text-white transition-colors cursor-pointer">
+                        <span className="font-mono text-xs uppercase tracking-widest">[ View All Archives ]</span>
+                        <span className="font-mono text-lg group-hover:translate-x-2 transition-transform">→</span>
                     </a>
                 </div>
             </div>
