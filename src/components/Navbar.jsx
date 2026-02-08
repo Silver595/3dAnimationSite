@@ -5,7 +5,7 @@ import { useWindowScroll } from "react-use";
 import { useEffect, useRef, useState } from "react";
 
 
-const navItems = ["Projects", "Experience", "About", "Contact"];
+const navItems = ["Projects", "Skills", "Experience", "About", "Contact"];
 
 const NavBar = () => {
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
@@ -63,7 +63,7 @@ const NavBar = () => {
         <nav className="flex size-full items-center justify-between p-4 px-6">
           <div className="flex items-center gap-7">
             <span className="font-zentry text-lg font-black text-white uppercase tracking-widest">
-              Slvr<span className="text-zinc-600">.</span>
+              Silver<span className="text-zinc-600">.</span>
             </span>
           </div>
 
