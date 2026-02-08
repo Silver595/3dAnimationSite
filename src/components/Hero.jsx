@@ -77,12 +77,12 @@ const Hero = () => {
           loop
           muted
           playsInline
+          preload="auto"
           className="absolute left-0 top-0 size-full object-cover object-center opacity-30 grayscale contrast-125"
         />
 
         {/* Technical Grid Overlay */}
         <div className="absolute inset-0 bg-[url('/img/grid.svg')] opacity-10 bg-center" />
-        {/* Note: grid.svg might not exist, but opacity 10 won't hurt if missing. Just adds texture if present. */}
 
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a0a0a]/80 to-[#0a0a0a]" />
 

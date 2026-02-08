@@ -7,9 +7,7 @@
 :root {
   /* Luxury Grey Palette - Deep & Technical */
   --bg-primary: #0a0a0a;
-  /* Almost black */
   --bg-secondary: #141414;
-  /* Very dark grey */
   --bg-accent: #222222;
 
   --text-primary: #f2f2f2;
@@ -17,11 +15,8 @@
 
   /* Sharper Edges */
   --radius-sm: 0.125rem;
-  /* rounded-sm */
   --radius-md: 0.25rem;
-  /* rounded */
   --radius-lg: 0.5rem;
-  /* rounded-lg - was 1rem previously */
 }
 
 body {
@@ -73,6 +68,12 @@ body {
 
   .soft-button-outline {
     @apply px-6 py-3 rounded-md border border-white/20 text-white hover:bg-white/5 transition-all duration-300 font-medium tracking-wide;
+  }
+
+  /* Optimization: GPU Acceleration Hints */
+  .about-panel {
+    will-change: transform;
+    /* Hint for horizontal scroll performance */
   }
 }
 
@@ -148,7 +149,7 @@ body {
   }
 }
 
-/* Animations follow... (Restored from previous step or kept same) */
+/* Animations follow... */
 .indicator-line {
   @apply h-1 w-px rounded-full bg-white transition-all duration-200 ease-in-out;
 }
