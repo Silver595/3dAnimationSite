@@ -5,7 +5,7 @@ import { useWindowScroll } from "react-use";
 import { useEffect, useRef, useState } from "react";
 
 
-const navItems = ["Projects", "Skills", "Experience", "About", "Contact"];
+const navItems = ["Projects", "Skills", "Workflow", "About", "Contact"]; // Updated "Experience" to "Workflow"
 
 const NavBar = () => {
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
