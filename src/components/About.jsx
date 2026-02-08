@@ -1,39 +1,67 @@
-const skills = [
-    "React", "Next.js", "Node.js", "Python",
-    "Security", "Pentesting", "OWASP", "Burp Suite"
-];
+import gsap from "gsap"
+import { useGSAP } from "@gsap/react"
+import { ScrollTrigger } from "gsap/all"
+import AnimatedTitle from "./AnimatedTitle"
+
+gsap.registerPlugin(ScrollTrigger)
 
 const About = () => {
+    useGSAP(() => {
+        const clipAnimation = gsap.timeline({
+            scrollTrigger: {
+                trigger: '#clip',
+                start: 'center center',
+                end: '+=800 center',
+                scrub: 0.5,
+                pin: true,
+                pinSpacing: true
+            }
+        })
+        clipAnimation.to('.mask-clip-path', {
+            width: '100vw',
+            height: '100vh',
+            borderRadius: 0
+        })
+    })
+
     return (
-        <section id="about" className="py-32 section-padding border-t border-[#1a1a1a]">
-            <div className="max-w-4xl">
-                {/* Section label */}
-                <p className="text-xs tracking-[0.3em] uppercase text-[#555] mb-12">
-                    About
+        <div id="about" className="min-h-screen w-screen relative z-20">
+            <div className="relative mb-8 mt-36 flex flex-col items-center gap-5 px-6 text-center">
+                <p className="font-general text-sm uppercase text-zinc-500 tracking-[0.2em]">
+                    About Me
                 </p>
 
-                {/* Main text */}
-                <p className="text-2xl md:text-3xl lg:text-4xl leading-relaxed text-[#ccc] mb-16">
-                    I'm a developer who finds beauty in simplicity.
-                    By day, I build modern web applications.
-                    By night, I hunt for vulnerabilities.
-                    <span className="text-white"> Security isn't just my job—it's my obsession.</span>
-                </p>
+                <AnimatedTitle
+                    title="Se<b>c</b>uring the <br /> digital f<b>u</b>ture"
+                    containerClass="mt-5 !text-white"
+                />
 
-                {/* Skills - minimal list */}
-                <div className="flex flex-wrap gap-3">
-                    {skills.map((skill) => (
-                        <span
-                            key={skill}
-                            className="text-xs text-[#666] px-3 py-1.5 border border-[#222] rounded"
-                        >
-                            {skill}
-                        </span>
-                    ))}
+                <div className="about-subtext mt-10">
+                    <p className="text-xl md:text-2xl text-zinc-300 font-medium">
+                        Building robust systems with a hacker's mindset.
+                    </p>
+                    <p className="text-zinc-500 mt-4 leading-relaxed max-w-lg mx-auto">
+                        I specialize in identifying vulnerabilities and architecting secure solutions,
+                        blending offensive security knowledge with modern full-stack development.
+                    </p>
                 </div>
             </div>
-        </section>
-    );
-};
 
-export default About;
+            <div className="h-dvh w-screen" id="clip">
+                <div className="mask-clip-path about-image bg-[#1a1a1a]">
+                    {/* Using a gradient or abstract video instead of 'nature' if preferred, but keeping nature for now as placeholder */}
+                    <video
+                        src="./nature.mp4"
+                        autoPlay
+                        muted
+                        loop
+                        className="absolute left-0 top-0 size-full object-cover opacity-80"
+                    />
+                    <div className="absolute inset-0 bg-violet-900/20 mix-blend-overlay" />
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default About
