@@ -18,8 +18,8 @@ const FloatingImage = () => {
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
 
-    const rotateX = ((yPos - centerY) / centerY) * -10;
-    const rotateY = ((xPos - centerX) / centerX) * 10;
+    const rotateX = ((yPos - centerY) / centerY) * -5; // Sharper motion
+    const rotateY = ((xPos - centerX) / centerX) * 5;
 
     gsap.to(element, {
       duration: 0.3,
@@ -44,10 +44,10 @@ const FloatingImage = () => {
   };
 
   return (
-    <div id="experience" className="min-h-dvh w-screen bg-[#121212] text-white relative z-10">
-      <div className="flex size-full flex-col items-center py-10 pb-24">
-        <p className="font-general text-[12px] uppercase md:text-[10px] tracking-widest text-zinc-500">
-          Career Timeline
+    <div id="experience" className="min-h-dvh w-screen bg-[#0a0a0a] text-white relative z-10 border-t border-white/5">
+      <div className="flex size-full flex-col items-center py-20 pb-32">
+        <p className="font-general text-[10px] uppercase md:text-[10px] tracking-[0.3em] text-zinc-600 mb-4">
+          Timeline
         </p>
 
         <div className="relative size-full">
@@ -56,8 +56,8 @@ const FloatingImage = () => {
             containerClass="mt-5 pointer-events-none mix-blend-difference relative z-10 text-white"
           />
 
-          <div className="story-img-container">
-            <div className="story-img-mask rounded-xl"> {/* Tighter corner radius */}
+          <div className="story-img-container mt-10">
+            <div className="story-img-mask rounded-sm"> {/* Sharper mask */}
               <div className="story-img-content">
                 <img
                   ref={frameRef}
@@ -67,7 +67,7 @@ const FloatingImage = () => {
                   onMouseEnter={handleMouseLeave}
                   src="/img/entrance.webp"
                   alt="entrance.webp"
-                  className="object-contain opacity-80"
+                  className="object-contain opacity-60 grayscale hover:grayscale-0 transition-all duration-700"
                 />
               </div>
             </div>
@@ -75,21 +75,22 @@ const FloatingImage = () => {
         </div>
 
         <div className="-mt-80 flex w-full justify-center md:-mt-64 md:me-44 md:justify-end relative z-20">
-          <div className="flex h-full w-fit flex-col items-center md:items-start bg-[#1c1c1f]/80 backdrop-blur-md p-8 rounded-xl border border-white/5 shadow-2xl">
-            <p className="mt-3 max-w-sm text-center font-circular-web text-zinc-400 md:text-start leading-relaxed">
-              Navigating the intersection of offensive security and modern web development.
-              Building tools that secure the future of the internet.
+          <div className="flex h-full w-fit flex-col items-center md:items-start bg-[#141414]/90 backdrop-blur-md p-10 rounded-sm border border-white/10 shadow-none hover:shadow-2xl hover:border-white/20 transition-all duration-500">
+            <p className="mt-3 max-w-sm text-center font-mono text-xs text-zinc-400 md:text-start leading-relaxed tracking-wide">
+              {">"} INITIALIZING CAREER SEQUENCE...<br />
+              {">"} LOADED: OFFENSIVE SECURITY<br />
+              {">"} LOADED: FULL STACK ARCHITECTURE<br />
+              <span className="text-zinc-600 block mt-2">// Building the future of secure web.</span>
             </p>
 
-            <div className="mt-8 flex gap-6 items-center">
+            <div className="mt-8 flex gap-8 items-center border-t border-white/10 pt-6 w-full">
               <div className="flex flex-col">
-                <span className="text-3xl font-zentry text-white">2024</span>
-                <span className="text-[10px] text-zinc-500 uppercase tracking-widest mt-1">Present</span>
+                <span className="text-4xl font-zentry text-white">2024</span>
+                <span className="text-[9px] text-zinc-600 uppercase tracking-widest mt-1 font-mono">Present Day</span>
               </div>
-              <div className="w-px bg-white/10 h-12" />
               <div className="flex flex-col">
-                <span className="text-white font-medium text-lg">Bug Bounty Hunter</span>
-                <span className="text-zinc-500 text-sm">Independent</span>
+                <span className="text-white font-medium text-sm font-mono">Bug Bounty Hunter</span>
+                <span className="text-zinc-600 text-[9px] uppercase tracking-widest">Independent</span>
               </div>
             </div>
           </div>

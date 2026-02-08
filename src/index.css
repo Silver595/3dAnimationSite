@@ -5,28 +5,23 @@
 @tailwind utilities;
 
 :root {
-  /* Luxury Grey Palette */
-  --bg-primary: #121212;
-  /* Deep Charcoal */
-  --bg-secondary: #1c1c1f;
-  /* Lighter Grey for cards */
-  --bg-accent: #2a2a2e;
-  /* Borders/Highlights */
+  /* Luxury Grey Palette - Deep & Technical */
+  --bg-primary: #0a0a0a;
+  /* Almost black */
+  --bg-secondary: #141414;
+  /* Very dark grey */
+  --bg-accent: #222222;
 
-  /* Luxury White Palette */
-  --text-primary: #ededed;
-  /* Soft White */
-  --text-secondary: #a1a1aa;
-  /* Muted Grey */
-  --text-accent: #fff;
-  /* Pure White highlights */
+  --text-primary: #f2f2f2;
+  --text-secondary: #999999;
 
-  --radius-sm: 0.5rem;
-  /* rounded-lg */
-  --radius-md: 0.75rem;
-  /* rounded-xl */
-  --radius-lg: 1rem;
-  /* rounded-2xl */
+  /* Sharper Edges */
+  --radius-sm: 0.125rem;
+  /* rounded-sm */
+  --radius-md: 0.25rem;
+  /* rounded */
+  --radius-lg: 0.5rem;
+  /* rounded-lg - was 1rem previously */
 }
 
 body {
@@ -67,31 +62,31 @@ body {
 
 @layer components {
 
-  /* Updated 'Luxury' Classes with reduced radius */
+  /* Sharper Glass Panel */
   .glass-panel {
-    @apply bg-[#1c1c1f]/60 backdrop-blur-md border border-white/5 rounded-xl shadow-2xl;
+    @apply bg-[#141414]/90 backdrop-blur-sm border border-white/10 rounded-lg shadow-2xl;
   }
 
   .soft-button {
-    @apply px-6 py-3 rounded-lg bg-white text-black hover:bg-[#e0e0e0] transition-all duration-300 font-medium tracking-wide shadow-lg shadow-white/5 hover:translate-y-[-2px];
+    @apply px-6 py-3 rounded-md bg-white text-black hover:bg-[#e0e0e0] transition-all duration-300 font-medium tracking-wide shadow-none hover:shadow-lg hover:shadow-white/5;
   }
 
   .soft-button-outline {
-    @apply px-6 py-3 rounded-lg border border-white/20 text-white hover:bg-white/5 transition-all duration-300 font-medium tracking-wide;
+    @apply px-6 py-3 rounded-md border border-white/20 text-white hover:bg-white/5 transition-all duration-300 font-medium tracking-wide;
   }
 }
 
 @layer utilities {
   .border-hsla {
-    @apply border border-white/5;
+    @apply border border-white/10;
   }
 
   .nav-hover-btn {
-    @apply relative ms-10 font-general text-xs uppercase text-zinc-400 after:absolute after:-bottom-0.5 after:left-0 after:h-[2px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-white after:transition-transform after:duration-300 after:ease-[cubic-bezier(0.65_0.05_0.36_1)] hover:text-white hover:after:origin-bottom-left hover:after:scale-x-100 cursor-pointer transition-colors duration-300;
+    @apply relative ms-10 font-general text-xs uppercase text-zinc-500 after:absolute after:-bottom-0.5 after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-white after:transition-transform after:duration-300 hover:text-white hover:after:origin-bottom-left hover:after:scale-x-100 cursor-pointer transition-colors duration-300;
   }
 
   .floating-nav {
-    @apply bg-[#1c1c1f]/90 backdrop-blur-md border border-white/5 rounded-xl mt-4 mx-4 shadow-lg shadow-black/20;
+    @apply bg-[#0a0a0a]/90 backdrop-blur-md border border-white/10 rounded-lg mt-4 mx-4 shadow-xl;
   }
 
   .absolute-center {
@@ -117,20 +112,20 @@ body {
   }
 
   .about-subtext {
-    @apply absolute bottom-[-80dvh] left-1/2 w-full max-w-96 -translate-x-1/2 text-center font-circular-web text-lg md:max-w-[34rem] text-zinc-400;
+    @apply absolute bottom-[-80dvh] left-1/2 w-full max-w-96 -translate-x-1/2 text-center font-circular-web text-lg md:max-w-[34rem] text-zinc-500;
   }
 
   .about-image {
-    @apply absolute left-1/2 top-0 z-20 h-[60vh] w-96 origin-center -translate-x-1/2 overflow-hidden rounded-xl md:w-[30vw] shadow-2xl shadow-black/50;
+    @apply absolute left-1/2 top-0 z-20 h-[60vh] w-96 origin-center -translate-x-1/2 overflow-hidden rounded-lg md:w-[30vw] shadow-2xl;
   }
 
-  /* Modified bento radius to rounded-xl (from 2rem) */
+  /* Sharper Bento */
   .bento-tilt_1 {
-    @apply relative border-hsla col-span-2 overflow-hidden rounded-xl transition-transform duration-500 ease-out hover:scale-[1.01] shadow-2xl;
+    @apply relative border-hsla col-span-2 overflow-hidden rounded-lg transition-transform duration-500 ease-out hover:scale-[1.01];
   }
 
   .bento-tilt_2 {
-    @apply relative col-span-1 row-span-1 overflow-hidden rounded-xl transition-transform duration-500 ease-out hover:scale-[1.01] shadow-xl;
+    @apply relative col-span-1 row-span-1 overflow-hidden rounded-lg transition-transform duration-500 ease-out hover:scale-[1.01];
   }
 
   .bento-title {
@@ -142,7 +137,6 @@ body {
     filter: url("#flt_tag");
   }
 
-  /* Tighter mask */
   .story-img-mask {
     @apply absolute left-0 top-0 size-full overflow-hidden md:left-[20%] md:top-[-10%] md:size-4/5;
     clip-path: polygon(4% 0, 83% 21%, 100% 73%, 0% 100%);
@@ -154,7 +148,7 @@ body {
   }
 }
 
-/* Animations */
+/* Animations follow... (Restored from previous step or kept same) */
 .indicator-line {
   @apply h-1 w-px rounded-full bg-white transition-all duration-200 ease-in-out;
 }
