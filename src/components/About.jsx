@@ -1,62 +1,39 @@
-import gsap from "gsap"
-import { useGSAP } from "@gsap/react"
+const skills = [
+    "React", "Next.js", "Node.js", "Python",
+    "Security", "Pentesting", "OWASP", "Burp Suite"
+];
 
-import { ScrollTrigger } from "gsap/all"
-import AnimatedTitle from "./AnimatedTitle"
-gsap.registerPlugin(ScrollTrigger)
 const About = () => {
+    return (
+        <section id="about" className="py-32 section-padding border-t border-[#1a1a1a]">
+            <div className="max-w-4xl">
+                {/* Section label */}
+                <p className="text-xs tracking-[0.3em] uppercase text-[#555] mb-12">
+                    About
+                </p>
 
-    useGSAP(()=>{
-        const clipAnimation = gsap.timeline({
-            scrollTrigger:{
-                trigger:'#clip',
-                start:'center center',
-                end:'+=800 center',
-                scrub:0.5,
-                pin:true,
-                pinSpacing:true
-            }
-        })
-        clipAnimation.to('.mask-clip-path',{
-            width:'100vw',
-            height:'100vh',
-            borderRadius:0
-        })
-    })
+                {/* Main text */}
+                <p className="text-2xl md:text-3xl lg:text-4xl leading-relaxed text-[#ccc] mb-16">
+                    I'm a developer who finds beauty in simplicity.
+                    By day, I build modern web applications.
+                    By night, I hunt for vulnerabilities.
+                    <span className="text-white"> Security isn't just my job—it's my obsession.</span>
+                </p>
 
-  return (
-    <div id="about" className="min-h-screen w-screen">
-        <div className="relative mb-8 mt-36 flex flex-col items-center gap-5">
-            <h2 className="font-general text-sm uppercase md:text-[10px]">
-                Welcome to hawai
-            </h2>
-
-            <AnimatedTitle
-            title="Disc<b>o</b>ver the world <br></br> of created by <b>G</b>od. Explore<b>Y</b>ou F<b>o</b>rm inside your so<b>u</b>l."
-            containerClass="mt-5 !text-black text-center"
-            />
-            
-            <div className="about-subtext">
-                <p>The future will become like the nature</p>
-            <p>
-                Beautiful, Danger, Greenery, Happy.
-            </p>
+                {/* Skills - minimal list */}
+                <div className="flex flex-wrap gap-3">
+                    {skills.map((skill) => (
+                        <span
+                            key={skill}
+                            className="text-xs text-[#666] px-3 py-1.5 border border-[#222] rounded"
+                        >
+                            {skill}
+                        </span>
+                    ))}
+                </div>
             </div>
-        </div>
-        <div className="h-dvh w-screen" id="clip">
-            <div className="mask-clip-path about-image">
-                <video
-                    src="./nature.mp4"
-                    autoPlay
-                    muted
-                    loop
-                    alt="background"
-                    className="absolute left-0 top-0 size-full object-cover"
-                />
-            </div>
-        </div>
-    </div>
-  )
-}
+        </section>
+    );
+};
 
-export default About
+export default About;
