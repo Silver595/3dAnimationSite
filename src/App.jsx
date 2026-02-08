@@ -6,7 +6,7 @@ import Projects from "./components/Projects";
 import Skills from "./components/Skills";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
-import Story from "./components/Strory";
+import Experience from "./components/Experience"; // Updated import
 import { useEffect } from "react";
 import Lenis from "lenis";
 
@@ -41,7 +41,7 @@ const App = () => {
       <About />
       <Projects />
       <Skills />
-      <Story />
+      <Experience /> {/* Updated Component */}
       <Contact />
       <Footer />
     </main>
