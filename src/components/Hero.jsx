@@ -1,3 +1,4 @@
+
 import { useRef } from "react";
 import { useGSAP } from '@gsap/react';
 import gsap from "gsap";
@@ -17,10 +18,9 @@ const Hero = () => {
       if (titleText) {
         gsap.from(titleText, {
           opacity: 0,
-          y: 100,
-          rotateX: -20,
+          y: 50,
           duration: 1.5,
-          ease: "power4.out",
+          ease: "power2.out",
           delay: 0.2,
         });
       }
@@ -30,11 +30,11 @@ const Hero = () => {
       if (lines) {
         gsap.from(lines, {
           opacity: 0,
-          y: 30,
-          stagger: 0.2,
+          y: 20,
+          stagger: 0.1,
           duration: 1,
-          ease: "power3.out",
-          delay: 0.8,
+          ease: "power2.out",
+          delay: 0.6,
         });
       }
 
@@ -42,8 +42,9 @@ const Hero = () => {
       const mm = gsap.matchMedia();
       mm.add("(min-width: 768px)", () => {
         gsap.set("#video-frame", {
-          clipPath: "polygon(14% 0%, 72% 0%, 90% 90%, 0% 100%)",
-          borderRadius: "0 0 2rem 2rem",
+          // Less aggressive clip path for a "luxury" structured look, more rectangular
+          clipPath: "polygon(5% 0%, 95% 0%, 100% 90%, 0% 100%)",
+          borderRadius: "0 0 1rem 1rem",
         });
 
         gsap.from("#video-frame", {
@@ -67,20 +68,20 @@ const Hero = () => {
       {/* Video Background Container */}
       <div
         id="video-frame"
-        className="relative z-10 h-dvh w-screen overflow-hidden bg-[#1a1a1a]"
+        className="relative z-10 h-dvh w-screen overflow-hidden bg-[#121212]"
       >
-        {/* Abstract Background Video */}
+        {/* Abstract Background Video - Luxury Grey Tone */}
         <video
           src="/videos/hero-1.mp4"
           autoPlay
           loop
           muted
           playsInline
-          className="absolute left-0 top-0 size-full object-cover object-center opacity-60 mix-blend-screen"
+          className="absolute left-0 top-0 size-full object-cover object-center opacity-40 grayscale"
         />
 
-        {/* Soft Gradient Overlay - Essential for 'Soft Minimal' look */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0f0f12]/50 to-[#0f0f12]" />
+        {/* Luxury Grey Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#121212]/60 to-[#121212]" />
 
         {/* Content */}
         <div className="absolute inset-0 z-40 flex flex-col justify-center px-6 md:px-20">
@@ -93,41 +94,35 @@ const Hero = () => {
             </h1>
 
             <div ref={textRef} className="mt-8 space-y-4 max-w-lg">
-              <p className="font-robert-medium text-2xl md:text-3xl text-white/90">
-                Bug Bounty Hunter & <br />
-                Full Stack Developer
+              <p className="font-general text-xl md:text-2xl text-zinc-300 font-light tracking-wide">
+                CYBERSECURITY & DEVELOPMENT
               </p>
-              <p className="font-robert-regular text-zinc-400 text-lg leading-relaxed">
-                Crafting secure, beautiful digital experiences.
-                Merging the precision of cybersecurity with the art of development.
+              <p className="font-general text-zinc-400 text-lg leading-relaxed max-w-md">
+                Precision engineering for the digital age.
+                Securing infrastructure while building elegant user experiences.
               </p>
 
               <div className="pt-8 flex gap-4">
                 <a href="#projects" className="soft-button">
-                  View Work
+                  View Projects
                 </a>
                 <a href="#contact" className="soft-button-outline">
-                  Contact Me
+                  Contact
                 </a>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Minimal Scroll Indicator */}
-        <div className="absolute bottom-10 left-10 z-40">
-          <div className="flex items-center gap-3 text-white/50">
-            <div className="h-[2px] w-12 bg-white/20">
+        {/* Clean Scroll Indicator */}
+        <div className="absolute bottom-12 left-12 z-40">
+          <div className="flex items-center gap-3 text-zinc-500">
+            <div className="h-[1px] w-12 bg-zinc-700">
               <div className="h-full w-1/3 bg-white animate-pulse" />
             </div>
-            <span className="text-xs uppercase tracking-widest font-general">Scroll</span>
+            <span className="text-[10px] uppercase tracking-[0.2em] font-general">Scroll</span>
           </div>
         </div>
-
-        {/* Decorative corner number */}
-        <h1 className="special-font hero-heading absolute bottom-5 right-5 z-40 text-white/5 pointer-events-none">
-          5<b>9</b>5
-        </h1>
       </div>
     </div>
   );
