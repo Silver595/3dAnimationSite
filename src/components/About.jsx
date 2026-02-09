@@ -114,9 +114,9 @@ const About = () => {
 
                         <div className="grid grid-cols-1 gap-6">
                             {[
-                                { title: "OSCP", date: "2023", org: "OffSec" },
-                                { title: "AWS Solutions Architect", date: "2024", org: "Amazon" },
-                                { title: "Swimming", date: "Pending", org: "ISC2" }
+                                { title: "DevOps", date: "Ongoing", org: "YouTube" },
+                                { title: "AWS Security", date: "2026", org: "Amazon" },
+                                { title: "Swimming", date: "Pending", org: "personal" }
                             ].map((cert, i) => (
                                 <div key={i} className="group flex items-center justify-between border-b border-white/10 py-6 hover:bg-white/[0.02] px-4 transition-colors">
                                     <div>
