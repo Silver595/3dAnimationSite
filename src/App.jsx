@@ -41,7 +41,7 @@ const App = () => {
       <About />
       <Projects />
       <Skills />
-      <Terminal /> {/* Replaced Workflow with Terminal */}
+      {/* <Terminal /> Terminal hidden per user request */}
       <Contact />
       <Footer />
     </main>

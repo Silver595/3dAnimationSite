@@ -38,13 +38,11 @@ const Hero = () => {
         });
       }
 
-      // Video Frame Scroll Animation
       const mm = gsap.matchMedia();
       mm.add("(min-width: 768px)", () => {
         gsap.set("#video-frame", {
-          // Sharp clip path for technical look
           clipPath: "polygon(4% 0%, 96% 0%, 100% 90%, 0% 100%)",
-          borderRadius: "0 0 0.5rem 0.5rem", // Sharp corners
+          borderRadius: "0 0 0.5rem 0.5rem",
         });
 
         gsap.from("#video-frame", {
@@ -93,7 +91,7 @@ const Hero = () => {
               ref={titleRef}
               className="special-font hero-heading text-white opacity-90"
             >
-              Silver
+              Akash
             </h1>
 
             <div ref={textRef} className="mt-8 space-y-6 max-w-lg">

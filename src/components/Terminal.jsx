@@ -184,7 +184,6 @@ const Terminal = () => {
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             className="flex-1 bg-transparent outline-none border-none text-white placeholder-zinc-700 focus:ring-0 p-0 m-0 w-full"
-                            autoFocus
                             autoComplete="off"
                             spellCheck="false"
                         />
