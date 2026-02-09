@@ -66,17 +66,28 @@ const Hero = () => {
       {/* Video Background Container */}
       <div
         id="video-frame"
-        className="relative z-10 h-dvh w-screen overflow-hidden bg-[#0a0a0a]"
+        className="relative z-10 h-dvh w-screen overflow-hidden bg-[#0a0a0a] will-change-transform"
       >
         {/* Abstract Background Video - Deep Dark */}
         <video
+          ref={(el) => {
+            if (el) {
+              ScrollTrigger.create({
+                trigger: containerRef.current,
+                start: "top top",
+                end: "bottom top",
+                onLeave: () => el.pause(),
+                onEnterBack: () => el.play(),
+              });
+            }
+          }}
           src="/videos/hero-1.mp4"
           autoPlay
           loop
           muted
           playsInline
           preload="auto"
-          className="absolute left-0 top-0 size-full object-cover object-center opacity-30 grayscale contrast-125"
+          className="absolute left-0 top-0 size-full object-cover object-center opacity-30 grayscale contrast-125 will-change-transform"
         />
 
         {/* Technical Grid Overlay */}

@@ -22,7 +22,8 @@ const About = () => {
                 scrub: 1,
                 end: "+=3000",
                 snap: 1 / (sections.length - 1),
-            }
+            },
+            force3D: true,
         });
     }, { scope: sectionRef });
 
@@ -35,7 +36,7 @@ const About = () => {
                     <div className="absolute inset-0 z-0">
                         {/* Abstract BG */}
                         <div className="absolute inset-0 bg-[#0a0a0a]" />
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vh] bg-white/5 rounded-full blur-[120px] opacity-20" />
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vh] bg-[radial-gradient(circle,rgba(255,255,255,0.1)_0%,transparent_70%)] rounded-full opacity-20" />
                     </div>
 
                     <div className="relative z-10 text-center max-w-4xl mx-auto">

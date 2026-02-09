@@ -7,56 +7,64 @@ gsap.registerPlugin(ScrollTrigger);
 const projects = [
     {
         id: 1,
-        title: "Security Core",
-        category: "System Architecture",
-        description: "Enterprise vulnerability detection engine with real-time reporting.",
+        title: "Jotion",
+        category: "Web Application",
+        description: "A Notion-inspired note-taking app with rich text editing and workspace-style organization.",
         src: "/img/gallery-1.webp", // Switched to WebP images for performance
-        tags: ["Python", "Redis", "Docker"]
+        tags: ["Next.js", "ConvexDB", "Prisma"],
+        link: "https://personal-diary-psi.vercel.app/"
     },
     {
         id: 2,
-        title: "Bug Trac",
-        category: "SaaS Platform",
-        description: "Collaborative vulnerability management for security teams.",
+        title: "ShadowBox",
+        category: "Local AI Tool",
+        description: "A simple vulnerability tracking application focused on organizing and managing security findings.",
         src: "/img/gallery-2.webp",
-        tags: ["Next.js", "PostgreSQL", "Prisma"]
+        tags: ["Python", "ChromaDB", "OpenAI CLIP"],
+        link: "https://github.com/Silver595/ShadowBox"
     },
     {
         id: 3,
-        title: "Net Guard",
-        category: "Network Security",
-        description: "High-performance API Gateway with distributed rate limiting.",
+        title: "Auto Meeting Joiner",
+        category: "Chrome Extension",
+        description: "A browser extension that automatically joins online meetings on platforms like Zoom, Google Meet, and Webex, built to explore browser automation and extension APIs.",
         src: "/img/gallery-3.webp",
-        tags: ["Go", "gRPC", "Redis"]
+        tags: ["Python", "JavaScript", "html"],
+        link: "https://github.com/Silver595/AutoMeetingJoiner"
     },
     {
         id: 4,
-        title: "Portfolio v2",
-        category: "Interactive WebGL",
-        description: "Award-winning personal site with heavy GSAP integrations.",
+        title: "TechMock",
+        category: "Full-Stack Platform",
+        description: "A full-stack video interview platform with real-time audio/video calls, screen sharing, and an integrated coding environment to support technical interviews.",
         src: "/img/gallery-4.webp",
-        tags: ["React", "Three.js", "GSAP"]
+        tags: ["WebRTC", "Node.js", "Socket.io"],
+        link: "https://techmock.vercel.app/"
     },
     {
         id: 5,
-        title: "Cipher Chat",
-        category: "Cryptography",
-        description: "End-to-end encrypted messaging protocol implementation.",
+        title: "Time Travel",
+        category: "Chrome Extension",
+        description: "Shows how a website looked in the past (via Wayback Machine) in a split-screen view with the current version.",
         src: "/img/gallery-5.webp",
-        tags: ["Rust", "WASM", "Socket.io"]
+        tags: ["JavaScript", "HTML", "CSS"],
+        link: "https://chromewebstore.google.com/detail/ogckpcboinbcohhilmofkalobpkolkib"
     }
 ];
 
 const ProjectRow = ({ project, setHoveredProject, index }) => {
     return (
-        <div
+        <a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
             onMouseEnter={() => setHoveredProject(project)}
-            className="group relative flex w-full cursor-pointer items-center justify-between border-b border-white/10 py-12 transition-all duration-300 hover:bg-white/[0.02] px-4 md:px-10"
+            className="group relative flex w-full cursor-pointer items-center justify-between border-b border-white/10 py-12 transition-all duration-300 hover:bg-white/[0.02] px-4 md:px-10 block"
         >
             <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:gap-12">
                 <span className="font-mono text-xs text-zinc-600 md:text-sm">0{index + 1} //</span>
                 <h3 className="font-zentry text-4xl uppercase text-zinc-400 transition-colors duration-300 group-hover:text-white md:text-6xl">
-                    {project.title}
+                    {project.title} <span className="text-sm align-super opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
                 </h3>
             </div>
 
@@ -75,7 +83,7 @@ const ProjectRow = ({ project, setHoveredProject, index }) => {
             <p className="mt-4 max-w-[200px] text-right font-general text-xs text-zinc-500 md:hidden">
                 {project.category}
             </p>
-        </div>
+        </a>
     );
 };
 
