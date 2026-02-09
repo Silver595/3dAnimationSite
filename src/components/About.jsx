@@ -62,26 +62,27 @@ const About = () => {
                 <div className="about-panel relative h-full w-screen flex-shrink-0 flex items-center justify-between p-10 md:p-32 border-r border-white/5 bg-[#0b0b0b]">
                     <div className="flex flex-col flex-1 items-start z-10 max-w-xl">
                         <p className="font-mono text-sm uppercase text-zinc-500 tracking-[0.3em] mb-6">
-                            02 // Philosophy
+                            02 // Interests
                         </p>
                         <h3 className="font-zentry text-6xl text-white mb-8">
-                            Hacker's <br /> Mindset
+                            Simple <br /> Everyday
+                            <br />
+                            Things
                         </h3>
                         <p className="font-general text-zinc-400 text-lg leading-relaxed mb-6">
-                            To build secure systems, one must understand how to break them. My approach combines offensive security testing with defensive architectural patterns.
-                        </p>
+                            I like watching movies and anime, and spending my free time doing simple things that help me unwind and clear my head. <br />I use debian btw.</p>
                         <div className="space-y-4">
                             <div className="flex items-center gap-4">
                                 <span className="w-12 h-[1px] bg-zinc-600" />
-                                <span className="font-mono text-xs text-zinc-300 uppercase tracking-widest">Proactive Defense</span>
+                                <span className="font-mono text-xs text-zinc-300 uppercase tracking-widest">Movies</span>
                             </div>
                             <div className="flex items-center gap-4">
                                 <span className="w-12 h-[1px] bg-zinc-600" />
-                                <span className="font-mono text-xs text-zinc-300 uppercase tracking-widest">Zero Trust Arch</span>
+                                <span className="font-mono text-xs text-zinc-300 uppercase tracking-widest">Anime</span>
                             </div>
                             <div className="flex items-center gap-4">
                                 <span className="w-12 h-[1px] bg-zinc-600" />
-                                <span className="font-mono text-xs text-zinc-300 uppercase tracking-widest">Automated Security</span>
+                                <span className="font-mono text-xs text-zinc-300 uppercase tracking-widest">Gaming</span>
                             </div>
                         </div>
                     </div>
@@ -101,13 +102,13 @@ const About = () => {
                     <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
                         <div>
                             <p className="font-mono text-sm uppercase text-zinc-500 tracking-[0.3em] mb-6">
-                                03 // Credentials
+                                03 // LEARNING
                             </p>
                             <h3 className="font-zentry text-5xl md:text-7xl text-white mb-8">
-                                Certi<br />fied
+                                IN <br />PROGRESS
                             </h3>
                             <p className="font-general text-zinc-400 max-w-md">
-                                Validated expertise in cloud security, penetration testing, and secure coding practices.
+                                Things I’m currently spending time learning and getting better at.
                             </p>
                         </div>
 
@@ -115,7 +116,7 @@ const About = () => {
                             {[
                                 { title: "OSCP", date: "2023", org: "OffSec" },
                                 { title: "AWS Solutions Architect", date: "2024", org: "Amazon" },
-                                { title: "CISSP", date: "Pending", org: "ISC2" }
+                                { title: "Swimming", date: "Pending", org: "ISC2" }
                             ].map((cert, i) => (
                                 <div key={i} className="group flex items-center justify-between border-b border-white/10 py-6 hover:bg-white/[0.02] px-4 transition-colors">
                                     <div>
