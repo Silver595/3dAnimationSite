@@ -68,7 +68,6 @@ const Hero = () => {
         id="video-frame"
         className="relative z-10 h-dvh w-screen overflow-hidden bg-[#0a0a0a] will-change-transform"
       >
-        {/* Abstract Background Video - Deep Dark */}
         <video
           ref={(el) => {
             if (el) {
@@ -107,11 +106,11 @@ const Hero = () => {
 
             <div ref={textRef} className="mt-8 space-y-6 max-w-lg">
               <p className="font-general text-xl md:text-2xl text-zinc-300 font-light tracking-wide uppercase">
-                Cybersecurity <span className="text-zinc-600 mx-2">//</span> Development
+                Developer <span className="text-zinc-600 mx-2">//</span> Traveler
               </p>
               <p className="font-general text-zinc-500 text-sm md:text-base leading-relaxed max-w-md font-mono">
                 [SYSTEM STATUS: ONLINE]<br />
-                Engineering secure digital infrastructure.
+                I love to design things and making them great.
               </p>
 
               <div className="pt-8 flex gap-4">

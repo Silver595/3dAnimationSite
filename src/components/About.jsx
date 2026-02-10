@@ -44,7 +44,7 @@ const About = () => {
                             01 // About Me
                         </p>
                         <AnimatedTitle
-                            title="Se<b>c</b>uring <br /> the d<b>i</b>gital realm"
+                            title="we<b>b</b> designer <br /> & <b>d</b>evloper"
                             containerClass="!text-white !text-6xl md:!text-8xl"
                         />
                         <div className="mt-12 flex flex-col items-center gap-6">
