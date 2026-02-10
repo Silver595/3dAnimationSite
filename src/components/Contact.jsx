@@ -97,29 +97,41 @@ const Contact = () => {
               <div>
                 <h4 className="font-mono text-xs text-zinc-500 uppercase tracking-widest mb-4">Frequency</h4>
                 <a href="mailto:hello@silver.dev" className="text-2xl md:text-3xl font-general text-white hover:text-zinc-400 transition-colors block">
-                  hello@silver.dev
+                  akashpurjalkar66@gmail.com
                 </a>
               </div>
               <div>
                 <h4 className="font-mono text-xs text-zinc-500 uppercase tracking-widest mb-4">Coordinates</h4>
                 <p className="text-xl font-general text-zinc-300">
-                  San Francisco, CA<br />
-                  Earth, Sol System
+                  India,Maharashtra<br />
+                  Pune
                 </p>
               </div>
               <div>
                 <h4 className="font-mono text-xs text-zinc-500 uppercase tracking-widest mb-4">Socials</h4>
                 <div className="flex flex-col gap-2">
                   <a href="#" className="group flex items-center gap-3 text-zinc-400 hover:text-white transition-colors">
-                    <span className="font-mono text-sm">[GitHub]</span>
+                    <span className="font-mono text-sm">
+                      <a href="https://github.com/silver595" target="_blank">
+                        [GitHub]
+                      </a>
+                    </span>
                     <FiArrowUpRight className="opacity-0 group-hover:opacity-100 transition-opacity" />
                   </a>
-                  <a href="#" className="group flex items-center gap-3 text-zinc-400 hover:text-white transition-colors">
-                    <span className="font-mono text-sm">[Twitter]</span>
+                  {/* <a href="#" className="group flex items-center gap-3 text-zinc-400 hover:text-white transition-colors">
+                    <span className="font-mono text-sm">
+                      <a href="#" target="_blank">
+                        [instagram]
+                      </a>
+                    </span>
                     <FiArrowUpRight className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </a>
+                  </a> */}
                   <a href="#" className="group flex items-center gap-3 text-zinc-400 hover:text-white transition-colors">
-                    <span className="font-mono text-sm">[LinkedIn]</span>
+                    <span className="font-mono text-sm">
+                      <a href="https://www.linkedin.com/in/akash-purjalkar/" target="_blank">
+                        [LinkedIn]
+                      </a>
+                    </span>
                     <FiArrowUpRight className="opacity-0 group-hover:opacity-100 transition-opacity" />
                   </a>
                 </div>

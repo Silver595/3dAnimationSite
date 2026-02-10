@@ -25,8 +25,8 @@ app.post('/api/email', async (req, res) => {
 
     try {
         const data = await resend.emails.send({
-            from: 'Portfolio Contact <onboarding@resend.dev>', // Use onboarding domain for testing
-            to: 'akashpurjalkar66@gmail.com', // REPLACE THIS with your verified email if different
+            from: 'Portfolio Contact <onboarding@resend.dev>',
+            to: 'akashpurjalkar66@gmail.com',
             subject: `New Message from ${name}`,
             reply_to: email,
             html: `
