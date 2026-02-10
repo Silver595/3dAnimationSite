@@ -58,10 +58,11 @@ const Skills = () => {
             title: "Full Stack Web",
             skills: [
                 { name: "React / Next.js", desc: "UI Architecture" },
-                { name: "Three.js / GSAP", desc: "WebGL Interaction" },
+                { name: "Tailwind / GSAP", desc: "WebGL Interaction" },
                 { name: "Node.js", desc: "Runtime Environment" },
                 { name: "TypeScript", desc: "Type Safety" },
                 { name: "PostgreSQL", desc: "Relational DB" },
+                { name: "MongoDB", desc: "NoSQL DB" },
                 { name: "Redis", desc: "Cache Layer" },
                 { name: "Python", desc: "Scripting / Backend" }
             ]
@@ -80,13 +81,13 @@ const Skills = () => {
         {
             title: "Security & Net",
             skills: [
-                { name: "Vulnerability Assessment", desc: "Offensive Security" },
-                { name: "Burp Suite", desc: "Penetration Testing" },
-                { name: "Wireshark", desc: "Packet Analysis" },
-                { name: "TCP/IP & OSI", desc: "Protocol Stack" },
-                { name: "Cryptography", desc: "Data Protection" },
-                { name: "OWASP Top 10", desc: "Security Standards" }
+                { name: "Vulnerability Scanning", desc: "Configuration & Patching" },
+                { name: "Burp Suite", desc: "Web Proxy & Request Analysis" },
+                { name: "Wireshark", desc: "Network Traffic & Log Triage" },
+                { name: "TCP/IP & OSI", desc: "Network Communication Models" },
+                { name: "Encryption Basics", desc: "Data Integrity & Hashing" }
             ]
+
         }
     ];
 

@@ -49,7 +49,7 @@ const About = () => {
                         />
                         <div className="mt-12 flex flex-col items-center gap-6">
                             <p className="font-general text-xl text-zinc-300 max-w-2xl leading-relaxed">
-                                I am a security researcher and full-stack developer dedicated to building resilient systems.
+                                I am a DevOps Engineer and Full Stack Developer dedicated to building resilient systems.
                             </p>
                             <p className="font-mono text-xs text-zinc-500 uppercase tracking-widest max-w-md">
                                 [ SYSTEM STATUS: OPERATIONAL ]<br />

@@ -149,7 +149,7 @@ const Projects = () => {
                 </div>
 
                 <div className="mt-20 flex justify-center">
-                    <a href="https://github.com" target="_blank" rel="noreferrer" className="group flex items-center gap-4 text-zinc-500 hover:text-white transition-colors cursor-pointer">
+                    <a href="https://github.com/Silver595" target="_blank" rel="noreferrer" className="group flex items-center gap-4 text-zinc-500 hover:text-white transition-colors cursor-pointer">
                         <span className="font-mono text-xs uppercase tracking-widest">[ View All Archives ]</span>
                         <span className="font-mono text-lg group-hover:translate-x-2 transition-transform">→</span>
                     </a>
