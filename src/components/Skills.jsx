@@ -4,6 +4,7 @@ import { ScrollTrigger } from "gsap/all";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// eslint-disable-next-line react/prop-types
 const SkillCategory = ({ title, skills, index }) => {
     return (
         <div className="skill-category group border-l border-white/10 pl-8 relative">

@@ -18,7 +18,7 @@ const projects = [
         id: 2,
         title: "ShadowBox",
         category: "Local AI Tool",
-        description: "A privacy-first, offline image search engine powered by AI. Search your local photo library using natural",
+        description: "A privacy-first, offline image search engine powered by AI. Search your local photo library using natural language.",
         src: "/img/gallery-2.webp",
         tags: ["Python", "ChromaDB", "OpenAI CLIP"],
         link: "https://github.com/Silver595/ShadowBox"
@@ -52,6 +52,7 @@ const projects = [
     }
 ];
 
+// eslint-disable-next-line react/prop-types
 const ProjectRow = ({ project, setHoveredProject, index }) => {
     return (
         <a
