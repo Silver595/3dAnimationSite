@@ -4,7 +4,7 @@ import { useState, useRef } from "react";
 import { FiArrowUpRight } from "react-icons/fi";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import emailjs from "@emailjs/browser";
+
 
 const Contact = () => {
   const [formState, setFormState] = useState({ name: "", email: "", message: "" });
@@ -24,27 +24,22 @@ const Contact = () => {
     setIsSubmitting(true);
     setError("");
 
-    const serviceId = import.meta.env.VITE_APP_EMAILJS_SERVICE_ID;
-    const templateId = import.meta.env.VITE_APP_EMAILJS_TEMPLATE_ID;
-    const publicKey = import.meta.env.VITE_APP_EMAILJS_PUBLIC_KEY;
-
-    if (!serviceId || !templateId || !publicKey) {
-      console.error("EmailJS keys are missing! Check .env file.");
-      setError("Config Error: Missing Keys");
-      setIsSubmitting(false);
-      return;
-    }
-
     try {
-      await emailjs.sendForm(
-        serviceId,
-        templateId,
-        formRef.current,
-        publicKey
-      );
-      setIsSent(true);
-      setFormState({ name: "", email: "", message: "" });
-      setTimeout(() => setIsSent(false), 4000);
+      const response = await fetch('/api/email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formState),
+      });
+
+      if (response.ok) {
+        setIsSent(true);
+        setFormState({ name: "", email: "", message: "" });
+        setTimeout(() => setIsSent(false), 4000);
+      } else {
+        throw new Error('Server reported an error');
+      }
     } catch (error) {
       console.error("FAILED...", error);
       setError("Transmission Failed. Retry?");
