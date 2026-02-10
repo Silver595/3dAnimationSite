@@ -18,7 +18,7 @@ const projects = [
         id: 2,
         title: "ShadowBox",
         category: "Local AI Tool",
-        description: "A simple vulnerability tracking application focused on organizing and managing security findings.",
+        description: "A privacy-first, offline image search engine powered by AI. Search your local photo library using natural",
         src: "/img/gallery-2.webp",
         tags: ["Python", "ChromaDB", "OpenAI CLIP"],
         link: "https://github.com/Silver595/ShadowBox"
