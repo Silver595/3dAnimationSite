@@ -50,7 +50,7 @@ app.post('/api/email', async (req, res) => {
         res.status(500).json({ error: 'Failed to send email', details: error.message });
     }
 });
-
+// all done
 // Serve Static Assets in Production
 if (process.env.NODE_ENV === 'production' || process.env.npm_lifecycle_event === 'start') {
     // Serve any static files
