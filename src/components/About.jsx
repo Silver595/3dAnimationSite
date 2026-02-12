@@ -1,62 +1,139 @@
-import gsap from "gsap"
-import { useGSAP } from "@gsap/react"
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/all";
+import AnimatedTitle from "./AnimatedTitle";
+import { useRef } from "react";
 
-import { ScrollTrigger } from "gsap/all"
-import AnimatedTitle from "./AnimatedTitle"
-gsap.registerPlugin(ScrollTrigger)
+gsap.registerPlugin(ScrollTrigger);
+
 const About = () => {
+    const sectionRef = useRef(null);
+    const containerRef = useRef(null);
 
-    useGSAP(()=>{
-        const clipAnimation = gsap.timeline({
-            scrollTrigger:{
-                trigger:'#clip',
-                start:'center center',
-                end:'+=800 center',
-                scrub:0.5,
-                pin:true,
-                pinSpacing:true
-            }
-        })
-        clipAnimation.to('.mask-clip-path',{
-            width:'100vw',
-            height:'100vh',
-            borderRadius:0
-        })
-    })
+    useGSAP(() => {
+        const sections = gsap.utils.toArray(".about-panel");
 
-  return (
-    <div id="about" className="min-h-screen w-screen">
-        <div className="relative mb-8 mt-36 flex flex-col items-center gap-5">
-            <h2 className="font-general text-sm uppercase md:text-[10px]">
-                Welcome to hawai
-            </h2>
+        gsap.to(sections, {
+            xPercent: -100 * (sections.length - 1),
+            ease: "none",
+            scrollTrigger: {
+                trigger: sectionRef.current,
+                pin: true,
+                scrub: 1,
+                end: "+=3000",
+                snap: 1 / (sections.length - 1),
+            },
+            force3D: true,
+        });
+    }, { scope: sectionRef });
 
-            <AnimatedTitle
-            title="Disc<b>o</b>ver the world <br></br> of created by <b>G</b>od. Explore<b>Y</b>ou F<b>o</b>rm inside your so<b>u</b>l."
-            containerClass="mt-5 !text-black text-center"
-            />
-            
-            <div className="about-subtext">
-                <p>The future will become like the nature</p>
-            <p>
-                Beautiful, Danger, Greenery, Happy.
-            </p>
+    return (
+        <section ref={sectionRef} id="about" className="relative h-screen w-screen overflow-hidden bg-[#0a0a0a]">
+            <div ref={containerRef} className="flex h-full w-[300vw]">
+
+                {/* PANEL 1: INTRO */}
+                <div className="about-panel relative h-full w-screen flex-shrink-0 flex items-center justify-center p-10 border-r border-white/5">
+                    <div className="absolute inset-0 z-0">
+                        {/* Abstract BG */}
+                        <div className="absolute inset-0 bg-[#0a0a0a]" />
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vh] bg-[radial-gradient(circle,rgba(255,255,255,0.1)_0%,transparent_70%)] rounded-full opacity-20" />
+                    </div>
+
+                    <div className="relative z-10 text-center max-w-4xl mx-auto">
+                        <p className="font-mono text-sm uppercase text-zinc-500 tracking-[0.3em] mb-6">
+                            01 // About Me
+                        </p>
+                        <AnimatedTitle
+                            title="we<b>b</b> designer <br /> & <b>d</b>evloper"
+                            containerClass="!text-white !text-6xl md:!text-8xl"
+                        />
+                        <div className="mt-12 flex flex-col items-center gap-6">
+                            <p className="font-general text-xl text-zinc-300 max-w-2xl leading-relaxed">
+                                I am a DevOps Engineer and Full Stack Developer dedicated to building resilient systems.
+                            </p>
+                            <p className="font-mono text-xs text-zinc-500 uppercase tracking-widest max-w-md">
+                                [ SYSTEM STATUS: OPERATIONAL ]<br />
+                                [ LOCATION: CLASSIFIED ]
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* PANEL 2: PHILOSOPHY */}
+                <div className="about-panel relative h-full w-screen flex-shrink-0 flex items-center justify-between p-10 md:p-32 border-r border-white/5 bg-[#0b0b0b]">
+                    <div className="flex flex-col flex-1 items-start z-10 max-w-xl">
+                        <p className="font-mono text-sm uppercase text-zinc-500 tracking-[0.3em] mb-6">
+                            02 // Interests
+                        </p>
+                        <h3 className="font-zentry text-6xl text-white mb-8">
+                            Simple <br /> Everyday
+                            <br />
+                            Things
+                        </h3>
+                        <p className="font-general text-zinc-400 text-lg leading-relaxed mb-6">
+                            I like watching movies and anime, and spending my free time doing simple things that help me unwind and clear my head. <br />I use debian btw.</p>
+                        <div className="space-y-4">
+                            <div className="flex items-center gap-4">
+                                <span className="w-12 h-[1px] bg-zinc-600" />
+                                <span className="font-mono text-xs text-zinc-300 uppercase tracking-widest">Movies</span>
+                            </div>
+                            <div className="flex items-center gap-4">
+                                <span className="w-12 h-[1px] bg-zinc-600" />
+                                <span className="font-mono text-xs text-zinc-300 uppercase tracking-widest">Anime</span>
+                            </div>
+                            <div className="flex items-center gap-4">
+                                <span className="w-12 h-[1px] bg-zinc-600" />
+                                <span className="font-mono text-xs text-zinc-300 uppercase tracking-widest">Gaming</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="relative h-[60vh] w-[30vw] hidden md:block rounded-sm overflow-hidden border border-white/10">
+                        <img
+                            src="/img/about.webp"
+                            alt="Philosophy"
+                            className="absolute inset-0 h-full w-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-700 hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                    </div>
+                </div>
+
+                {/* PANEL 3: CREDENTIALS */}
+                <div className="about-panel relative h-full w-screen flex-shrink-0 flex items-center justify-center p-10 bg-[#0a0a0a]">
+                    <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
+                        <div>
+                            <p className="font-mono text-sm uppercase text-zinc-500 tracking-[0.3em] mb-6">
+                                03 // LEARNING
+                            </p>
+                            <h3 className="font-zentry text-5xl md:text-7xl text-white mb-8">
+                                IN <br />PROGRESS
+                            </h3>
+                            <p className="font-general text-zinc-400 max-w-md">
+                                Things I’m currently spending time learning and getting better at.
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-1 gap-6">
+                            {[
+                                { title: "DevOps", date: "Ongoing", org: "YouTube" },
+                                { title: "AWS Security", date: "2026", org: "Amazon" },
+                                { title: "Swimming", date: "Pending", org: "personal" }
+                            ].map((cert, i) => (
+                                <div key={i} className="group flex items-center justify-between border-b border-white/10 py-6 hover:bg-white/[0.02] px-4 transition-colors">
+                                    <div>
+                                        <h4 className="font-mono text-xl text-white mb-1 group-hover:text-zinc-200">{cert.title}</h4>
+                                        <p className="font-mono text-xs text-zinc-600 uppercase tracking-widest">{cert.org}</p>
+                                    </div>
+                                    <span className="font-mono text-sm text-zinc-500">{cert.date}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
             </div>
-        </div>
-        <div className="h-dvh w-screen" id="clip">
-            <div className="mask-clip-path about-image">
-                <video
-                    src="./nature.mp4"
-                    autoPlay
-                    muted
-                    loop
-                    alt="background"
-                    className="absolute left-0 top-0 size-full object-cover"
-                />
-            </div>
-        </div>
-    </div>
-  )
-}
+        </section>
+    );
+};
 
-export default About
+export default About;
