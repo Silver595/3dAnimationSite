@@ -1,21 +1,27 @@
-
 import express from 'express';
 import { Resend } from 'resend';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
+
+// ESM __dirname fix
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Middleware
-app.use(cors()); // Allow frontend to talk to backend
-app.use(express.json()); // Parse JSON bodies
+app.use(cors());
+app.use(express.json());
 
-// Initialize Resend with key from .env
+// Initialize Resend
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// API Routes
 app.post('/api/email', async (req, res) => {
     const { name, email, message } = req.body;
 
@@ -45,6 +51,17 @@ app.post('/api/email', async (req, res) => {
     }
 });
 
+// Serve Static Assets in Production
+if (process.env.NODE_ENV === 'production' || process.env.npm_lifecycle_event === 'start') {
+    // Serve any static files
+    app.use(express.static(path.join(__dirname, 'dist')));
+
+    // Handle React routing, return all requests to React app
+    app.get(/.*/, (req, res) => {
+        res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+    });
+}
+
 app.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`);
+    console.log(`Server is running on port ${port}`);
 });
