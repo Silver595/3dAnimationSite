@@ -6,7 +6,7 @@ import Projects from "./components/Projects";
 import Skills from "./components/Skills";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
-import Terminal from "./components/Terminal"; // New Component
+//import Terminal from "./components/Terminal"; // New Component
 import { useEffect } from "react";
 import Lenis from "lenis";
 

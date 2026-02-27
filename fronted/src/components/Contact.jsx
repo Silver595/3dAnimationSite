@@ -81,7 +81,6 @@ const Contact = () => {
       <div className="relative z-10 px-6 md:px-10">
         <div className="mb-20">
           <p className="font-mono text-xs uppercase tracking-[0.3em] text-zinc-500 mb-6">
-                        // System Uplink
           </p>
           <AnimatedTitle
             title="Init<b>i</b>ate <br /> C<b>o</b>nnection"
