@@ -118,7 +118,7 @@ const Skills = () => {
       </div>
 
       {/* Decorative Grid Background */}
-      <div className="absolute inset-0 z-[-1] opacity-5 pointer-events-none bg-[url('/img/grid.svg')] bg-center" />
+      <div className="absolute inset-0 z-[-1] opacity-5 pointer-events-none bg-[url('/img/intricate_minimal.svg')] bg-center" />
     </section>
   );
 };

@@ -76,7 +76,7 @@ const Contact = () => {
     <div id="contact" ref={containerRef} className="relative min-h-screen w-full bg-[#0a0a0a] pt-24 pb-10 overflow-hidden">
 
       {/* Background Texture */}
-      <div className="absolute inset-0 bg-[url('/img/grid.svg')] bg-center opacity-5 pointer-events-none" />
+      <div className="absolute inset-0 bg-[url('/img/intricate_minimal.svg')] bg-center opacity-5 pointer-events-none" />
 
       <div className="relative z-10 px-6 md:px-10">
         <div className="mb-20">
@@ -107,26 +107,6 @@ const Contact = () => {
                 </p>
               </div>
               <div>
-                <h4 className="font-mono text-xs text-zinc-500 uppercase tracking-widest mb-4">Socials</h4>
-                <div className="flex flex-col gap-2">
-                  <a href="https://github.com/silver595" className="group flex items-center gap-3 text-zinc-400 hover:text-white transition-colors">
-                    <span className="font-mono text-sm">
-                      <a href="https://github.com/silver595" target="_blank">
-                        [GitHub]
-                      </a>
-                    </span>
-                    <FiArrowUpRight className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </a>
-
-                  <a href="https://www.linkedin.com/in/akash-purjalkar/" className="group flex items-center gap-3 text-zinc-400 hover:text-white transition-colors">
-                    <span className="font-mono text-sm">
-                      <a href="https://www.linkedin.com/in/akash-purjalkar/" target="_blank">
-                        [LinkedIn]
-                      </a>
-                    </span>
-                    <FiArrowUpRight className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </a>
-                </div>
               </div>
             </div>
           </div>

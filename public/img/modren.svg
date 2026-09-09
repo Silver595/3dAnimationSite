@@ -1,0 +1,76 @@
+<svg width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <g
+    fill="none"
+    stroke="#ffffff"
+    stroke-width="0.8"
+    opacity="0.8"
+  >
+
+    <!-- Outer frame -->
+    <rect x="1" y="1" width="398" height="398"/>
+
+    <!-- Main concentric circles -->
+    <circle cx="200" cy="200" r="40"/>
+    <circle cx="200" cy="200" r="100"/>
+    <circle cx="200" cy="200" r="160"/>
+    <circle cx="200" cy="200" r="200"/>
+
+    <!-- Central point -->
+    <circle cx="200" cy="200" r="6"/>
+
+    <!-- Cross axis -->
+    <path d="M0 200 H400"/>
+    <path d="M200 0 V400"/>
+
+    <!-- Large diamond curves -->
+    <path d="
+      M200 0
+      C120 80 120 120 200 200
+      C280 280 280 320 200 400
+    "/>
+
+    <path d="
+      M0 200
+      C80 120 120 120 200 200
+      C280 280 320 280 400 200
+    "/>
+
+    <path d="
+      M200 0
+      C280 80 280 120 200 200
+      C120 280 120 320 200 400
+    "/>
+
+    <path d="
+      M0 200
+      C80 280 120 280 200 200
+      C280 120 320 120 400 200
+    "/>
+
+    <!-- Corner circles -->
+    <circle cx="0" cy="0" r="120"/>
+    <circle cx="400" cy="0" r="120"/>
+    <circle cx="0" cy="400" r="120"/>
+    <circle cx="400" cy="400" r="120"/>
+
+    <!-- Corner arcs -->
+    <path d="M0 120 Q120 0 240 0"/>
+    <path d="M160 0 Q280 0 400 120"/>
+
+    <path d="M0 280 Q120 400 240 400"/>
+    <path d="M160 400 Q280 400 400 280"/>
+
+    <!-- Small axis markers -->
+    <circle cx="200" cy="70" r="3"/>
+    <circle cx="200" cy="330" r="3"/>
+    <circle cx="70" cy="200" r="3"/>
+    <circle cx="330" cy="200" r="3"/>
+
+    <!-- Small inner circles -->
+    <circle cx="200" cy="130" r="4"/>
+    <circle cx="200" cy="270" r="4"/>
+    <circle cx="130" cy="200" r="4"/>
+    <circle cx="270" cy="200" r="4"/>
+
+  </g>
+</svg>
