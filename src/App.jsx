@@ -6,7 +6,6 @@ import Projects from "./components/Projects";
 import Skills from "./components/Skills";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
-import Terminal from "./components/Terminal"; // New Component
 import { useEffect } from "react";
 import Lenis from "lenis";
 
@@ -41,7 +40,6 @@ const App = () => {
       <About />
       <Projects />
       <Skills />
-      {/* <Terminal /> Terminal hidden per user request */}
       <Contact />
       <Footer />
     </main>

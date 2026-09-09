@@ -1,4 +1,4 @@
-
+import PropTypes from 'prop-types';
 import { useState, useRef } from "react";
 import { TiLocationArrow } from "react-icons/ti";
 
@@ -192,5 +192,18 @@ const Features = () => (
     </div>
   </section>
 );
+
+BentoTilt.propTypes = {
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string
+}
+
+BentoCard.propTypes = {
+  src: PropTypes.node.isRequired,
+  title: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  isComingSoon: PropTypes.string.isRequired,
+  tech: PropTypes.string.isRequired
+}
 
 export default Features;

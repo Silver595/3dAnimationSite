@@ -1,6 +1,4 @@
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { FiGithub, FiTwitter, FiLinkedin, FiArrowUp } from "react-icons/fi";
+import { FiGithub, FiTwitter ,FiLinkedin, FiArrowUp } from "react-icons/fi";
 
 const Footer = () => {
   const scrollToTop = () => {
@@ -9,7 +7,7 @@ const Footer = () => {
 
   const socialLinks = [
     { name: "Github", icon: <FiGithub />, href: "https://github.com/silver595" },
-    // { name: "Twitter", icon: <FiTwitter />, href: "https://twitter.com/akash" },
+    { name: "Twitter", icon: <FiTwitter />, href: "https://x.com/silver227j" },
     { name: "LinkedIn", icon: <FiLinkedin />, href: "https://www.linkedin.com/in/akash-purjalkar/" }
   ];
 
@@ -27,7 +25,7 @@ const Footer = () => {
             </div>
           </div>
           <p className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest mt-10 md:mt-0">
-             // Est. 2026 <br /> Secure Infrastructure
+            Est. ${ new Date().getFullYear()}<br /> Secure Infrastructure
           </p>
         </div>
 

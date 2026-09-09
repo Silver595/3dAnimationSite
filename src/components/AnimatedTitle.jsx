@@ -1,9 +1,10 @@
-
+import PropTypes from 'prop-types';
 import {useEffect, useRef} from 'react'
 import gsap from 'gsap';
 
 const AnimatedTitle = ({title,containerClass}) => {
-    const containerRef = useRef(null)
+  const containerRef = useRef(null)
+
     useEffect(() => {
     const ctx = gsap.context(() => {
         const titleAnimation = gsap.timeline({
@@ -12,7 +13,7 @@ const AnimatedTitle = ({title,containerClass}) => {
                 start:'100 bottom',
                 end:'center bottom',
                 toggleActions:'play none none reverse',
-                
+
             }
         });
         titleAnimation.to('.animated-word',{
@@ -26,7 +27,7 @@ const AnimatedTitle = ({title,containerClass}) => {
     return () => ctx.revert()
 },[])
   return (
-    <div 
+    <div
     ref={containerRef}
     className={`animated-title ${containerClass}`}>
         {title.split('<br />').map((line,index)=>(
@@ -39,5 +40,8 @@ const AnimatedTitle = ({title,containerClass}) => {
 </div>
   )
 }
-
+AnimatedTitle.propTypes = {
+  title: PropTypes.string.isRequired,
+  containerClass: PropTypes.string.isRequired
+}
 export default AnimatedTitle

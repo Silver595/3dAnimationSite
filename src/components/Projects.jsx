@@ -25,12 +25,12 @@ const projects = [
     },
     {
         id: 3,
-        title: "Auto Meeting Joiner",
-        category: "Chrome Extension",
-        description: "A browser extension that automatically joins online meetings on platforms like Zoom, Google Meet, and Webex, built to explore browser automation and extension APIs.",
-        src: "/img/gallery-3.webp",
-        tags: ["Python", "JavaScript", "html"],
-        link: "https://github.com/Silver595/AutoMeetingJoiner"
+        title: "Cloud-Native 3-Tier",
+          category: "AWS / Kubernetes",
+          description: "A production-style 3-tier system running on AWS EKS, engineered with automated CI/CD, multi-layer security scanning, least-privilege access, and hardened cloud deployments.",
+          src: "/img/gallery-1.webp",
+          tags: ["AWS EKS", "Kubernetes", "Terraform"],
+          link: "https://github.com/Silver595/user_management_platform"
     },
     {
         id: 4,
@@ -56,6 +56,7 @@ const projects = [
 const ProjectRow = ({ project, setHoveredProject, index }) => {
     return (
         <a
+          // eslint-disable-next-line react/prop-types
             href={project.link}
             target="_blank"
             rel="noopener noreferrer"
@@ -63,7 +64,7 @@ const ProjectRow = ({ project, setHoveredProject, index }) => {
             className="group relative flex w-full cursor-pointer items-center justify-between border-b border-white/10 py-12 transition-all duration-300 hover:bg-white/[0.02] px-4 md:px-10 block"
         >
             <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:gap-12">
-                <span className="font-mono text-xs text-zinc-600 md:text-sm">0{index + 1} //</span>
+                <span className="font-mono text-xs text-zinc-600 md:text-sm">{index + 1} &#9775;</span>
                 <h3 className="font-zentry text-4xl uppercase text-zinc-400 transition-colors duration-300 group-hover:text-white md:text-6xl">
                     {project.title} <span className="text-sm align-super opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
                 </h3>

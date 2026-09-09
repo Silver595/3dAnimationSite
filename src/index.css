@@ -1,4 +1,4 @@
-@import url("https://fonts.cdnfonts.com/css/general-sans");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -23,7 +23,7 @@ body {
   width: 100dvw;
   overflow-x: hidden;
   background-color: var(--bg-primary);
-  font-family: "General Sans", sans-serif;
+  font-family: "IBM Plex Mono", monospace;
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
 }
@@ -103,13 +103,13 @@ body {
   }
 
   .special-font b {
-    font-family: "Zentry";
+    font-family: "IBM Plex Mono", monospace;
     font-feature-settings: "ss01" on;
     color: var(--text-primary);
   }
 
   .hero-heading {
-    @apply uppercase font-zentry font-black text-5xl sm:right-10 sm:text-7xl md:text-9xl lg:text-[10rem] tracking-tighter;
+    @apply uppercase font-black text-5xl sm:right-10 sm:text-7xl md:text-9xl lg:text-[10rem] tracking-tighter;
   }
 
   .about-subtext {
@@ -130,7 +130,7 @@ body {
   }
 
   .bento-title {
-    @apply uppercase md:text-5xl text-3xl font-black font-zentry;
+    @apply uppercase md:text-5xl text-3xl font-black ;
   }
 
   .story-img-container {

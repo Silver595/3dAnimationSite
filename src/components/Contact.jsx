@@ -81,7 +81,6 @@ const Contact = () => {
       <div className="relative z-10 px-6 md:px-10">
         <div className="mb-20">
           <p className="font-mono text-xs uppercase tracking-[0.3em] text-zinc-500 mb-6">
-                        // System Uplink
           </p>
           <AnimatedTitle
             title="Init<b>i</b>ate <br /> C<b>o</b>nnection"
@@ -118,14 +117,7 @@ const Contact = () => {
                     </span>
                     <FiArrowUpRight className="opacity-0 group-hover:opacity-100 transition-opacity" />
                   </a>
-                  {/* <a href="#" className="group flex items-center gap-3 text-zinc-400 hover:text-white transition-colors">
-                    <span className="font-mono text-sm">
-                      <a href="#" target="_blank">
-                        [instagram]
-                      </a>
-                    </span>
-                    <FiArrowUpRight className="opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </a> */}
+
                   <a href="#" className="group flex items-center gap-3 text-zinc-400 hover:text-white transition-colors">
                     <span className="font-mono text-sm">
                       <a href="https://www.linkedin.com/in/akash-purjalkar/" target="_blank">

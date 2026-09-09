@@ -106,13 +106,12 @@ const Hero = () => {
 
             <div ref={textRef} className="mt-8 space-y-6 max-w-lg">
               <p className="font-general text-xl md:text-2xl text-zinc-300 font-light tracking-wide uppercase">
-                Developer <span className="text-zinc-600 mx-2">//</span> Traveler
+                Developer <span className="text-zinc-600 mx-2">&#9752;</span> Thinker
               </p>
-              <p className="font-general text-zinc-500 text-sm md:text-base leading-relaxed max-w-md font-mono">
-                [SYSTEM STATUS: ONLINE]<br />
-                I love to design things and making them great.
-              </p>
-
+              <p className=" text-zinc-500 text-sm md:text-base leading-relaxed max-w-md ">
+                Somewhere, my Vinland still waits.
+                I'm still searching for the road that leads there.              </p>
+              <p/>
               <div className="pt-8 flex gap-4">
                 <a href="#projects" className="soft-button !rounded-sm !bg-white !text-black hover:!bg-zinc-200">
                   Projects
@@ -126,13 +125,14 @@ const Hero = () => {
         </div>
 
         {/* Technical Footer Data */}
-        <div className="absolute bottom-12 left-12 z-40 hidden md:block">
+        {/* <div className="absolute bottom-12 left-12 z-40 hidden md:block">
           <div className="flex items-center gap-8 text-zinc-600 font-mono text-[10px]">
             <span>LOC: 127.0.0.1</span>
             <span>UPTIME: 99.9%</span>
             <span>SEC: ENCRYPTED</span>
           </div>
-        </div>
+        </div>*/}
+
       </div>
     </div>
   );
