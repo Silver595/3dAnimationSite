@@ -95,7 +95,7 @@ const Contact = () => {
             <div className="space-y-12 contact-field">
               <div>
                 <h4 className="font-mono text-xs text-zinc-500 uppercase tracking-widest mb-4">Frequency</h4>
-                <a href="mailto:hello@silver.dev" className="text-2xl md:text-3xl font-general text-white hover:text-zinc-400 transition-colors block">
+                <a href="mailto:akashpurjalkar66@gmail.com" className="text-2xl md:text-xl font-general text-white hover:text-zinc-400 transition-colors block">
                   akashpurjalkar66@gmail.com
                 </a>
               </div>
@@ -109,7 +109,7 @@ const Contact = () => {
               <div>
                 <h4 className="font-mono text-xs text-zinc-500 uppercase tracking-widest mb-4">Socials</h4>
                 <div className="flex flex-col gap-2">
-                  <a href="#" className="group flex items-center gap-3 text-zinc-400 hover:text-white transition-colors">
+                  <a href="https://github.com/silver595" className="group flex items-center gap-3 text-zinc-400 hover:text-white transition-colors">
                     <span className="font-mono text-sm">
                       <a href="https://github.com/silver595" target="_blank">
                         [GitHub]
@@ -118,7 +118,7 @@ const Contact = () => {
                     <FiArrowUpRight className="opacity-0 group-hover:opacity-100 transition-opacity" />
                   </a>
 
-                  <a href="#" className="group flex items-center gap-3 text-zinc-400 hover:text-white transition-colors">
+                  <a href="https://www.linkedin.com/in/akash-purjalkar/" className="group flex items-center gap-3 text-zinc-400 hover:text-white transition-colors">
                     <span className="font-mono text-sm">
                       <a href="https://www.linkedin.com/in/akash-purjalkar/" target="_blank">
                         [LinkedIn]
@@ -143,12 +143,12 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                   placeholder="ENTER NAME_"
-                  className="w-full bg-transparent border-b border-white/20 py-4 text-3xl md:text-5xl font-zentry text-white placeholder-zinc-800 focus:border-white outline-none transition-all uppercase"
+                  className="w-full bg-transparent border-b border-white/20 py-4 text-3xl md:text-5xl text-white placeholder-zinc-800 focus:border-white outline-none transition-all uppercase"
                 />
               </div>
 
               <div className="contact-field group relative">
-                <label className="block font-mono text-xs text-zinc-500 uppercase tracking-widest mb-2 group-focus-within:text-white transition-colors">Comms Channel</label>
+                <label className="block font-mono text-xs text-zinc-500 uppercase tracking-widest mb-2 group-focus-within:text-white transition-colors">Digital Identify</label>
                 <input
                   type="email"
                   name="email"
@@ -156,7 +156,7 @@ const Contact = () => {
                   onChange={handleChange}
                   required
                   placeholder="ENTER EMAIL_"
-                  className="w-full bg-transparent border-b border-white/20 py-4 text-3xl md:text-5xl font-zentry text-white placeholder-zinc-800 focus:border-white outline-none transition-all uppercase"
+                  className="w-full bg-transparent border-b border-white/20 py-4 text-3xl md:text-5xl text-white placeholder-zinc-800 focus:border-white outline-none transition-all"
                 />
               </div>
 
@@ -169,7 +169,7 @@ const Contact = () => {
                   required
                   rows="2"
                   placeholder="ENTER MESSAGE_"
-                  className="w-full bg-transparent border-b border-white/20 py-4 text-3xl md:text-5xl font-zentry text-white placeholder-zinc-800 focus:border-white outline-none transition-all resize-none uppercase leading-tight"
+                  className="w-full bg-transparent border-b border-white/20 py-4 text-3xl md:text-5xl  text-white placeholder-zinc-800 focus:border-white outline-none transition-all resize-none  leading-tight"
                 />
               </div>
 
