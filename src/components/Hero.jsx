@@ -106,7 +106,7 @@ const Hero = () => {
 
             <div ref={textRef} className="mt-8 space-y-6 max-w-lg">
               <p className="font-general text-xl md:text-2xl text-zinc-300 font-light tracking-wide uppercase">
-                Developer <span className="text-zinc-600 mx-2">&#9752;</span> Thinker
+                Developer <span className="text-zinc-600 mx-2">&#9752;</span> Human
               </p>
               <p className=" text-zinc-500 text-sm md:text-base leading-relaxed max-w-md ">
                 Somewhere, my Vinland still waits.

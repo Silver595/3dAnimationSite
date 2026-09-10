@@ -351,7 +351,7 @@ const Footer = () => {
           "
         >
           <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-zinc-600">
-            © {new Date().getFullYear()} Akash Portfolio. All Rights Reserved.
+            © {new Date().getFullYear()} Akash Purjalkar. All Rights Reserved.
           </span>
 
           <div className="flex gap-8">
