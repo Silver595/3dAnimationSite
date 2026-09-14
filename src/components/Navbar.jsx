@@ -1,11 +1,9 @@
-
 import clsx from "clsx";
 import gsap from "gsap";
 import { useWindowScroll } from "react-use";
 import { useEffect, useRef, useState } from "react";
 
-
-const navItems = ["Projects", "Skills", "About", "Contact"]; // Removed "Terminal" per user request
+const navItems = ["Projects", "Skills", "About", "Contact"];
 
 const NavBar = () => {
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
@@ -19,18 +17,78 @@ const NavBar = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
 
   const toggleAudioIndicator = () => {
-    setIsAudioPlaying((prev) => !prev);
-    setIsIndicatorActive((prev) => !prev);
+    const audio = audioElementRef.current;
+
+    if (!audio) return;
+
+    if (audio.paused) {
+      audio
+        .play()
+        .then(() => {
+          setIsAudioPlaying(true);
+          setIsIndicatorActive(true);
+        })
+        .catch((error) => {
+          console.log("Audio playback blocked:", error);
+        });
+    } else {
+      audio.pause();
+      setIsAudioPlaying(false);
+      setIsIndicatorActive(false);
+    }
   };
 
+  // Try autoplay first, then start on the first real user interaction
   useEffect(() => {
-    if (isAudioPlaying) {
-      audioElementRef.current.play();
-    } else {
-      audioElementRef.current.pause();
-    }
-  }, [isAudioPlaying]);
+    const audio = audioElementRef.current;
 
+    if (!audio) return;
+
+    audio.volume = 0.4;
+
+    const startAudio = () => {
+      if (!audio.paused) return;
+
+      audio
+        .play()
+        .then(() => {
+          setIsAudioPlaying(true);
+          setIsIndicatorActive(true);
+          cleanup();
+        })
+        .catch(() => {
+          // Browser blocked autoplay.
+          // Wait for another user interaction.
+        });
+    };
+
+    const cleanup = () => {
+      window.removeEventListener("touchstart", startAudio);
+      window.removeEventListener("pointerdown", startAudio);
+      window.removeEventListener("click", startAudio);
+    };
+
+    // Attempt automatic playback on page load
+    startAudio();
+
+    // Mobile
+    window.addEventListener("touchstart", startAudio, {
+      passive: true,
+    });
+
+    // Desktop
+    window.addEventListener("pointerdown", startAudio, {
+      passive: true,
+    });
+
+    window.addEventListener("click", startAudio, {
+      passive: true,
+    });
+
+    return cleanup;
+  }, []);
+
+  // Navbar visibility on scroll
   useEffect(() => {
     if (currentScrollY === 0) {
       setIsNavVisible(true);
@@ -46,6 +104,7 @@ const NavBar = () => {
     setLastScrollY(currentScrollY);
   }, [currentScrollY, lastScrollY]);
 
+  // Navbar animation
   useEffect(() => {
     gsap.to(navContainerRef.current, {
       y: isNavVisible ? 0 : -100,
@@ -89,8 +148,8 @@ const NavBar = () => {
                 className="hidden"
                 src="/audio/loop.mp3"
                 loop
-                autoPlay
               />
+
               {[1, 2, 3, 4].map((bar) => (
                 <div
                   key={bar}
