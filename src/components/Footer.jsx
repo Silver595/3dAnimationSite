@@ -17,7 +17,7 @@ const Footer = () => {
     {
       name: "Twitter",
       icon: <FiTwitter />,
-      href: "https://x.com/silver227j",
+      href: "https://x.com/akashpurjalkar",
     },
     {
       name: "LinkedIn",
