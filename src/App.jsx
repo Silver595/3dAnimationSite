@@ -3,7 +3,7 @@ import Lenis from "lenis";
 
 import Loader from "./components/Loader";
 import NotFound from "./components/NotFound";
-import Hero from "./components/Hero";
+import Hero from "./components/Hero.jsx";
 import About from "./components/About";
 import Navbar from "./components/Navbar";
 import Projects from "./components/Projects";
