@@ -10,7 +10,7 @@ const SkillCategory = ({ title, skills, index }) => {
       <div className="absolute -left-[1px] top-0 h-0 w-[1px] bg-white transition-all duration-700 group-hover:h-full" />
 
       <div className="mb-6 flex items-center gap-3">
-        <span className="font-mono text-ls text-zinc-600">{index + 1}</span>
+        <span className="font-mono text-xs text-zinc-600">{index + 1}</span>
         <h3 className="font-zentry text-3xl uppercase text-zinc-400 transition-colors group-hover:text-white">
           {title}
         </h3>

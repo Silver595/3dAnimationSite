@@ -32,26 +32,31 @@ body {
   @font-face {
     font-family: "circular-web";
     src: url("/fonts/circularweb-book.woff2") format("woff2");
+    font-display: swap;
   }
 
   @font-face {
     font-family: "general";
     src: url("/fonts/general.woff2") format("woff2");
+    font-display: swap;
   }
 
   @font-face {
     font-family: "robert-medium";
     src: url("/fonts/robert-medium.woff2") format("woff2");
+    font-display: swap;
   }
 
   @font-face {
     font-family: "robert-regular";
     src: url("/fonts/robert-regular.woff2") format("woff2");
+    font-display: swap;
   }
 
   @font-face {
     font-family: "zentry";
     src: url("/fonts/zentry-regular.woff2") format("woff2");
+    font-display: swap;
   }
 }
 
@@ -151,27 +156,24 @@ body {
 
 /* Animations follow... */
 .indicator-line {
-  @apply h-1 w-px rounded-full bg-white transition-all duration-200 ease-in-out;
+  @apply h-4 w-[2px] rounded-full bg-white origin-bottom transition-transform duration-200 ease-in-out;
+  transform: scaleY(0.2);
 }
 
 .indicator-line.active {
-  animation: indicator-line 0.5s ease infinite;
-  animation-delay: calc(var(--animation-order) * 0.1s);
+  animation: indicator-line 0.6s ease-in-out infinite alternate;
 }
 
 @keyframes indicator-line {
   0% {
-    height: 4px;
-    transform: translateY(-0px);
+    transform: scaleY(0.2);
   }
 
   50% {
-    height: 16px;
-    transform: translateY(-4px);
+    transform: scaleY(1);
   }
 
   100% {
-    height: 4px;
-    transform: translateY(-0px);
+    transform: scaleY(0.35);
   }
 }

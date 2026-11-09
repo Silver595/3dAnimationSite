@@ -52,16 +52,14 @@ const projects = [
     }
 ];
 
-// eslint-disable-next-line react/prop-types
 const ProjectRow = ({ project, setHoveredProject, index }) => {
     return (
         <a
-          // eslint-disable-next-line react/prop-types
             href={project.link}
             target="_blank"
             rel="noopener noreferrer"
             onMouseEnter={() => setHoveredProject(project)}
-            className="group relative flex w-full cursor-pointer items-center justify-between border-b border-white/10 py-12 transition-all duration-300 hover:bg-white/[0.02] px-4 md:px-10 block"
+            className="group relative flex w-full cursor-pointer items-center justify-between border-b border-white/10 py-12 transition-all duration-300 hover:bg-white/[0.02] px-4 md:px-10"
         >
             <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:gap-12">
                 <span className="font-mono text-xs text-zinc-600 md:text-sm">{index + 1} &#9775;</span>

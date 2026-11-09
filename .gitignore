@@ -24,3 +24,5 @@ build_log.txt
 *.njsproj
 *.sln
 *.sw?
+temp/
+PROJECT_ANALYSIS.md
