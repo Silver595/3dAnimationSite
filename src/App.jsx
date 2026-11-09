@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 import Lenis from "lenis";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
+
+gsap.registerPlugin(ScrollTrigger);
 
 import Loader from "./components/Loader";
 import NotFound from "./components/NotFound";
@@ -50,15 +54,17 @@ const App = () => {
       infinite: false,
     });
 
-    let rafId;
-    function raf(time) {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    }
-    rafId = requestAnimationFrame(raf);
+    lenis.on("scroll", ScrollTrigger.update);
+
+    const updateTicker = (time) => {
+      lenis.raf(time * 1000);
+    };
+
+    gsap.ticker.add(updateTicker);
+    gsap.ticker.lagSmoothing(0);
 
     return () => {
-      cancelAnimationFrame(rafId);
+      gsap.ticker.remove(updateTicker);
       lenis.destroy();
     };
   }, [loading, notFound]);

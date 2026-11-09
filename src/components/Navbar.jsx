@@ -1,31 +1,23 @@
 import clsx from "clsx";
 import gsap from "gsap";
-import { useWindowScroll } from "react-use";
 import { useEffect, useRef, useState } from "react";
 
 const navItems = ["Projects", "Skills", "About", "Contact"];
 
 const NavBar = () => {
-  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [isIndicatorActive, setIsIndicatorActive] = useState(false);
 
   const audioElementRef = useRef(null);
   const navContainerRef = useRef(null);
 
-  const { y: currentScrollY } = useWindowScroll();
-  const [isNavVisible, setIsNavVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
-
   const toggleAudioIndicator = () => {
     const audio = audioElementRef.current;
-
     if (!audio) return;
 
     if (audio.paused) {
       audio
         .play()
         .then(() => {
-          setIsAudioPlaying(true);
           setIsIndicatorActive(true);
         })
         .catch((error) => {
@@ -33,85 +25,35 @@ const NavBar = () => {
         });
     } else {
       audio.pause();
-      setIsAudioPlaying(false);
       setIsIndicatorActive(false);
     }
   };
 
-  // Try autoplay first, then start on the first real user interaction
+  // Passive scroll direction handler with zero React re-renders
   useEffect(() => {
-    const audio = audioElementRef.current;
+    let lastY = window.scrollY;
 
-    if (!audio) return;
+    const onScroll = () => {
+      const currentY = window.scrollY;
+      const nav = navContainerRef.current;
+      if (!nav) return;
 
-    audio.volume = 0.4;
-
-    const startAudio = () => {
-      if (!audio.paused) return;
-
-      audio
-        .play()
-        .then(() => {
-          setIsAudioPlaying(true);
-          setIsIndicatorActive(true);
-          cleanup();
-        })
-        .catch(() => {
-          // Browser blocked autoplay.
-          // Wait for another user interaction.
-        });
+      if (currentY === 0) {
+        nav.classList.remove("floating-nav");
+        gsap.to(nav, { y: 0, opacity: 1, duration: 0.25, overwrite: "auto" });
+      } else if (currentY > lastY && currentY > 50) {
+        nav.classList.add("floating-nav");
+        gsap.to(nav, { y: -100, opacity: 0, duration: 0.25, overwrite: "auto" });
+      } else if (currentY < lastY) {
+        nav.classList.add("floating-nav");
+        gsap.to(nav, { y: 0, opacity: 1, duration: 0.25, overwrite: "auto" });
+      }
+      lastY = currentY;
     };
 
-    const cleanup = () => {
-      window.removeEventListener("touchstart", startAudio);
-      window.removeEventListener("pointerdown", startAudio);
-      window.removeEventListener("click", startAudio);
-    };
-
-    // Attempt automatic playback on page load
-    startAudio();
-
-    // Mobile
-    window.addEventListener("touchstart", startAudio, {
-      passive: true,
-    });
-
-    // Desktop
-    window.addEventListener("pointerdown", startAudio, {
-      passive: true,
-    });
-
-    window.addEventListener("click", startAudio, {
-      passive: true,
-    });
-
-    return cleanup;
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  // Navbar visibility on scroll
-  useEffect(() => {
-    if (currentScrollY === 0) {
-      setIsNavVisible(true);
-      navContainerRef.current.classList.remove("floating-nav");
-    } else if (currentScrollY > lastScrollY) {
-      setIsNavVisible(false);
-      navContainerRef.current.classList.add("floating-nav");
-    } else if (currentScrollY < lastScrollY) {
-      setIsNavVisible(true);
-      navContainerRef.current.classList.add("floating-nav");
-    }
-
-    setLastScrollY(currentScrollY);
-  }, [currentScrollY, lastScrollY]);
-
-  // Navbar animation
-  useEffect(() => {
-    gsap.to(navContainerRef.current, {
-      y: isNavVisible ? 0 : -100,
-      opacity: isNavVisible ? 1 : 0,
-      duration: 0.2,
-    });
-  }, [isNavVisible]);
 
   return (
     <div
@@ -139,17 +81,18 @@ const NavBar = () => {
               ))}
             </div>
 
+            <audio
+              ref={audioElementRef}
+              className="hidden"
+              src="/audio/loop.mp3"
+              loop
+            />
+
             <button
               onClick={toggleAudioIndicator}
-              className="ml-10 flex items-center space-x-0.5 mr-4"
+              aria-label="Toggle background audio"
+              className="ml-10 flex items-center space-x-0.5 mr-4 focus:outline-none"
             >
-              <audio
-                ref={audioElementRef}
-                className="hidden"
-                src="/audio/loop.mp3"
-                loop
-              />
-
               {[1, 2, 3, 4].map((bar) => (
                 <div
                   key={bar}

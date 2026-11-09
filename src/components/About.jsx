@@ -50,7 +50,7 @@ const About = () => {
               About Me
             </p>
             <AnimatedTitle
-              title="we<b>b</b> designer <br /> & <b>d</b>evloper"
+              title="we<b>b</b> designer <br /> & <b>d</b>eveloper"
               containerClass="!text-white !text-6xl md:!text-8xl"
             />
             <div className="mt-12 flex flex-col items-center gap-6">
@@ -59,8 +59,8 @@ const About = () => {
                 building resilient systems.
               </p>
               <p className=" text-xs text-zinc-500  tracking-widest max-w-md">
-                [ Happiness lies in Vinland,] <br />
-                and I'm far away from it.]
+                [ Happiness lies in Vinland, <br />
+                and I&apos;m far away from it. ]
               </p>
             </div>
           </div>
