@@ -1,4 +1,3 @@
-
 import { useRef } from "react";
 import { useGSAP } from '@gsap/react';
 import gsap from "gsap";
@@ -80,7 +79,7 @@ const Hero = () => {
               });
             }
           }}
-          src="/videos/hero-1.mp4"
+          src="videos/mixkit-4.mp4"
           autoPlay
           loop
           muted
@@ -89,14 +88,11 @@ const Hero = () => {
           className="absolute left-0 top-0 size-full object-cover object-center opacity-30 grayscale contrast-125 will-change-transform"
         />
 
-        {/* Technical Grid Overlay */}
-        <div className="absolute inset-0 bg-[url('/img/grid.svg')] opacity-10 bg-center" />
-
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a0a0a]/80 to-[#0a0a0a]" />
 
         {/* Content */}
         <div className="absolute inset-0 z-40 flex flex-col justify-center px-6 md:px-20">
-          <div className="max-w-4xl border-l-2 border-white/20 pl-8 md:pl-12">
+          <div className="max-w-4xl">
             <h1
               ref={titleRef}
               className="special-font hero-heading text-white opacity-90"
@@ -110,8 +106,8 @@ const Hero = () => {
               </p>
               <p className=" text-zinc-500 text-sm md:text-base leading-relaxed max-w-md ">
                 Somewhere, my Vinland still waits.
-                I'm still searching for the road that leads there.              </p>
-              <p/>
+                I&apos;m still searching for the road that leads there.
+              </p>
               <div className="pt-8 flex gap-4">
                 <a href="#projects" className="soft-button !rounded-sm !bg-white !text-black hover:!bg-zinc-200">
                   Projects
@@ -123,16 +119,6 @@ const Hero = () => {
             </div>
           </div>
         </div>
-
-        {/* Technical Footer Data */}
-        {/* <div className="absolute bottom-12 left-12 z-40 hidden md:block">
-          <div className="flex items-center gap-8 text-zinc-600 font-mono text-[10px]">
-            <span>LOC: 127.0.0.1</span>
-            <span>UPTIME: 99.9%</span>
-            <span>SEC: ENCRYPTED</span>
-          </div>
-        </div>*/}
-
       </div>
     </div>
   );
