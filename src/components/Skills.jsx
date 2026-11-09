@@ -4,16 +4,26 @@ import { ScrollTrigger } from "gsap/all";
 import PropTypes from "prop-types";
 gsap.registerPlugin(ScrollTrigger);
 
-const SkillCategory = ({ title, skills, index }) => {
+const SkillCategory = ({ title, skills, index, icon }) => {
   return (
     <div className="skill-category group border-l border-white/10 pl-8 relative">
       <div className="absolute -left-[1px] top-0 h-0 w-[1px] bg-white transition-all duration-700 group-hover:h-full" />
 
-      <div className="mb-6 flex items-center gap-3">
-        <span className="font-mono text-xs text-zinc-600">{index + 1}</span>
-        <h3 className="font-zentry text-3xl uppercase text-zinc-400 transition-colors group-hover:text-white">
-          {title}
-        </h3>
+      <div className="mb-6 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <span className="font-mono text-xs text-zinc-600">{index + 1}</span>
+          <h3 className="font-zentry text-3xl uppercase text-zinc-400 transition-colors group-hover:text-white">
+            {title}
+          </h3>
+        </div>
+        {icon && (
+          <img
+            src={icon}
+            alt=""
+            aria-hidden="true"
+            className="size-8 object-contain opacity-40 group-hover:opacity-80 transition-opacity"
+          />
+        )}
       </div>
 
       <div className="flex flex-wrap gap-x-8 gap-y-4">
@@ -41,6 +51,7 @@ SkillCategory.propTypes = {
     }),
   ).isRequired,
   index: PropTypes.number.isRequired,
+  icon: PropTypes.string,
 };
 const Skills = () => {
   const containerRef = useRef(null);
@@ -58,6 +69,17 @@ const Skills = () => {
         stagger: 0.2,
         ease: "power3.out",
       });
+
+      gsap.to(".skills-statue", {
+        y: -80,
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
     }, containerRef);
 
     return () => ctx.revert();
@@ -66,6 +88,7 @@ const Skills = () => {
   const skillSets = [
     {
       title: "Full Stack Web",
+      icon: "/img/torus.gif",
       skills: [
         { name: "React & Next.js", desc: "UI Architecture" },
         { name: "Tailwind & GSAP", desc: "WebGL Interaction" },
@@ -79,6 +102,7 @@ const Skills = () => {
     },
     {
       title: "Cloud & DevOps",
+      icon: "/img/earth.gif",
       skills: [
         { name: "AWS", desc: "Cloud Infrastructure" },
         { name: "Docker", desc: "Containerization" },
@@ -94,8 +118,16 @@ const Skills = () => {
     <section
       ref={containerRef}
       id="skills"
-      className="min-h-screen bg-[#0a0a0a] py-32 px-4 md:px-10 relative z-10 border-t border-white/5"
+      className="min-h-screen bg-[#0a0a0a] py-32 px-4 md:px-10 relative z-10 border-t border-white/5 overflow-hidden"
     >
+      {/* Subtle classical backdrop */}
+      <img
+        src="/img/laocoon.png"
+        alt=""
+        aria-hidden="true"
+        className="skills-statue pointer-events-none absolute right-4 md:right-16 bottom-8 h-[55%] object-contain opacity-[0.035] select-none filter invert grayscale will-change-transform"
+      />
+
       {/* Technical Header */}
       <div className="mb-20 flex flex-col items-start border-b border-white/10 pb-8">
         <h2 className="text-xs uppercase tracking-[0.3em] text-zinc-500 mb-2">
@@ -111,6 +143,7 @@ const Skills = () => {
           <SkillCategory
             key={set.title}
             title={set.title}
+            icon={set.icon}
             skills={set.skills}
             index={i}
           />

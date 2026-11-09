@@ -5,158 +5,292 @@ import { ScrollTrigger } from "gsap/all";
 gsap.registerPlugin(ScrollTrigger);
 
 const projects = [
-    {
-        id: 1,
-        title: "Jotion",
-        category: "Web Application",
-        description: "A Notion-inspired note-taking app with rich text editing and workspace-style organization.",
-        src: "/img/gallery-1.webp", // Switched to WebP images for performance
-        tags: ["Next.js", "ConvexDB", "Prisma"],
-        link: "https://personal-diary-psi.vercel.app/"
-    },
-    {
-        id: 2,
-        title: "ShadowBox",
-        category: "Local AI Tool",
-        description: "A privacy-first, offline image search engine powered by AI. Search your local photo library using natural language.",
-        src: "/img/gallery-2.webp",
-        tags: ["Python", "ChromaDB", "OpenAI CLIP"],
-        link: "https://github.com/Silver595/ShadowBox"
-    },
-    {
-        id: 3,
-        title: "Cloud-Native 3-Tier",
-          category: "AWS / Kubernetes",
-          description: "A production-style 3-tier system running on AWS EKS, engineered with automated CI/CD, multi-layer security scanning, least-privilege access, and hardened cloud deployments.",
-          src: "/img/gallery-1.webp",
-          tags: ["AWS EKS", "Kubernetes", "Terraform"],
-          link: "https://github.com/Silver595/user_management_platform"
-    },
-    {
-        id: 4,
-        title: "TechMock",
-        category: "Full-Stack Platform",
-        description: "A full-stack video interview platform with real-time audio/video calls, screen sharing, and an integrated coding environment to support technical interviews.",
-        src: "/img/gallery-4.webp",
-        tags: ["WebRTC", "Node.js", "Socket.io"],
-        link: "https://techmock.vercel.app/"
-    },
-    {
-        id: 5,
-        title: "Time Travel",
-        category: "Chrome Extension",
-        description: "Shows how a website looked in the past (via Wayback Machine) in a split-screen view with the current version.",
-        src: "/img/gallery-5.webp",
-        tags: ["JavaScript", "HTML", "CSS"],
-        link: "https://chromewebstore.google.com/detail/ogckpcboinbcohhilmofkalobpkolkib"
-    }
+  {
+    id: 1,
+    title: "Jotion",
+    category: "Web Application",
+    description: "A Notion-inspired note-taking workspace with rich text editing, tree-structured notes, and real-time cloud sync.",
+    src: "/img/san-francisco.webp",
+    tags: ["Next.js", "ConvexDB", "Prisma"],
+    link: "https://personal-diary-psi.vercel.app/",
+  },
+  {
+    id: 2,
+    title: "ShadowBox",
+    category: "Local AI Tool",
+    description: "A privacy-first, offline image search engine powered by AI. Search your local photo library using natural language.",
+    src: "/img/lofoten.webp",
+    tags: ["Python", "ChromaDB", "OpenAI CLIP"],
+    link: "https://github.com/Silver595/ShadowBox",
+  },
+  {
+    id: 3,
+    title: "Cloud-Native 3-Tier",
+    category: "AWS / Kubernetes",
+    description: "Production-style 3-tier system running on AWS EKS with automated CI/CD, security scanning, and hardened deployments.",
+    src: "/img/new-york.webp",
+    tags: ["AWS EKS", "Kubernetes", "Terraform"],
+    link: "https://github.com/Silver595/user_management_platform",
+  },
+  {
+    id: 4,
+    title: "TechMock",
+    category: "Full-Stack Platform",
+    description: "Full-stack technical interview platform with real-time video/audio, screen sharing, and integrated collaborative editor.",
+    src: "/img/italy.webp",
+    tags: ["WebRTC", "Node.js", "Socket.io"],
+    link: "https://techmock.vercel.app/",
+  },
+  {
+    id: 5,
+    title: "Time Travel",
+    category: "Chrome Extension",
+    description: "Split-screen temporal web comparison engine leveraging the Wayback Machine archive against live sites.",
+    src: "/img/coast.jpg",
+    tags: ["JavaScript", "Browser API", "CSS"],
+    link: "https://chromewebstore.google.com/detail/ogckpcboinbcohhilmofkalobpkolkib",
+  },
 ];
 
-const ProjectRow = ({ project, setHoveredProject, index }) => {
-    return (
-        <a
-            href={project.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            onMouseEnter={() => setHoveredProject(project)}
-            className="group relative flex w-full cursor-pointer items-center justify-between border-b border-white/10 py-12 transition-all duration-300 hover:bg-white/[0.02] px-4 md:px-10"
-        >
-            <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:gap-12">
-                <span className="font-mono text-xs text-zinc-600 md:text-sm">{index + 1} &#9775;</span>
-                <h3 className="font-zentry text-4xl uppercase text-zinc-400 transition-colors duration-300 group-hover:text-white md:text-6xl">
-                    {project.title} <span className="text-sm align-super opacity-0 group-hover:opacity-100 transition-opacity">↗</span>
-                </h3>
-            </div>
-
-            <div className="absolute right-10 top-1/2 -translate-y-1/2 opacity-0 transition-opacity duration-300 group-hover:opacity-100 hidden md:block">
-                <div className="flex flex-col items-end gap-2 text-right">
-                    <span className="font-mono text-xs text-white uppercase tracking-widest bg-white/10 px-2 py-1 rounded-sm">
-                        {project.category}
-                    </span>
-                    <p className="max-w-xs font-general text-xs text-zinc-500">
-                        {project.description}
-                    </p>
-                </div>
-            </div>
-
-            {/* Mobile only description */}
-            <p className="mt-4 max-w-[200px] text-right font-general text-xs text-zinc-500 md:hidden">
-                {project.category}
-            </p>
-        </a>
-    );
-};
-
 const Projects = () => {
-    const [hoveredProject, setHoveredProject] = useState(projects[0]);
-    const previewRef = useRef(null);
-    const containerRef = useRef(null);
+  const [activeProject, setActiveProject] = useState(projects[0]);
 
-    useEffect(() => {
-        // Parallax effect for the preview image container
-        const ctx = gsap.context(() => {
-            gsap.to(previewRef.current, {
-                scrollTrigger: {
-                    trigger: containerRef.current,
-                    start: "top bottom",
-                    end: "bottom top",
-                    scrub: true,
-                },
-                y: 100,
-                ease: "none"
-            });
-        }, containerRef);
+  const containerRef = useRef(null);
+  const listRef = useRef(null);
+  const floatingModalRef = useRef(null);
+  const modalImgRef = useRef(null);
 
-        return () => ctx.revert();
-    }, []);
+  // Smooth cursor follower physics (GSAP quickTo for 60fps)
+  const xTo = useRef(null);
+  const yTo = useRef(null);
+  const rotateTo = useRef(null);
+  const lastX = useRef(0);
 
-    return (
-        <section ref={containerRef} id="projects" className="relative min-h-screen bg-[#0a0a0a] py-32 overflow-hidden z-10">
+  useEffect(() => {
+    if (!floatingModalRef.current) return;
 
-            {/* Background Preview Image - Changes on Hover */}
-            <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center opacity-20 mix-blend-screen transition-opacity duration-500">
-                <div ref={previewRef} className="relative h-[60vh] w-[80vw] md:h-[80vh] md:w-[60vw]">
-                    <img
-                        key={hoveredProject.src} // Key change triggers fade if we add css animation, but keeping it simple for perf
-                        src={hoveredProject.src}
-                        alt="Project Preview"
-                        className="h-full w-full object-cover grayscale opacity-50 blur-sm transition-all duration-700 ease-in-out"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-[#0a0a0a]" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#0a0a0a] via-transparent to-[#0a0a0a]" />
+    xTo.current = gsap.quickTo(floatingModalRef.current, "x", {
+      duration: 0.5,
+      ease: "power3.out",
+    });
+    yTo.current = gsap.quickTo(floatingModalRef.current, "y", {
+      duration: 0.5,
+      ease: "power3.out",
+    });
+    rotateTo.current = gsap.quickTo(floatingModalRef.current, "rotation", {
+      duration: 0.5,
+      ease: "power3.out",
+    });
+
+    const ctx = gsap.context(() => {
+      // Soft staggered reveal of rows
+      gsap.from(".project-item", {
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top 85%",
+          once: true,
+        },
+        y: 30,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.12,
+        ease: "power3.out",
+        clearProps: "transform,opacity",
+      });
+
+      // Ambient parallax on the background watermark
+      gsap.to(".project-watermark", {
+        y: -120,
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  const handleMouseMove = (e) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    xTo.current?.(x);
+    yTo.current?.(y);
+
+    const deltaX = e.clientX - lastX.current;
+    lastX.current = e.clientX;
+    const tilt = gsap.utils.clamp(-8, 8, deltaX * 0.3);
+    rotateTo.current?.(tilt);
+  };
+
+  const handleMouseEnterRow = (project) => {
+    setActiveProject(project);
+
+    if (floatingModalRef.current) {
+      gsap.to(floatingModalRef.current, {
+        scale: 1,
+        opacity: 1,
+        duration: 0.4,
+        ease: "power3.out",
+        overwrite: "auto",
+      });
+    }
+
+    // Gentle image settle on hover change
+    if (modalImgRef.current) {
+      gsap.fromTo(
+        modalImgRef.current,
+        { scale: 1.08, opacity: 0.6 },
+        { scale: 1, opacity: 1, duration: 0.6, ease: "power2.out", overwrite: "auto" }
+      );
+    }
+  };
+
+  const handleMouseLeaveList = () => {
+    if (floatingModalRef.current) {
+      gsap.to(floatingModalRef.current, {
+        scale: 0.85,
+        opacity: 0,
+        duration: 0.35,
+        ease: "power2.out",
+        overwrite: "auto",
+      });
+    }
+  };
+
+  return (
+    <section
+      ref={containerRef}
+      id="projects"
+      onMouseMove={handleMouseMove}
+      className="relative min-h-screen md:h-screen w-full bg-[#0a0a0a] px-6 sm:px-10 md:px-16 py-10 overflow-hidden z-10 select-none flex flex-col"
+    >
+      {/* Background Watermark Parallax */}
+      <div className="project-watermark pointer-events-none absolute right-4 top-1/3 -translate-y-1/2 opacity-[0.03] select-none text-[20vw] font-zentry uppercase tracking-tighter text-white leading-none">
+        WORKS
+      </div>
+
+      {/* Floating Cursor Preview (Desktop only) */}
+      <div
+        ref={floatingModalRef}
+        className="pointer-events-none absolute left-0 top-0 z-50 hidden md:block -translate-x-1/2 -translate-y-1/2 opacity-0 scale-75 will-change-transform"
+        style={{ width: "360px", height: "230px" }}
+      >
+        <div className="relative size-full overflow-hidden rounded-xl bg-[#121212] shadow-2xl shadow-black/60">
+          <img
+            ref={modalImgRef}
+            src={activeProject.src}
+            alt={activeProject.title}
+            className="size-full object-cover grayscale contrast-115 will-change-transform"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+          <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between">
+            <span className="font-mono text-xs uppercase tracking-widest text-white/90">
+              {activeProject.category}
+            </span>
+            <span className="font-mono text-[10px] uppercase text-zinc-400">
+              View ↗
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div className="relative z-10 flex h-full w-full flex-1 flex-col">
+        {/* Section Header */}
+        <div className="mb-6 flex flex-col items-start pb-4">
+          <p className="font-mono text-xs uppercase tracking-[0.3em] text-zinc-500 mb-2">
+            Selected Works
+          </p>
+          <h2 className="font-zentry text-4xl sm:text-6xl md:text-7xl text-white uppercase leading-[0.9] tracking-tight">
+            Featured Works
+          </h2>
+        </div>
+
+        {/* Project List: rows share the window height; others dim when one is hovered */}
+        <div
+          ref={listRef}
+          onMouseLeave={handleMouseLeaveList}
+          className="group/list flex min-h-0 flex-1 flex-col"
+        >
+          {projects.map((project, index) => (
+            <a
+              key={project.id}
+              href={project.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              onMouseEnter={() => handleMouseEnterRow(project)}
+              className="project-item group relative flex w-full flex-1 cursor-pointer flex-col md:flex-row items-start md:items-center justify-between py-6 md:py-0 px-3 sm:px-6 transition-opacity duration-500 ease-out group-hover/list:opacity-30 hover:!opacity-100"
+            >
+              {/* Left side: Index + Title + Description */}
+              <div className="flex flex-col sm:flex-row sm:items-baseline gap-3 sm:gap-8 transition-transform duration-500 ease-out group-hover:translate-x-3">
+                <span className="font-mono text-xs md:text-sm text-zinc-600 group-hover:text-zinc-300 transition-colors duration-500">
+                  0{index + 1}
+                </span>
+
+                <div className="max-w-2xl">
+                  <div className="flex items-center gap-3">
+                    <h3 className="font-zentry text-3xl sm:text-4xl md:text-5xl uppercase text-zinc-300 transition-colors duration-500 group-hover:text-white">
+                      {project.title}
+                    </h3>
+                    <span className="text-sm font-mono text-zinc-600 opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:text-white group-hover:translate-x-1 group-hover:-translate-y-1">
+                      ↗
+                    </span>
+                  </div>
+
+                  <p className="mt-2 font-general text-xs sm:text-sm text-zinc-500 leading-relaxed max-w-xl transition-colors duration-500 group-hover:text-zinc-300">
+                    {project.description}
+                  </p>
                 </div>
-            </div>
+              </div>
 
-            <div className="container relative z-10 mx-auto px-4">
-                <div className="mb-20 flex flex-col items-start border-b border-white/10 pb-8">
-                    <h2 className="font-general text-xs uppercase tracking-[0.3em] text-zinc-500 mb-2">
-                        System Log
-                    </h2>
-                    <h2 className="font-zentry text-6xl text-white uppercase md:text-8xl">
-                        Selected Works
-                    </h2>
-                </div>
+              {/* Right side: Category & Tags (plain text, no boxes) */}
+              <div className="mt-4 md:mt-0 flex flex-row md:flex-col items-start md:items-end gap-3 md:gap-2 text-left md:text-right">
+                <span className="font-mono text-xs uppercase tracking-widest text-zinc-400 transition-colors duration-500 group-hover:text-white">
+                  {project.category}
+                </span>
 
-                <div className="flex flex-col">
-                    {projects.map((project, index) => (
-                        <ProjectRow
-                            key={project.id}
-                            project={project}
-                            index={index}
-                            setHoveredProject={setHoveredProject}
-                        />
-                    ))}
-                </div>
+                <span className="font-mono text-[10px] text-zinc-600 uppercase tracking-wider">
+                  {project.tags.join(" · ")}
+                </span>
+              </div>
 
-                <div className="mt-20 flex justify-center">
-                    <a href="https://github.com/Silver595" target="_blank" rel="noreferrer" className="group flex items-center gap-4 text-zinc-500 hover:text-white transition-colors cursor-pointer">
-                        <span className="font-mono text-xs uppercase tracking-widest">[ View All Archives ]</span>
-                        <span className="font-mono text-lg group-hover:translate-x-2 transition-transform">→</span>
-                    </a>
-                </div>
-            </div>
-        </section>
-    );
+              {/* Mobile Preview Thumbnail (Touch devices) */}
+              <div className="mt-4 w-full md:hidden rounded-lg overflow-hidden h-36">
+                <img
+                  src={project.src}
+                  alt={project.title}
+                  className="size-full object-cover grayscale"
+                />
+              </div>
+            </a>
+          ))}
+        </div>
+
+        {/* Archives Link */}
+        <div className="mt-4 flex justify-center">
+          <a
+            href="https://github.com/Silver595"
+            target="_blank"
+            rel="noreferrer"
+            className="group flex items-center gap-3 text-zinc-500 hover:text-white transition-colors duration-500 cursor-pointer py-2 px-6"
+          >
+            <span className="font-mono text-xs uppercase tracking-widest">
+              View all on GitHub
+            </span>
+            <span className="font-mono text-lg transition-transform duration-500 group-hover:translate-x-2">
+              →
+            </span>
+          </a>
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default Projects;

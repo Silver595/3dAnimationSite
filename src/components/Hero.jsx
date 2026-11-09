@@ -71,10 +71,6 @@ const Hero = () => {
           },
         });
       });
-
-      return () => {
-        mm.revert();
-      };
     },
     { scope: containerRef }
   );
@@ -117,6 +113,7 @@ const Hero = () => {
                 road that leads there.
               </p>
             </div>
+
           </div>
         </div>
       </div>

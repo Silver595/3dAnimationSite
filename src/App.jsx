@@ -25,6 +25,7 @@ const App = () => {
   const [notFound, setNotFound] = useState(() => !isHomePath());
   // No loader on the error page, and no loader when returning from it.
   const [loading, setLoading] = useState(() => isHomePath());
+  const [heroReady, setHeroReady] = useState(() => !isHomePath());
 
   // Keep the view in sync with browser back/forward.
   useEffect(() => {
@@ -37,6 +38,7 @@ const App = () => {
   const goHome = () => {
     window.history.pushState({}, "", "/");
     setLoading(false);
+    setHeroReady(true);
     setNotFound(false);
     window.scrollTo(0, 0);
   };
@@ -75,11 +77,16 @@ const App = () => {
 
   return (
     <>
-      {loading && <Loader onComplete={() => setLoading(false)} />}
+      {loading && (
+        <Loader
+          onExitStart={() => setHeroReady(true)}
+          onComplete={() => setLoading(false)}
+        />
+      )}
 
       <main className="relative min-h-screen w-screen overflow-x-hidden bg-[#0a0a0a]">
         <Navbar />
-        <Hero />
+        <Hero isReady={heroReady} />
         <About />
         <Projects />
         <Skills />
