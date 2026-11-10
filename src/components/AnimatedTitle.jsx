@@ -10,7 +10,7 @@ const AnimatedTitle = ({title,containerClass}) => {
         const titleAnimation = gsap.timeline({
           scrollTrigger: {
             trigger: containerRef.current,
-            start: '100 bottom',
+            start: 'top 85%',
             end: 'center bottom',
             toggleActions: 'play none none reverse',
           },
@@ -19,13 +19,13 @@ const AnimatedTitle = ({title,containerClass}) => {
           '.animated-word',
           {
             opacity: 0,
-            transform: 'translate3d(10px, 35px, -20px) rotateY(15deg) rotateX(-25deg)',
+            transform: 'translate3d(0, 40px, 0) rotateX(-25deg)',
           },
           {
             opacity: 1,
-            transform: 'translate3d(0, 0, 0) rotateY(0deg) rotateX(0deg)',
+            transform: 'translate3d(0, 0, 0) rotateX(0deg)',
             ease: 'power2.out',
-            stagger: 0.03,
+            stagger: 0.04,
             duration: 0.8,
           }
         );
@@ -40,7 +40,7 @@ const AnimatedTitle = ({title,containerClass}) => {
       className={`animated-title ${containerClass}`}
     >
       {title.split('<br />').map((line, index) => (
-        <div key={index} className="flex-center max-w-full flex-wrap gap-2 px-10 md:gap-3">
+        <div key={index} className="flex-center max-w-full flex-wrap gap-x-4 md:gap-x-6 gap-y-2 px-2">
           {line.split(' ').map((word, i) => (
             <span
               key={i}

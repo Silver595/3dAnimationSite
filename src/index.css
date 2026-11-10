@@ -108,13 +108,23 @@ body {
   }
 
   .special-font b {
-    font-family: "IBM Plex Mono", monospace;
+    font-family: "zentry", sans-serif;
     font-feature-settings: "ss01" on;
-    color: var(--text-primary);
   }
 
   .hero-heading {
-    @apply uppercase font-black text-5xl sm:right-10 sm:text-7xl md:text-9xl lg:text-[10rem] tracking-tighter;
+    @apply uppercase font-zentry font-black text-5xl sm:text-7xl md:text-9xl lg:text-[10rem] tracking-tighter leading-[0.85];
+  }
+
+  .animated-title {
+    @apply flex flex-col gap-3 sm:gap-5 text-5xl uppercase leading-[0.95] text-white sm:text-7xl md:text-8xl lg:text-[7rem] font-zentry font-black tracking-tight;
+  }
+
+  .animated-word {
+    @apply special-font font-zentry font-black inline-block opacity-0;
+    transform: translate3d(0, 40px, 0) rotateX(-25deg);
+    transform-origin: 50% 100% 0 !important;
+    will-change: opacity, transform;
   }
 
   .about-subtext {

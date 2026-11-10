@@ -70,13 +70,31 @@ const Contact = () => {
         ease: "power3.out"
       }, "-=0.5");
 
+    gsap.to(".contact-katana", {
+      y: -80,
+      rotation: -30,
+      ease: "none",
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true,
+      },
+    });
+
   }, { scope: containerRef });
 
   return (
     <div id="contact" ref={containerRef} className="relative min-h-screen w-full bg-[#0a0a0a] pt-24 pb-10 overflow-hidden">
 
-      {/* Background Texture */}
+      {/* Background Texture & Silhouette */}
       <div className="absolute inset-0 bg-[url('/img/intricate_minimal.svg')] bg-center opacity-5 pointer-events-none" />
+      <img
+        src="/img/katana.png"
+        alt=""
+        aria-hidden="true"
+        className="contact-katana pointer-events-none absolute right-4 md:right-16 top-1/2 -translate-y-1/2 max-h-[420px] object-contain opacity-[0.05] -rotate-45 select-none filter invert grayscale will-change-transform"
+      />
 
       <div className="relative z-10 px-6 md:px-10">
         <div className="mb-20">
@@ -94,17 +112,27 @@ const Contact = () => {
           <div className="w-full md:w-1/3 flex flex-col justify-between">
             <div className="space-y-12 contact-field">
               <div>
-                <h4 className="font-mono text-xs text-zinc-500 uppercase tracking-widest mb-4">Frequency</h4>
+                <h4 className="font-mono text-xs text-zinc-500 uppercase tracking-widest mb-4">contant directly</h4>
                 <a href="mailto:akashpurjalkar66@gmail.com" className="text-2xl md:text-xl font-general text-white hover:text-zinc-400 transition-colors block">
                   akashpurjalkar66@gmail.com
                 </a>
               </div>
               <div>
-                <h4 className="font-mono text-xs text-zinc-500 uppercase tracking-widest mb-4">Coordinates</h4>
-                <p className="text-xl font-general text-zinc-300">
-                  India,Maharashtra<br />
-                  Pune
-                </p>
+                <h4 className="font-mono text-xs text-zinc-500 uppercase tracking-widest mb-4">current place of work</h4>
+                <div className="flex items-center gap-4">
+                  <img
+                    src="/img/wave.gif"
+                    alt=""
+                    aria-hidden="true"
+                    className="size-8 object-contain opacity-70"
+                  />
+                  <div>
+                    <p className="text-xl font-general text-zinc-200">
+                      Pune, Maharashtra
+                    </p>
+
+                  </div>
+                </div>
               </div>
               <div>
               </div>
