@@ -12,56 +12,52 @@ const About = () => {
 
   useGSAP(
     () => {
-      const mm = gsap.matchMedia();
+      const panels = gsap.utils.toArray(".about-panel");
+      const count = panels.length;
 
-      mm.add("(min-width: 768px)", () => {
-        const panels = gsap.utils.toArray(".about-panel");
-        const count = panels.length;
-
-        // One master timeline drives the pin, the horizontal slide and every
-        // parallax layer, so everything stays in sync with scroll + snap.
-        const tl = gsap.timeline({
-          defaults: { ease: "none", duration: 1 },
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top top",
-            end: () => "+=" + window.innerWidth * (count - 1) * 1.2,
-            pin: true,
-            anticipatePin: 1,
-            scrub: 0.8,
-            invalidateOnRefresh: true,
-            snap: {
-              snapTo: 1 / (count - 1),
-              duration: { min: 0.2, max: 0.6 },
-              delay: 0.05,
-              ease: "power1.inOut",
-            },
+      // Master timeline drives the pin, horizontal slide, and parallax on all devices (phones & desktop)
+      const tl = gsap.timeline({
+        defaults: { ease: "none", duration: 1 },
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: () =>
+            "+=" +
+            Math.max(
+              window.innerWidth * (count - 1) * 1.2,
+              window.innerHeight * (count - 1)
+            ),
+          pin: true,
+          anticipatePin: 1,
+          scrub: 0.8,
+          invalidateOnRefresh: true,
+          snap: {
+            snapTo: 1 / (count - 1),
+            duration: { min: 0.2, max: 0.6 },
+            delay: 0.05,
+            ease: "power1.inOut",
           },
-        });
-
-        // Slide the whole track (container is 300% of the section width)
-        tl.to(
-          containerRef.current,
-          { xPercent: -(100 * (count - 1)) / count, force3D: true },
-          0
-        );
-
-        // Watermark statues move slower than the panels for depth
-        tl.fromTo(".about-statue-1", { xPercent: 0 }, { xPercent: 30 }, 0);
-        tl.fromTo(".about-statue-2", { xPercent: -30 }, { xPercent: 0 }, 0);
-
-        // Philosophy photo: gentle drift, scaled so edges never show a gap
-        tl.fromTo(
-          ".about-img-stretch",
-          { xPercent: -6, scale: 1.2 },
-          { xPercent: 6, scale: 1.2 },
-          0
-        );
+        },
       });
 
-      return () => {
-        mm.revert();
-      };
+      // Slide the whole track (container is 300% of the section width)
+      tl.to(
+        containerRef.current,
+        { xPercent: -(100 * (count - 1)) / count, force3D: true },
+        0
+      );
+
+      // Watermark statues move slower than the panels for depth
+      tl.fromTo(".about-statue-1", { xPercent: 0 }, { xPercent: 30 }, 0);
+      tl.fromTo(".about-statue-2", { xPercent: -30 }, { xPercent: 0 }, 0);
+
+      // Philosophy photo: gentle drift, scaled so edges never show a gap
+      tl.fromTo(
+        ".about-img-stretch",
+        { xPercent: -6, scale: 1.2 },
+        { xPercent: 6, scale: 1.2 },
+        0
+      );
     },
     { scope: sectionRef }
   );
@@ -70,14 +66,14 @@ const About = () => {
     <section
       ref={sectionRef}
       id="about"
-      className="relative min-h-screen md:h-screen w-full overflow-hidden bg-[#0a0a0a]"
+      className="relative h-screen w-full overflow-hidden bg-[#0a0a0a]"
     >
       <div
         ref={containerRef}
-        className="flex flex-col md:flex-row h-auto md:h-full w-full md:w-[300%] will-change-transform"
+        className="flex flex-row h-full w-[300%] will-change-transform"
       >
         {/* PANEL 1: INTRO */}
-        <div className="about-panel relative min-h-screen md:h-full w-full md:w-1/3 flex-shrink-0 flex items-center justify-center p-8 sm:p-12 md:p-16 overflow-hidden">
+        <div className="about-panel relative h-full w-1/3 flex-shrink-0 flex items-center justify-center p-6 sm:p-12 md:p-16 overflow-hidden">
           <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
             {/* Ambient Radial Glow */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vh] bg-[radial-gradient(circle,rgba(255,255,255,0.08)_0%,transparent_70%)] rounded-full opacity-30" />
@@ -126,7 +122,7 @@ const About = () => {
         </div>
 
         {/* PANEL 2: PHILOSOPHY */}
-        <div className="about-panel relative min-h-screen md:h-full w-full md:w-1/3 flex-shrink-0 flex items-center justify-between gap-12 px-8 sm:px-12 md:px-16 lg:px-28 py-16 overflow-hidden">
+        <div className="about-panel relative h-full w-1/3 flex-shrink-0 flex items-center justify-between gap-6 md:gap-12 px-6 sm:px-12 md:px-16 lg:px-28 py-8 sm:py-16 overflow-hidden">
           <div className="flex flex-col flex-1 min-w-0 items-start z-10 max-w-xl">
             <p className="font-mono text-sm uppercase text-zinc-500 tracking-[0.3em] mb-6">
               Interests
@@ -197,7 +193,7 @@ const About = () => {
         </div>
 
         {/* PANEL 3: LEARNING IN PROGRESS */}
-        <div className="about-panel relative min-h-screen md:h-full w-full md:w-1/3 flex-shrink-0 flex items-center justify-center p-8 sm:p-12 md:p-16 overflow-hidden">
+        <div className="about-panel relative h-full w-1/3 flex-shrink-0 flex items-center justify-center p-6 sm:p-12 md:p-16 overflow-hidden">
           <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
             <img
               src="/img/aurelius.png"

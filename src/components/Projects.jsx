@@ -210,7 +210,7 @@ const Projects = () => {
           onMouseLeave={handleMouseLeaveList}
           className="group/list flex min-h-0 flex-1 flex-col"
         >
-          {projects.map((project, index) => (
+          {projects.map((project) => (
             <a
               key={project.id}
               href={project.link}

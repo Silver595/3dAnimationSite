@@ -118,7 +118,7 @@ const Contact = () => {
                 </a>
               </div>
               <div>
-                <h4 className="font-mono text-xs text-zinc-500 uppercase tracking-widest mb-4">current place of work1</h4>
+                <h4 className="font-mono text-xs text-zinc-500 uppercase tracking-widest mb-4">current place of work</h4>
                 <div className="flex items-center gap-4">
                   <img
                     src="/img/wave.gif"
