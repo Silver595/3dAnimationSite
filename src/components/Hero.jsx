@@ -13,23 +13,21 @@ const Hero = () => {
     () => {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-      // Video slowly settles
       tl.fromTo(
         videoRef.current,
         { scale: 1.1 },
         { scale: 1, duration: 3, ease: "power1.out" },
         0
       )
-        // Title rises out of a mask
+
         .from(".hero-title-inner", { yPercent: 110, duration: 1.4 }, 0.3)
-        // Tagline, quote and buttons fade up
+
         .from(
           ".hero-fade",
           { opacity: 0, y: 18, duration: 1.1, stagger: 0.15, ease: "power2.out" },
           0.9
         );
 
-      // Content drifts up slightly as you scroll away
       gsap.to(".hero-content", {
         y: -60,
         opacity: 0.4,
@@ -42,7 +40,6 @@ const Hero = () => {
         },
       });
 
-      // Pause video once scrolled past
       const video = videoRef.current;
       ScrollTrigger.create({
         trigger: containerRef.current,
@@ -94,9 +91,8 @@ const Hero = () => {
 
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a0a0a]/80 to-[#0a0a0a]" />
 
-        {/* Content anchored to the bottom */}
         <div className="hero-content absolute inset-0 z-40 flex flex-col justify-end px-6 pb-14 md:px-20 md:pb-20">
-          {/* Masked title */}
+
           <div className="overflow-hidden pb-2">
             <h1 className="special-font hero-heading hero-title-inner text-white opacity-90">
               Akash
@@ -113,7 +109,6 @@ const Hero = () => {
                 road that leads there.
               </p>
             </div>
-
           </div>
         </div>
       </div>

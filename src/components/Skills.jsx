@@ -120,7 +120,6 @@ const Skills = () => {
       id="skills"
       className="min-h-screen bg-[#0a0a0a] py-32 px-4 md:px-10 relative z-10 border-t border-white/5 overflow-hidden"
     >
-      {/* Subtle classical backdrop */}
       <img
         src="/img/laocoon.png"
         alt=""
@@ -128,11 +127,8 @@ const Skills = () => {
         className="skills-statue pointer-events-none absolute right-4 md:right-16 bottom-8 h-[55%] object-contain opacity-[0.035] select-none filter invert grayscale will-change-transform"
       />
 
-      {/* Technical Header */}
       <div className="mb-20 flex flex-col items-start border-b border-white/10 pb-8">
-        <h2 className="text-xs uppercase tracking-[0.3em] text-zinc-500 mb-2">
-          {">"} System Capabilities
-        </h2>
+
         <h2 className="font-zentry text-6xl text-white uppercase md:text-8xl opacity-90">
           Technical Stack
         </h2>
@@ -150,7 +146,7 @@ const Skills = () => {
         ))}
       </div>
 
-      {/* Decorative Grid Background */}
+
       <div className="absolute inset-0 z-[-1] opacity-5 pointer-events-none bg-[url('/img/intricate_minimal.svg')] bg-center" />
     </section>
   );

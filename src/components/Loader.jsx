@@ -103,15 +103,6 @@ const Loader = ({ onExitStart, onComplete }) => {
         ref={contentRef}
         className="absolute inset-0 flex flex-col justify-between p-6 md:p-12 z-20"
       >
-        {/* Top Bar */}
-        <div className="flex items-center justify-between">
-          <span className="text-[11px] font-mono uppercase tracking-[0.4em] text-zinc-500">
-            Akash Purjalkar
-          </span>
-          <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-zinc-600">
-            Portfolio // 2024
-          </span>
-        </div>
 
         {/* Center 3D Wireframe & Monolithic Counter */}
         <div className="flex flex-col items-center justify-center my-auto">
@@ -137,18 +128,8 @@ const Loader = ({ onExitStart, onComplete }) => {
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="flex items-center justify-between">
-          <span className="text-[10px] font-mono tracking-[0.3em] text-zinc-600 uppercase">
-            VINLAND // SYSTEM INIT
-          </span>
-          <span className="text-[10px] font-mono tracking-[0.3em] text-zinc-600 uppercase hidden sm:inline">
-            18.5204° N, 73.8567° E
-          </span>
-        </div>
-      </div>
 
-      {/* Hairline progress along the bottom edge */}
+      </div>
       <div
         ref={lineRef}
         className="absolute bottom-0 left-0 h-px w-full origin-left bg-white/60"

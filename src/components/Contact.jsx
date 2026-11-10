@@ -112,16 +112,16 @@ const Contact = () => {
           <div className="w-full md:w-1/3 flex flex-col justify-between">
             <div className="space-y-12 contact-field">
               <div>
-                <h4 className="font-mono text-xs text-zinc-500 uppercase tracking-widest mb-4">Frequency</h4>
+                <h4 className="font-mono text-xs text-zinc-500 uppercase tracking-widest mb-4">contant directly</h4>
                 <a href="mailto:akashpurjalkar66@gmail.com" className="text-2xl md:text-xl font-general text-white hover:text-zinc-400 transition-colors block">
                   akashpurjalkar66@gmail.com
                 </a>
               </div>
               <div>
-                <h4 className="font-mono text-xs text-zinc-500 uppercase tracking-widest mb-4">Coordinates</h4>
+                <h4 className="font-mono text-xs text-zinc-500 uppercase tracking-widest mb-4">current place of work1</h4>
                 <div className="flex items-center gap-4">
                   <img
-                    src="/img/compass.gif"
+                    src="/img/wave.gif"
                     alt=""
                     aria-hidden="true"
                     className="size-8 object-contain opacity-70"
@@ -130,9 +130,7 @@ const Contact = () => {
                     <p className="text-xl font-general text-zinc-200">
                       Pune, Maharashtra
                     </p>
-                    <p className="font-mono text-xs text-zinc-500 tracking-wider">
-                      18.5204° N, 73.8567° E
-                    </p>
+
                   </div>
                 </div>
               </div>

@@ -220,25 +220,15 @@ const About = () => {
                 at.
               </p>
 
-              {/* Seamless, unboxed 3D wireframe cube representing Kubernetes & Cloud */}
-              <div className="flex items-center gap-4 pt-2">
-                <img
-                  src="/img/cube.gif"
-                  alt="Containerization"
-                  className="size-14 shrink-0 object-contain opacity-60"
-                />
-                <span className="font-mono text-xs text-zinc-600 uppercase tracking-widest">
-                  Kubernetes &bull; Cloud Architecture
-                </span>
-              </div>
+
             </div>
 
             <div className="grid grid-cols-1 gap-2 min-w-0">
               {[
                 {
-                  title: "DevOps",
+                  title: "Spanish",
                   date: "Ongoing",
-                  org: "Current Progress: Kubernetes",
+                  org: "Current Progress: yo soy akash",
                   icon: "/img/cube.gif",
                 },
                 {

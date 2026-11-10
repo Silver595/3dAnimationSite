@@ -60,7 +60,6 @@ const Projects = () => {
   const floatingModalRef = useRef(null);
   const modalImgRef = useRef(null);
 
-  // Smooth cursor follower physics (GSAP quickTo for 60fps)
   const xTo = useRef(null);
   const yTo = useRef(null);
   const rotateTo = useRef(null);
@@ -83,7 +82,6 @@ const Projects = () => {
     });
 
     const ctx = gsap.context(() => {
-      // Soft staggered reveal of rows
       gsap.from(".project-item", {
         scrollTrigger: {
           trigger: containerRef.current,
@@ -98,7 +96,6 @@ const Projects = () => {
         clearProps: "transform,opacity",
       });
 
-      // Ambient parallax on the background watermark
       gsap.to(".project-watermark", {
         y: -120,
         ease: "none",
@@ -142,7 +139,6 @@ const Projects = () => {
       });
     }
 
-    // Gentle image settle on hover change
     if (modalImgRef.current) {
       gsap.fromTo(
         modalImgRef.current,
@@ -171,12 +167,10 @@ const Projects = () => {
       onMouseMove={handleMouseMove}
       className="relative min-h-screen md:h-screen w-full bg-[#0a0a0a] px-6 sm:px-10 md:px-16 py-10 overflow-hidden z-10 select-none flex flex-col"
     >
-      {/* Background Watermark Parallax */}
       <div className="project-watermark pointer-events-none absolute right-4 top-1/3 -translate-y-1/2 opacity-[0.03] select-none text-[20vw] font-zentry uppercase tracking-tighter text-white leading-none">
         WORKS
       </div>
 
-      {/* Floating Cursor Preview (Desktop only) */}
       <div
         ref={floatingModalRef}
         className="pointer-events-none absolute left-0 top-0 z-50 hidden md:block -translate-x-1/2 -translate-y-1/2 opacity-0 scale-75 will-change-transform"
@@ -202,17 +196,15 @@ const Projects = () => {
       </div>
 
       <div className="relative z-10 flex h-full w-full flex-1 flex-col">
-        {/* Section Header */}
         <div className="mb-6 flex flex-col items-start pb-4">
           <p className="font-mono text-xs uppercase tracking-[0.3em] text-zinc-500 mb-2">
-            Selected Works
+            Selected
           </p>
           <h2 className="font-zentry text-4xl sm:text-6xl md:text-7xl text-white uppercase leading-[0.9] tracking-tight">
-            Featured Works
+            Featured
           </h2>
         </div>
 
-        {/* Project List: rows share the window height; others dim when one is hovered */}
         <div
           ref={listRef}
           onMouseLeave={handleMouseLeaveList}
@@ -227,11 +219,10 @@ const Projects = () => {
               onMouseEnter={() => handleMouseEnterRow(project)}
               className="project-item group relative flex w-full flex-1 cursor-pointer flex-col md:flex-row items-start md:items-center justify-between py-6 md:py-0 px-3 sm:px-6 transition-opacity duration-500 ease-out group-hover/list:opacity-30 hover:!opacity-100"
             >
-              {/* Left side: Index + Title + Description */}
               <div className="flex flex-col sm:flex-row sm:items-baseline gap-3 sm:gap-8 transition-transform duration-500 ease-out group-hover:translate-x-3">
-                <span className="font-mono text-xs md:text-sm text-zinc-600 group-hover:text-zinc-300 transition-colors duration-500">
-                  0{index + 1}
-                </span>
+                {/* <span className="font-mono text-xs md:text-sm text-zinc-600 group-hover:text-zinc-300 transition-colors duration-500">
+                  {index + 1}
+                </span>*/}
 
                 <div className="max-w-2xl">
                   <div className="flex items-center gap-3">
@@ -249,7 +240,6 @@ const Projects = () => {
                 </div>
               </div>
 
-              {/* Right side: Category & Tags (plain text, no boxes) */}
               <div className="mt-4 md:mt-0 flex flex-row md:flex-col items-start md:items-end gap-3 md:gap-2 text-left md:text-right">
                 <span className="font-mono text-xs uppercase tracking-widest text-zinc-400 transition-colors duration-500 group-hover:text-white">
                   {project.category}
@@ -260,7 +250,6 @@ const Projects = () => {
                 </span>
               </div>
 
-              {/* Mobile Preview Thumbnail (Touch devices) */}
               <div className="mt-4 w-full md:hidden rounded-lg overflow-hidden h-36">
                 <img
                   src={project.src}
@@ -272,7 +261,6 @@ const Projects = () => {
           ))}
         </div>
 
-        {/* Archives Link */}
         <div className="mt-4 flex justify-center">
           <a
             href="https://github.com/Silver595"
