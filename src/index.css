@@ -223,23 +223,18 @@ html:has(.sound-choice[open]) {
 .footer-socials a:nth-child(3) { grid-area: 3 / 3; }
 
 :root[data-theme="colorful"] .footer-socials a:where(:nth-child(-n + 2)) {
+  --footer-interaction-color: color-mix(in oklab, rgb(var(--risco)) 35%, rgb(var(--ink)));
   color: rgb(var(--content));
   filter: drop-shadow(0 1px 2px rgb(var(--paper) / 0.85));
 }
 
 :root[data-theme="colorful"] footer :is(a, button):is(:hover, :focus-visible, :active) {
-  --footer-control-bg: var(--paper);
-  color: rgb(var(--risco));
-  background-color: rgb(var(--footer-control-bg));
-  box-shadow: 0 0 0 4px rgb(var(--footer-control-bg));
-  border-radius: 3px;
+  color: var(--footer-interaction-color, color-mix(in oklab, rgb(var(--risco)) 35%, white));
   text-decoration-color: currentColor;
-  filter: none;
 }
 
 :root[data-theme="colorful"] footer :is(a, button):active {
-  --footer-control-bg: var(--risco);
-  color: rgb(var(--paper));
+  text-decoration-thickness: 2px;
 }
 
 .skills-surface {
