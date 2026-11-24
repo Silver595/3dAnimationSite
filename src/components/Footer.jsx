@@ -58,6 +58,8 @@ const Footer = ({ colorful, ready }) => {
             <GradientASCII
               colors={palette}
               cellSize={14}
+              gradientOpacity={colorful ? 0.28 : undefined}
+              clickEffect={colorful ? "none" : undefined}
               intro={false}
               dpr={1}
             />

@@ -206,11 +206,14 @@ html:has(.sound-choice[open]) {
 }
 
 :root[data-theme="colorful"] .footer-background {
-  background: radial-gradient(
-    ellipse 85% 76% at 50% 0%,
+  background: linear-gradient(
+    174deg in oklab,
     rgb(var(--paper)),
-    color-mix(in srgb, rgb(var(--accent)) 55%, rgb(var(--paper))) 42%,
-    rgb(var(--accent)) 55%,
+    color-mix(in oklab, rgb(var(--accent)) 22%, rgb(var(--paper))) 23%,
+    color-mix(in oklab, rgb(var(--accent)) 65%, rgb(var(--paper))) 41%,
+    rgb(var(--accent)) 52%,
+    oklch(from rgb(var(--accent)) calc(l * 0.84) calc(c * 0.92) h) 67%,
+    oklch(from rgb(var(--accent)) calc(l * 0.67) calc(c * 0.78) h) 83%,
     oklch(from rgb(var(--accent)) calc(l * 0.45) calc(c * 0.62) h) 100%
   );
 }
@@ -219,9 +222,24 @@ html:has(.sound-choice[open]) {
 .footer-socials a:nth-child(2) { grid-area: 2 / 2; }
 .footer-socials a:nth-child(3) { grid-area: 3 / 3; }
 
-:root[data-theme="colorful"] .footer-socials a:nth-child(-n + 2) {
+:root[data-theme="colorful"] .footer-socials a:where(:nth-child(-n + 2)) {
   color: rgb(var(--content));
   filter: drop-shadow(0 1px 2px rgb(var(--paper) / 0.85));
+}
+
+:root[data-theme="colorful"] footer :is(a, button):is(:hover, :focus-visible, :active) {
+  --footer-control-bg: var(--paper);
+  color: rgb(var(--risco));
+  background-color: rgb(var(--footer-control-bg));
+  box-shadow: 0 0 0 4px rgb(var(--footer-control-bg));
+  border-radius: 3px;
+  text-decoration-color: currentColor;
+  filter: none;
+}
+
+:root[data-theme="colorful"] footer :is(a, button):active {
+  --footer-control-bg: var(--risco);
+  color: rgb(var(--paper));
 }
 
 .skills-surface {
