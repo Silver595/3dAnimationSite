@@ -22,6 +22,7 @@ const Loader = ({ onExitStart, onComplete }) => {
     const state = { value: 0 };
     let goal = 0;
     let exited = false;
+    let exitTimeline;
 
     const render = () => {
       countRef.current.textContent = String(Math.round(state.value)).padStart(2, "0");
@@ -32,7 +33,7 @@ const Loader = ({ onExitStart, onComplete }) => {
       if (exited) return;
       exited = true;
 
-      gsap
+      exitTimeline = gsap
         .timeline()
         .to([contentRef.current, lineRef.current], {
           opacity: 0,
@@ -73,10 +74,10 @@ const Loader = ({ onExitStart, onComplete }) => {
     if (document.readyState === "complete") onLoad();
     else window.addEventListener("load", onLoad, { once: true });
 
-    const probe = document.createElement("video");
-    probe.preload = "auto";
-    probe.onloadeddata = () => advance(100);
-    probe.src = "/videos/mixkit-4.mp4";
+    const video = document.querySelector("#video-frame video");
+    const onVideoReady = () => advance(100);
+    if (video?.readyState >= 2) onVideoReady();
+    else video?.addEventListener("loadeddata", onVideoReady, { once: true });
 
     // Safety net so it never stalls
     const safety = setTimeout(() => advance(100), 2500);
@@ -85,9 +86,8 @@ const Loader = ({ onExitStart, onComplete }) => {
       exited = true;
       clearTimeout(safety);
       window.removeEventListener("load", onLoad);
-      probe.onloadeddata = null;
-      probe.removeAttribute("src");
-      probe.load();
+      video?.removeEventListener("loadeddata", onVideoReady);
+      exitTimeline?.kill();
       gsap.killTweensOf(state);
     };
   }, []);

@@ -1,7 +1,7 @@
+import useReducedMotion from "../useReducedMotion";
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
-import PropTypes from "prop-types";
 gsap.registerPlugin(ScrollTrigger);
 
 const SkillCategory = ({ title, skills, index, icon }) => {
@@ -42,21 +42,12 @@ const SkillCategory = ({ title, skills, index, icon }) => {
   );
 };
 
-SkillCategory.propTypes = {
-  title: PropTypes.string.isRequired,
-  skills: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      desc: PropTypes.string.isRequired,
-    }),
-  ).isRequired,
-  index: PropTypes.number.isRequired,
-  icon: PropTypes.string,
-};
 const Skills = () => {
+  const reduced = useReducedMotion();
   const containerRef = useRef(null);
 
   useEffect(() => {
+    if (reduced) return;
     const ctx = gsap.context(() => {
       gsap.from(".skill-category", {
         scrollTrigger: {
@@ -83,7 +74,7 @@ const Skills = () => {
     }, containerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [reduced]);
 
   const skillSets = [
     {

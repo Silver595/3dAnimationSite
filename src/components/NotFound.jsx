@@ -1,3 +1,4 @@
+import useReducedMotion from "../useReducedMotion";
 import { useEffect, useRef, useState } from "react";
 
 /* ------------------------------------------------------------------ */
@@ -118,11 +119,7 @@ export default function ErrorPage({
   const [side, setSide] = useState(makeSide);
   const [glitch, setGlitch] = useState(null);
   const [path, setPath] = useState("");
-  const [reduced] = useState(
-    () =>
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
-  );
+  const reduced = useReducedMotion();
 
   useEffect(() => {
     setPath(window.location.pathname + window.location.search);
@@ -130,9 +127,9 @@ export default function ErrorPage({
 
   /* decorative values + occasional glitch */
   useEffect(() => {
+    if (reduced) return;
     const id = setInterval(() => {
       setSide(makeSide());
-      if (reduced) return;
       if (Math.random() < 0.09) {
         setGlitch({
           dx: (Math.random() < 0.5 ? -1 : 1) * (2 + rand(9)),

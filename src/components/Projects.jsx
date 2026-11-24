@@ -1,3 +1,4 @@
+import useReducedMotion from "../useReducedMotion";
 import { useState, useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
@@ -10,7 +11,7 @@ const projects = [
     title: "Jotion",
     category: "Web Application",
     description: "A Notion-inspired note-taking workspace with rich text editing, tree-structured notes, and real-time cloud sync.",
-    src: "/img/jotion.png",
+    src: "/img/jotion.webp",
     tags: ["Next.js", "ConvexDB", "Prisma"],
     link: "https://personal-diary-psi.vercel.app/",
   },
@@ -19,7 +20,7 @@ const projects = [
     title: "Secure Production CI/CD Pipeline",
     category: "AWS, DevSecOps",
     description: "An end-to-end production-grade deployment pipeline for Production Level Application, featuring IAC , CVE finder, security policies, and Kubernetes deployment hardening.",
-    src: "/img/Real_World_Production_cicd.png",
+    src: "/img/Real_World_Production_cicd.webp",
     tags: ["AWS EKS", "Kubernetes", "Terraform", "Docker", "Jenkins", "DevSecOps"],
     link: "https://github.com/Silver595/user_management_platform",
   },
@@ -28,7 +29,7 @@ const projects = [
     title: "TechMock",
     category: "Full-Stack Platform",
     description: "Full-stack technical interview platform with real-time video/audio, screen sharing, and integrated real time dynamic collaborative editor.",
-    src: "/img/TechMock.png",
+    src: "/img/TechMock.webp",
     tags: ["WebRTC", "Node.js", "Socket.io"],
     link: "https://techmock.vercel.app/",
   },
@@ -37,7 +38,7 @@ const projects = [
     title: "Time Travel",
     category: "Chrome Extension",
     description: "Split-screen temporal web comparison engine leveraging the Wayback Machine archive against live sites.",
-    src: "/img/Time_Travel.png",
+    src: "/img/Time_Travel.webp",
     tags: ["JavaScript", "Browser API", "CSS"],
     link: "https://chromewebstore.google.com/detail/ogckpcboinbcohhilmofkalobpkolkib",
   },
@@ -46,17 +47,17 @@ const projects = [
     title: "SelfGrowthOS",
     category: "Personal Growth Platform",
     description: "A personal growth and habit-tracking platform designed to help users build consistent habits, track daily progress, reflect through journaling, and take control of their personal development.",
-    src: "/img/SelfGrowthOs.png",
+    src: "/img/SelfGrowthOs.webp",
     tags: ["React", "Node.js", "PostgreSQL", "Clerk", "GSAP"],
     link: "https://selfgrowthos.lovable.app/",
   },
 ];
 
 const Projects = () => {
+  const reduced = useReducedMotion();
   const [activeProject, setActiveProject] = useState(projects[0]);
 
   const containerRef = useRef(null);
-  const listRef = useRef(null);
   const floatingModalRef = useRef(null);
   const modalImgRef = useRef(null);
 
@@ -66,6 +67,7 @@ const Projects = () => {
   const lastX = useRef(0);
 
   useEffect(() => {
+    if (reduced) return;
     if (!floatingModalRef.current) return;
 
     xTo.current = gsap.quickTo(floatingModalRef.current, "x", {
@@ -109,10 +111,10 @@ const Projects = () => {
     }, containerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [reduced]);
 
   const handleMouseMove = (e) => {
-    if (!containerRef.current) return;
+    if (reduced || !containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -127,6 +129,7 @@ const Projects = () => {
   };
 
   const handleMouseEnterRow = (project) => {
+    if (reduced) return;
     setActiveProject(project);
 
     if (floatingModalRef.current) {
@@ -149,7 +152,7 @@ const Projects = () => {
   };
 
   const handleMouseLeaveList = () => {
-    if (floatingModalRef.current) {
+    if (!reduced && floatingModalRef.current) {
       gsap.to(floatingModalRef.current, {
         scale: 0.85,
         opacity: 0,
@@ -165,7 +168,7 @@ const Projects = () => {
       ref={containerRef}
       id="projects"
       onMouseMove={handleMouseMove}
-      className="relative min-h-screen md:h-screen w-full bg-[#0a0a0a] px-6 sm:px-10 md:px-16 py-10 overflow-hidden z-10 select-none flex flex-col"
+      className="relative min-h-screen w-full bg-[#0a0a0a] px-6 sm:px-10 md:px-16 py-10 overflow-hidden z-10 select-none flex flex-col"
     >
       <div className="project-watermark pointer-events-none absolute right-4 top-1/3 -translate-y-1/2 opacity-[0.03] select-none text-[20vw] font-zentry uppercase tracking-tighter text-white leading-none">
         WORKS
@@ -173,7 +176,7 @@ const Projects = () => {
 
       <div
         ref={floatingModalRef}
-        className="pointer-events-none absolute left-0 top-0 z-50 hidden md:block -translate-x-1/2 -translate-y-1/2 opacity-0 scale-75 will-change-transform"
+        className="pointer-events-none absolute left-0 top-0 z-50 hidden motion-reduce:!hidden md:block -translate-x-1/2 -translate-y-1/2 opacity-0 scale-75 will-change-transform"
         style={{ width: "360px", height: "230px" }}
       >
         <div className="relative size-full overflow-hidden rounded-xl bg-[#121212] shadow-2xl shadow-black/60">
@@ -195,7 +198,7 @@ const Projects = () => {
         </div>
       </div>
 
-      <div className="relative z-10 flex h-full w-full flex-1 flex-col">
+      <div className="relative z-10 flex w-full flex-1 flex-col">
         <div className="mb-6 flex flex-col items-start pb-4">
           <p className="font-mono text-xs uppercase tracking-[0.3em] text-zinc-500 mb-2">
             Selected
@@ -206,9 +209,8 @@ const Projects = () => {
         </div>
 
         <div
-          ref={listRef}
           onMouseLeave={handleMouseLeaveList}
-          className="group/list flex min-h-0 flex-1 flex-col"
+          className="group/list flex flex-1 flex-col"
         >
           {projects.map((project) => (
             <a
@@ -217,13 +219,9 @@ const Projects = () => {
               target="_blank"
               rel="noopener noreferrer"
               onMouseEnter={() => handleMouseEnterRow(project)}
-              className="project-item group relative flex w-full flex-1 cursor-pointer flex-col md:flex-row items-start md:items-center justify-between py-6 md:py-0 px-3 sm:px-6 transition-opacity duration-500 ease-out group-hover/list:opacity-30 hover:!opacity-100"
+              className="project-item group relative flex w-full flex-1 cursor-pointer flex-col md:flex-row items-start md:items-center justify-between py-6 md:py-3 px-3 sm:px-6 transition-opacity duration-500 ease-out group-hover/list:opacity-30 hover:!opacity-100"
             >
               <div className="flex flex-col sm:flex-row sm:items-baseline gap-3 sm:gap-8 transition-transform duration-500 ease-out group-hover:translate-x-3">
-                {/* <span className="font-mono text-xs md:text-sm text-zinc-600 group-hover:text-zinc-300 transition-colors duration-500">
-                  {index + 1}
-                </span>*/}
-
                 <div className="max-w-2xl">
                   <div className="flex items-center gap-3">
                     <h3 className="font-zentry text-3xl sm:text-4xl md:text-5xl uppercase text-zinc-300 transition-colors duration-500 group-hover:text-white">
@@ -252,6 +250,7 @@ const Projects = () => {
 
               <div className="mt-4 w-full md:hidden rounded-lg overflow-hidden h-36">
                 <img
+                  loading="lazy"
                   src={project.src}
                   alt={project.title}
                   className="size-full object-cover grayscale"

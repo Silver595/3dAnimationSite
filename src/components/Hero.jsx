@@ -1,3 +1,4 @@
+import useReducedMotion from "../useReducedMotion";
 import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -5,12 +6,14 @@ import { ScrollTrigger } from "gsap/all";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Hero = () => {
+const Hero = ({ isReady }) => {
+  const reduced = useReducedMotion();
   const containerRef = useRef(null);
   const videoRef = useRef(null);
 
   useGSAP(
     () => {
+      if (!isReady || reduced) return;
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
       tl.fromTo(
@@ -69,7 +72,7 @@ const Hero = () => {
         });
       });
     },
-    { scope: containerRef }
+    { scope: containerRef, dependencies: [isReady, reduced], revertOnUpdate: true }
   );
 
   return (
@@ -78,16 +81,20 @@ const Hero = () => {
         id="video-frame"
         className="relative z-10 h-dvh w-screen overflow-hidden bg-[#0a0a0a] will-change-transform"
       >
-        <video
-          ref={videoRef}
-          src="/videos/mixkit-4.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          className="absolute left-0 top-0 size-full object-cover object-center opacity-30 grayscale contrast-125 will-change-transform"
-        />
+        {reduced ? (
+          <img src="/img/hero-still.webp" alt="" className="absolute inset-0 size-full object-cover opacity-30 grayscale contrast-125" />
+        ) : (
+          <video
+            ref={videoRef}
+            src="/videos/mixkit-4.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            className="absolute left-0 top-0 size-full object-cover object-center opacity-30 grayscale contrast-125 will-change-transform"
+          />
+        )}
 
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a0a0a]/80 to-[#0a0a0a]" />
 

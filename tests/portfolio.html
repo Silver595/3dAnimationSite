@@ -1,0 +1,50 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Portfolio browser smoke test</title>
+<pre id="result">Running</pre>
+<iframe title="Portfolio" width="1024" height="600"></iframe>
+<script type="module">
+  const frame = document.querySelector("iframe");
+  const tick = () => new Promise(resolve => setTimeout(resolve, 50));
+  const check = (ok, description) => { if (!ok) throw new Error(description); };
+  async function run() {
+    const win = frame.contentWindow;
+    const doc = frame.contentDocument;
+    await doc.fonts.ready;
+    const projects = doc.querySelector("#projects");
+    const bottom = projects.getBoundingClientRect().bottom;
+    for (const link of projects.querySelectorAll("a")) {
+      check(link.getBoundingClientRect().bottom <= bottom + 1, "Clipped project link");
+    }
+    const form = doc.querySelector("form");
+    check([...form.querySelectorAll("label")].every(label => label.control), "Unassociated label");
+
+    frame.width = 320;
+    await tick();
+    for (const link of doc.querySelectorAll("nav a")) {
+      const rect = link.getBoundingClientRect();
+      check(rect.width > 0 && rect.left >= 0 && rect.right <= win.innerWidth, "Hidden mobile link");
+    }
+    if (win.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      check(!doc.querySelector("#video-frame video"), "Autoplay in reduced motion");
+      const panels = [...doc.querySelectorAll(".about-panel")];
+      check(panels[2].offsetTop > panels[1].offsetTop, "About panels overlap");
+    }
+    for (const [name, value] of Object.entries({name: "Visitor", email: "visitor@example.org", message: "Hello"})) {
+      const field = form.elements[name];
+      Object.getOwnPropertyDescriptor(Object.getPrototypeOf(field), "value").set.call(field, value);
+      field.dispatchEvent(new win.Event("input", {bubbles: true}));
+    }
+    for (const accepted of [false, true]) {
+      win.fetch = async () => Response.json(accepted ? {data: {id: "mock"}} : {data: null, error: {}});
+      form.requestSubmit();
+      await tick();
+      check(form.elements.message.value === (accepted ? "" : "Hello"), "Incorrect draft state");
+      check(accepted ? !!form.querySelector('[role=status]').textContent : !!form.querySelector('[role=alert]'), "Missing submission feedback");
+    }
+    return "PASS";
+  }
+  frame.onload = () => run().then(value => result.textContent = value)
+    .catch(error => result.textContent = "FAIL " + error.message);
+  frame.src = "/";
+</script>

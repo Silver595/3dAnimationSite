@@ -1,3 +1,4 @@
+import useReducedMotion from "../useReducedMotion";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -7,11 +8,13 @@ import { useRef } from "react";
 gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
+  const reduced = useReducedMotion();
   const sectionRef = useRef(null);
   const containerRef = useRef(null);
 
   useGSAP(
     () => {
+      if (reduced) return;
       const panels = gsap.utils.toArray(".about-panel");
       const count = panels.length;
 
@@ -59,21 +62,21 @@ const About = () => {
         0
       );
     },
-    { scope: sectionRef }
+    { scope: sectionRef, dependencies: [reduced], revertOnUpdate: true }
   );
 
   return (
     <section
       ref={sectionRef}
       id="about"
-      className="relative h-screen w-full overflow-hidden bg-[#0a0a0a]"
+      className="relative h-screen motion-reduce:h-auto w-full overflow-hidden bg-[#0a0a0a]"
     >
       <div
         ref={containerRef}
-        className="flex flex-row h-full w-[300%] will-change-transform"
+        className="flex flex-row h-full w-[300%] motion-reduce:block motion-reduce:h-auto motion-reduce:w-full will-change-transform"
       >
         {/* PANEL 1: INTRO */}
-        <div className="about-panel relative h-full w-1/3 flex-shrink-0 flex items-center justify-center p-6 sm:p-12 md:p-16 overflow-hidden">
+        <div className="about-panel motion-reduce:h-auto motion-reduce:min-h-screen motion-reduce:w-full relative h-full w-1/3 flex-shrink-0 flex items-center justify-center p-6 sm:p-12 md:p-16 overflow-hidden">
           <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
             {/* Ambient Radial Glow */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vh] bg-[radial-gradient(circle,rgba(255,255,255,0.08)_0%,transparent_70%)] rounded-full opacity-30" />
@@ -122,7 +125,7 @@ const About = () => {
         </div>
 
         {/* PANEL 2: PHILOSOPHY */}
-        <div className="about-panel relative h-full w-1/3 flex-shrink-0 flex items-center justify-between gap-6 md:gap-12 px-6 sm:px-12 md:px-16 lg:px-28 py-8 sm:py-16 overflow-hidden">
+        <div className="about-panel motion-reduce:h-auto motion-reduce:min-h-screen motion-reduce:w-full relative h-full w-1/3 flex-shrink-0 flex items-center justify-between gap-6 md:gap-12 px-6 sm:px-12 md:px-16 lg:px-28 py-8 sm:py-16 overflow-hidden">
           <div className="flex flex-col flex-1 min-w-0 items-start z-10 max-w-xl">
             <p className="font-mono text-sm uppercase text-zinc-500 tracking-[0.3em] mb-6">
               Interests
@@ -193,7 +196,7 @@ const About = () => {
         </div>
 
         {/* PANEL 3: LEARNING IN PROGRESS */}
-        <div className="about-panel relative h-full w-1/3 flex-shrink-0 flex items-center justify-center p-6 sm:p-12 md:p-16 overflow-hidden">
+        <div className="about-panel motion-reduce:h-auto motion-reduce:min-h-screen motion-reduce:w-full relative h-full w-1/3 flex-shrink-0 flex items-center justify-center p-6 sm:p-12 md:p-16 overflow-hidden">
           <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
             <img
               src="/img/aurelius.png"

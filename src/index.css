@@ -29,11 +29,6 @@ body {
 }
 
 @layer base {
-  @font-face {
-    font-family: "circular-web";
-    src: url("/fonts/circularweb-book.woff2") format("woff2");
-    font-display: swap;
-  }
 
   @font-face {
     font-family: "general";
@@ -41,17 +36,7 @@ body {
     font-display: swap;
   }
 
-  @font-face {
-    font-family: "robert-medium";
-    src: url("/fonts/robert-medium.woff2") format("woff2");
-    font-display: swap;
-  }
 
-  @font-face {
-    font-family: "robert-regular";
-    src: url("/fonts/robert-regular.woff2") format("woff2");
-    font-display: swap;
-  }
 
   @font-face {
     font-family: "zentry";
@@ -62,19 +47,6 @@ body {
 
 @layer components {
 
-  /* Sharper Glass Panel */
-  .glass-panel {
-    @apply bg-[#141414]/90 backdrop-blur-sm border border-white/10 rounded-lg shadow-2xl;
-  }
-
-  .soft-button {
-    @apply px-6 py-3 rounded-md bg-white text-black hover:bg-[#e0e0e0] transition-all duration-300 font-medium tracking-wide shadow-none hover:shadow-lg hover:shadow-white/5;
-  }
-
-  .soft-button-outline {
-    @apply px-6 py-3 rounded-md border border-white/20 text-white hover:bg-white/5 transition-all duration-300 font-medium tracking-wide;
-  }
-
   /* Optimization: GPU Acceleration Hints */
   .about-panel {
     will-change: transform;
@@ -83,29 +55,20 @@ body {
 }
 
 @layer utilities {
-  .border-hsla {
-    @apply border border-white/10;
-  }
 
   .nav-hover-btn {
-    @apply relative ms-10 font-general text-xs uppercase text-zinc-500 after:absolute after:-bottom-0.5 after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-white after:transition-transform after:duration-300 hover:text-white hover:after:origin-bottom-left hover:after:scale-x-100 cursor-pointer transition-colors duration-300;
+    @apply relative md:ms-10 font-general text-xs uppercase text-zinc-500 after:absolute after:-bottom-0.5 after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 after:bg-white after:transition-transform after:duration-300 hover:text-white hover:after:origin-bottom-left hover:after:scale-x-100 cursor-pointer transition-colors duration-300;
   }
 
   .floating-nav {
     @apply bg-[#0a0a0a]/90 backdrop-blur-md border border-white/10 rounded-lg mt-4 mx-4 shadow-xl;
   }
 
-  .absolute-center {
-    @apply absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%];
-  }
 
   .flex-center {
     @apply flex justify-center items-center;
   }
 
-  .mask-clip-path {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-  }
 
   .special-font b {
     font-family: "zentry", sans-serif;
@@ -127,41 +90,6 @@ body {
     will-change: opacity, transform;
   }
 
-  .about-subtext {
-    @apply absolute bottom-[-80dvh] left-1/2 w-full max-w-96 -translate-x-1/2 text-center font-circular-web text-lg md:max-w-[34rem] text-zinc-500;
-  }
-
-  .about-image {
-    @apply absolute left-1/2 top-0 z-20 h-[60vh] w-96 origin-center -translate-x-1/2 overflow-hidden rounded-lg md:w-[30vw] shadow-2xl;
-  }
-
-  /* Sharper Bento */
-  .bento-tilt_1 {
-    @apply relative border-hsla col-span-2 overflow-hidden rounded-lg transition-transform duration-500 ease-out hover:scale-[1.01];
-  }
-
-  .bento-tilt_2 {
-    @apply relative col-span-1 row-span-1 overflow-hidden rounded-lg transition-transform duration-500 ease-out hover:scale-[1.01];
-  }
-
-  .bento-title {
-    @apply uppercase md:text-5xl text-3xl font-black ;
-  }
-
-  .story-img-container {
-    @apply relative md:h-dvh h-[90vh] w-full;
-    filter: url("#flt_tag");
-  }
-
-  .story-img-mask {
-    @apply absolute left-0 top-0 size-full overflow-hidden md:left-[20%] md:top-[-10%] md:size-4/5;
-    clip-path: polygon(4% 0, 83% 21%, 100% 73%, 0% 100%);
-  }
-
-  .story-img-content {
-    @apply absolute w-full md:h-dvh h-[50dvh] opacity-100 left-10 top-16 md:left-0 md:top-10 lg:left-[-300px] lg:top-[-100px];
-    transform: translate3d(0, 0, 0) rotateX(0) rotateY(0) rotateZ(0) scale(1);
-  }
 }
 
 /* Animations follow... */
@@ -186,4 +114,10 @@ body {
   100% {
     transform: scaleY(0.35);
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated-word { opacity: 1; transform: none; }
+  img[src$=".gif"][aria-hidden="true"] { visibility: hidden; }
+  .indicator-line.active { animation: none; transform: scaleY(1); }
 }

@@ -1,3 +1,4 @@
+import useReducedMotion from "./useReducedMotion";
 import { useEffect, useState } from "react";
 import Lenis from "lenis";
 import gsap from "gsap";
@@ -22,6 +23,7 @@ const isHomePath = () => {
 };
 
 const App = () => {
+  const reduced = useReducedMotion();
   const [notFound, setNotFound] = useState(() => !isHomePath());
   // No loader on the error page, and no loader when returning from it.
   const [loading, setLoading] = useState(() => isHomePath());
@@ -44,7 +46,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    if (notFound || loading) return;
+    if (notFound || loading || reduced) return;
 
     const lenis = new Lenis({
       duration: 1.2,
@@ -69,7 +71,7 @@ const App = () => {
       gsap.ticker.remove(updateTicker);
       lenis.destroy();
     };
-  }, [loading, notFound]);
+  }, [loading, notFound, reduced]);
 
   if (notFound) {
     return <NotFound onHome={goHome} />;

@@ -4,7 +4,7 @@ const Footer = () => {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: "smooth",
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
     });
   };
 
@@ -29,7 +29,6 @@ const Footer = () => {
   return (
     <footer className="relative w-full overflow-hidden bg-black text-white border-t border-white/10 ">
       <div className="relative w-full bg-[#0a0a0a]">
-
 
         <div
           className="
@@ -67,7 +66,6 @@ const Footer = () => {
             </span>
           </div>
 
-
           <span
             className="
               absolute
@@ -82,7 +80,9 @@ const Footer = () => {
           >
             AVAILABLE
           </span>
-        </div>        <div
+        </div>
+
+        <div
           className="
             group
             relative
@@ -186,7 +186,6 @@ const Footer = () => {
           </div>
         </div>
 
-
         <div className="relative h-[300px] md:h-[390px]">
           {/* Horizontal measurement line */}
 
@@ -203,31 +202,6 @@ const Footer = () => {
               md:block
             "
           />
-
-
-          {/* <div className="absolute left-8 top-1/2 hidden -translate-y-1/2 md:block">
-            <div className="h-2 w-2 border border-white/20" />
-
-            <span className="absolute left-5 top-[-7px] whitespace-nowrap font-mono text-[8px] tracking-[0.2em] text-zinc-700">
-              00 / 01
-            </span>
-          </div>*/}
-{/*
-
-          <div className="absolute bottom-8 left-8 md:bottom-12 md:left-16">
-            <div className="flex items-center gap-3">
-              <span className="h-1.5 w-1.5 rounded-full bg-green-500" />
-
-              <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-zinc-600">
-                Available for opportunities
-              </span>
-            </div>
-
-            <p className="mt-3 font-mono text-[8px] uppercase tracking-[0.25em] text-zinc-700">
-              Est. 2025 / Pune, India
-            </p>
-          </div>*/}
-
 
           <button
             onClick={scrollToTop}
@@ -273,25 +247,6 @@ const Footer = () => {
               "
             />
 
-            <span
-              className="
-                absolute
-                right-6
-                top-5
-                font-mono
-                text-[8px]
-                tracking-[0.25em]
-                text-zinc-600
-                transition-colors
-                duration-500
-                group-hover/top:text-zinc-500
-              "
-            >
-
-            </span>
-
-
-
             <FiArrowUp
               className="
                 mb-4
@@ -302,8 +257,6 @@ const Footer = () => {
                 group-hover/top:scale-110
               "
             />
-
-
 
             <span
               className="
@@ -317,7 +270,6 @@ const Footer = () => {
             >
               Return to Top
             </span>
-
 
             <span
               className="
@@ -334,8 +286,6 @@ const Footer = () => {
             />
           </button>
         </div>
-
-
 
         <div
           className="
@@ -354,37 +304,6 @@ const Footer = () => {
             © {new Date().getFullYear()} Akash Purjalkar. All Rights Reserved.
           </span>
 
-          <div className="flex gap-8">
-            <a
-              href="#"
-              className="
-                font-mono
-                text-[9px]
-                uppercase
-                tracking-[0.2em]
-                text-zinc-600
-                transition-colors
-                hover:text-white
-              "
-            >
-              Privacy Policy
-            </a>
-
-            <a
-              href="#"
-              className="
-                font-mono
-                text-[9px]
-                uppercase
-                tracking-[0.2em]
-                text-zinc-600
-                transition-colors
-                hover:text-white
-              "
-            >
-              Terms of Use
-            </a>
-          </div>
         </div>
       </div>
     </footer>

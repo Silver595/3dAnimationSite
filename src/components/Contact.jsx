@@ -1,4 +1,4 @@
-
+import useReducedMotion from "../useReducedMotion";
 import AnimatedTitle from "./AnimatedTitle";
 import { useState, useRef } from "react";
 import { FiArrowUpRight } from "react-icons/fi";
@@ -13,14 +13,19 @@ const Contact = () => {
   const [error, setError] = useState("");
 
   const containerRef = useRef(null);
-  const formRef = useRef(null);
+  const reduced = useReducedMotion();
 
   const handleChange = (e) => {
+    setIsSent(false);
     setFormState({ ...formState, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formState.name.trim() || !formState.message.trim()) {
+      setError("Enter a name and a message.");
+      return;
+    }
     setIsSubmitting(true);
     setError("");
 
@@ -33,10 +38,10 @@ const Contact = () => {
         body: JSON.stringify(formState),
       });
 
-      if (response.ok) {
+      const result = await response.json();
+      if (response.ok && result?.data?.id && !result.error) {
         setIsSent(true);
         setFormState({ name: "", email: "", message: "" });
-        setTimeout(() => setIsSent(false), 4000);
       } else {
         throw new Error('Server reported an error');
       }
@@ -49,6 +54,7 @@ const Contact = () => {
   };
 
   useGSAP(() => {
+    if (reduced) return;
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
@@ -82,7 +88,7 @@ const Contact = () => {
       },
     });
 
-  }, { scope: containerRef });
+  }, { scope: containerRef, dependencies: [reduced], revertOnUpdate: true });
 
   return (
     <div id="contact" ref={containerRef} className="relative min-h-screen w-full bg-[#0a0a0a] pt-24 pb-10 overflow-hidden">
@@ -112,7 +118,7 @@ const Contact = () => {
           <div className="w-full md:w-1/3 flex flex-col justify-between">
             <div className="space-y-12 contact-field">
               <div>
-                <h4 className="font-mono text-xs text-zinc-500 uppercase tracking-widest mb-4">contant directly</h4>
+                <h4 className="font-mono text-xs text-zinc-500 uppercase tracking-widest mb-4">Contact directly</h4>
                 <a href="mailto:akashpurjalkar66@gmail.com" className="text-2xl md:text-xl font-general text-white hover:text-zinc-400 transition-colors block">
                   akashpurjalkar66@gmail.com
                 </a>
@@ -134,19 +140,20 @@ const Contact = () => {
                   </div>
                 </div>
               </div>
-              <div>
-              </div>
             </div>
           </div>
 
           {/* Right: Form */}
           <div className="w-full md:w-2/3">
-            <form ref={formRef} onSubmit={handleSubmit} className="space-y-12">
+            <form onSubmit={handleSubmit} className="space-y-12">
               <div className="contact-field group relative">
-                <label className="block font-mono text-xs text-zinc-500 uppercase tracking-widest mb-2 group-focus-within:text-white transition-colors">Identify Yourself</label>
+                <label htmlFor="contact-name" className="block font-mono text-xs text-zinc-500 uppercase tracking-widest mb-2 group-focus-within:text-white transition-colors">Identify Yourself</label>
                 <input
                   type="text"
+                  id="contact-name"
                   name="name"
+                  maxLength={100}
+                  disabled={isSubmitting}
                   value={formState.name}
                   onChange={handleChange}
                   required
@@ -156,10 +163,13 @@ const Contact = () => {
               </div>
 
               <div className="contact-field group relative">
-                <label className="block font-mono text-xs text-zinc-500 uppercase tracking-widest mb-2 group-focus-within:text-white transition-colors">Digital Identify</label>
+                <label htmlFor="contact-email" className="block font-mono text-xs text-zinc-500 uppercase tracking-widest mb-2 group-focus-within:text-white transition-colors">Email address</label>
                 <input
                   type="email"
+                  id="contact-email"
                   name="email"
+                  maxLength={150}
+                  disabled={isSubmitting}
                   value={formState.email}
                   onChange={handleChange}
                   required
@@ -169,9 +179,12 @@ const Contact = () => {
               </div>
 
               <div className="contact-field group relative">
-                <label className="block font-mono text-xs text-zinc-500 uppercase tracking-widest mb-2 group-focus-within:text-white transition-colors">Transmission Data</label>
+                <label htmlFor="contact-message" className="block font-mono text-xs text-zinc-500 uppercase tracking-widest mb-2 group-focus-within:text-white transition-colors">Transmission Data</label>
                 <textarea
+                  id="contact-message"
                   name="message"
+                  maxLength={5000}
+                  disabled={isSubmitting}
                   value={formState.message}
                   onChange={handleChange}
                   required
@@ -182,7 +195,8 @@ const Contact = () => {
               </div>
 
               <div className="contact-field pt-10 flex justify-end items-center gap-6">
-                {error && <p className="font-mono text-xs text-red-500 uppercase tracking-widest animate-pulse">{error}</p>}
+                {error && <p role="alert" className="font-mono text-xs text-red-500 uppercase tracking-widest animate-pulse">{error}</p>}
+                <span role="status" className="sr-only">{isSent ? "Message sent." : ""}</span>
                 <button
                   type="submit"
                   disabled={isSubmitting}
