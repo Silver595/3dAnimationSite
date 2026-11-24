@@ -8,7 +8,6 @@ import { useEffect, useRef, useState } from "react";
 /*    <ErrorPage code="500" title="SYSTEM FAULT" onHome={() => nav("/")} /> */
 /* ------------------------------------------------------------------ */
 
-const BG = "#0a0a0a";
 const rand = (n) => Math.floor(Math.random() * n);
 const pick = (chars, len) =>
   Array.from({ length: len }, () => chars[rand(chars.length)]).join("");
@@ -33,7 +32,7 @@ const TopMark = () => (
 );
 
 const BottomGlyphs = () => (
-  <div className="flex items-center gap-4 text-white/25 sm:gap-6">
+  <div className="flex items-center gap-4 text-paper/25 sm:gap-6">
     <svg width="9" height="9" viewBox="0 0 9 9" fill="none" stroke="currentColor" strokeWidth="1">
       <path d="M1 1l7 7M8 1L1 8" />
     </svg>
@@ -54,7 +53,7 @@ const BottomGlyphs = () => (
 function Code({ code, glitch }) {
   const chars = String(code).split("");
   return (
-    <div className="relative z-10 flex items-center px-3 text-[#ededed] sm:px-6" style={{ textShadow: `0 0 28px ${BG}, 0 0 8px ${BG}` }}>
+    <div className="relative z-10 flex items-center px-3 text-paper sm:px-6">
       <span
         className="relative flex items-center"
         style={{
@@ -69,7 +68,7 @@ function Code({ code, glitch }) {
             {i === 1 && c === "0" && (
               <span
                 aria-hidden="true"
-                className="sv-slash absolute left-1/2 top-1/2 h-[1px] w-[115%] origin-center bg-[#cfcfcf]"
+                className="sv-slash absolute left-1/2 top-1/2 h-[1px] w-[115%] origin-center bg-paper"
                 style={{ transform: "translate(-50%,-50%) rotate(-62deg)" }}
               />
             )}
@@ -81,7 +80,7 @@ function Code({ code, glitch }) {
         <>
           <span
             aria-hidden="true"
-            className={`pointer-events-none absolute inset-0 flex items-center justify-center px-3 text-[#9a9a9a] sm:px-6 ${DIGIT}`}
+            className={`pointer-events-none absolute inset-0 flex items-center justify-center px-3 text-accent sm:px-6 ${DIGIT}`}
             style={{
               transform: `translateX(${glitch.dx}px)`,
               clipPath: `inset(${glitch.y1}% 0 ${100 - glitch.y1 - glitch.h1}% 0)`,
@@ -91,7 +90,7 @@ function Code({ code, glitch }) {
           </span>
           <span
             aria-hidden="true"
-            className={`pointer-events-none absolute inset-0 flex items-center justify-center px-3 text-white/70 sm:px-6 ${DIGIT}`}
+            className={`pointer-events-none absolute inset-0 flex items-center justify-center px-3 text-paper/70 sm:px-6 ${DIGIT}`}
             style={{
               transform: `translateX(${-glitch.dx * 0.8}px)`,
               clipPath: `inset(${glitch.y2}% 0 ${100 - glitch.y2 - glitch.h2}% 0)`,
@@ -167,8 +166,8 @@ export default function ErrorPage({
       ref={rootRef}
       onMouseMove={handleMove}
       role="alert"
-      className="relative w-full select-none overflow-hidden font-mono text-[#d4d4d4]"
-      style={{ minHeight: "100dvh", background: BG, "--px": 0, "--py": 0 }}
+      className="relative w-full select-none overflow-hidden bg-risco font-mono text-paper"
+      style={{ minHeight: "max(100dvh, 18rem)", "--px": 0, "--py": 0 }}
     >
       <style>{`
         @keyframes sv-grain {
@@ -219,32 +218,32 @@ export default function ErrorPage({
       />
 
       {/* top mark */}
-      <div className="sv-in absolute left-1/2 top-6 -translate-x-1/2 text-white/40 sm:top-10" style={{ animationDelay: "0.2s" }}>
+      <div className="sv-in absolute left-1/2 top-6 -translate-x-1/2 text-paper/40 sm:top-10" style={{ animationDelay: "0.2s" }}>
         <TopMark />
       </div>
 
       {/* side info */}
-      <div className="sv-in absolute left-3 top-1/2 -translate-y-1/2 text-[8px] leading-[1.9] tracking-[0.25em] text-white/35 sm:left-8 sm:text-[10px]" style={{ animationDelay: "0.5s" }}>
-        <div className="text-white/60">E{code}</div>
+      <div className="sv-in absolute left-3 top-1/2 -translate-y-1/2 text-[8px] leading-[1.9] tracking-[0.25em] text-paper/35 sm:left-8 sm:text-[10px]" style={{ animationDelay: "0.5s" }}>
+        <div className="text-paper/60">E{code}</div>
         {side.l.slice(0, 2).map((s, i) => (
           <div key={i} className={i === 1 ? "hidden sm:block" : ""}>{s}</div>
         ))}
       </div>
-      <div className="sv-in absolute right-3 top-1/2 -translate-y-1/2 text-right text-[8px] leading-[1.9] tracking-[0.25em] text-white/35 sm:right-8 sm:text-[10px]" style={{ animationDelay: "0.5s" }}>
+      <div className="sv-in absolute right-3 top-1/2 -translate-y-1/2 text-right text-[8px] leading-[1.9] tracking-[0.25em] text-paper/35 sm:right-8 sm:text-[10px]" style={{ animationDelay: "0.5s" }}>
         {side.r.map((s, i) => (
           <div key={i} className={i === 2 ? "hidden sm:block" : ""}>{s}</div>
         ))}
       </div>
 
       {/* center: broken line + code */}
-      <div className="absolute left-0 top-[46%] flex w-full -translate-y-1/2 items-center">
+      <div className="error-code absolute left-0 top-[46%] flex w-full -translate-y-1/2 items-center">
         {/* connected segment (left) */}
         <div
           className="relative h-px flex-1"
           style={{ transform: "translateX(calc(var(--px) * -5px))", transition: "transform 300ms ease-out" }}
         >
-          <div className="sv-l absolute inset-0 bg-[#cfcfcf]/70" />
-          <span className="sv-seek absolute -top-[1px] h-[3px] w-[3px] rounded-full bg-white" />
+          <div className="sv-l absolute inset-0 bg-paper/70" />
+          <span className="sv-seek absolute -top-[1px] h-[3px] w-[3px] rounded-full bg-accent" />
         </div>
 
         <div style={{ transform: "translate(calc(var(--px) * 6px), calc(var(--py) * 3px))", transition: "transform 300ms ease-out" }}>
@@ -269,32 +268,32 @@ export default function ErrorPage({
 
       {/* status + action */}
       <div
-        className="sv-in absolute left-1/2 top-[46%] flex w-full max-w-[90vw] -translate-x-1/2 flex-col items-center gap-5 px-4 text-center"
-        style={{ marginTop: "clamp(4.5rem, 12vw, 9rem)", animationDelay: "0.9s" }}
+        className="error-actions sv-in absolute left-1/2 top-[46%] mt-[clamp(4.5rem,12vw,9rem)] flex w-full max-w-[90vw] -translate-x-1/2 flex-col items-center gap-5 px-4 text-center"
+        style={{ animationDelay: "0.9s" }}
       >
-        <div className="flex items-center gap-3 text-[9px] tracking-[0.35em] text-white/60 sm:text-[11px]">
-          <span className="sv-blink inline-block h-[5px] w-[5px] bg-white/80" />
+        <div className="flex items-center gap-3 text-[9px] tracking-[0.35em] text-paper sm:text-[11px]">
+          <span className="sv-blink inline-block h-[5px] w-[5px] bg-accent/80" />
           <span>{title}</span>
         </div>
 
-        <div className="max-w-full text-[8px] tracking-[0.3em] text-white/30 sm:text-[10px]">
+        <div className="max-w-full text-[8px] tracking-[0.3em] text-paper sm:text-[10px]">
           <div>{message}</div>
-          {path && <div className="mt-1 truncate text-white/20">{path}</div>}
+          {path && <div className="mt-1 truncate text-paper">{path}</div>}
         </div>
 
         <a
           href={homeHref}
           onClick={handleHome}
-          className="group relative mt-2 inline-flex items-center gap-3 border border-white/15 px-5 py-2.5 text-[9px] tracking-[0.35em] text-[#d4d4d4] transition-colors duration-300 hover:border-white/50 hover:text-white focus-visible:border-white/60 focus-visible:outline-none sm:text-[10px]"
+          className="group relative mt-2 inline-flex items-center gap-3 border border-paper/15 px-5 py-2.5 text-[9px] tracking-[0.35em] text-paper transition-colors duration-300 hover:border-paper/50 hover:text-paper focus-visible:border-paper/60 focus-visible:outline-none sm:text-[10px]"
         >
           <span className="transition-transform duration-300 group-hover:-translate-x-1">←</span>
           <span>{homeLabel}</span>
-          <span className="absolute -bottom-px left-0 h-px w-0 bg-white transition-all duration-500 group-hover:w-full" />
+          <span className="absolute -bottom-px left-0 h-px w-0 bg-accent transition-all duration-500 group-hover:w-full" />
         </a>
       </div>
 
       {/* bottom glyphs */}
-      <div className="sv-in absolute bottom-6 left-1/2 -translate-x-1/2 sm:bottom-10" style={{ animationDelay: "0.7s" }}>
+      <div className="error-glyphs sv-in absolute bottom-6 left-1/2 -translate-x-1/2 sm:bottom-10" style={{ animationDelay: "0.7s" }}>
         <BottomGlyphs />
       </div>
     </main>

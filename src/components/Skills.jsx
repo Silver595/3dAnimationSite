@@ -1,27 +1,74 @@
 import useReducedMotion from "../useReducedMotion";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 gsap.registerPlugin(ScrollTrigger);
 
-const SkillCategory = ({ title, skills, index, icon }) => {
-  return (
-    <div className="skill-category group border-l border-white/10 pl-8 relative">
-      <div className="absolute -left-[1px] top-0 h-0 w-[1px] bg-white transition-all duration-700 group-hover:h-full" />
+const cipherCharacters = "0123456789#%+";
+const revealSteps = 6;
 
-      <div className="mb-6 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <span className="font-mono text-xs text-zinc-600">{index + 1}</span>
-          <h3 className="font-zentry text-3xl uppercase text-zinc-400 transition-colors group-hover:text-white">
-            {title}
-          </h3>
-        </div>
+function SkillLabel({ text }) {
+  const reduced = useReducedMotion();
+  const timer = useRef();
+  const [frame, setFrame] = useState(null);
+
+  useEffect(() => () => window.clearInterval(timer.current), []);
+
+  const animate = (event, entering) => {
+    if (reduced || event.pointerType !== "mouse") return;
+
+    window.clearInterval(timer.current);
+    let step = 0;
+    setFrame({ step, entering });
+    timer.current = window.setInterval(() => {
+      step += 1;
+      if (step >= revealSteps) {
+        window.clearInterval(timer.current);
+        setFrame(null);
+      } else {
+        setFrame({ step, entering });
+      }
+    }, 40);
+  };
+
+  const activeFrame = reduced ? null : frame;
+  const scrambled = activeFrame && Array.from(text, (character, index) => {
+    const distance = activeFrame.entering ? index : text.length - 1 - index;
+    const revealed = distance < (activeFrame.step / revealSteps) * text.length;
+    return revealed || character === " "
+      ? character
+      : cipherCharacters[(index * 3 + activeFrame.step * 5) % cipherCharacters.length];
+  }).join("");
+
+  return (
+    <span
+      className="skill-label"
+      data-scrambling={activeFrame ? "" : undefined}
+      style={activeFrame ? { "--pixel-step": activeFrame.step } : undefined}
+      onPointerEnter={(event) => animate(event, true)}
+      onPointerLeave={(event) => animate(event, false)}
+    >
+      <span className="skill-label-text">{text}</span>
+      {activeFrame && <span className="skill-label-cipher" aria-hidden="true">{scrambled}</span>}
+    </span>
+  );
+}
+
+const SkillCategory = ({ title, skills, icon }) => {
+  return (
+    <div className="skill-category">
+      <div className="mb-6 flex items-center justify-between gap-3">
+        <h3 className="font-zentry text-3xl uppercase text-paper">
+          <SkillLabel text={title} />
+        </h3>
         {icon && (
           <img
             src={icon}
+            loading="lazy"
+            decoding="async"
             alt=""
             aria-hidden="true"
-            className="size-8 object-contain opacity-40 group-hover:opacity-80 transition-opacity"
+            className="size-8 object-contain opacity-40"
           />
         )}
       </div>
@@ -29,10 +76,10 @@ const SkillCategory = ({ title, skills, index, icon }) => {
       <div className="flex flex-wrap gap-x-8 gap-y-4">
         {skills.map((skill) => (
           <div key={skill.name} className="flex flex-col">
-            <span className="font-general text-sm text-zinc-300 font-medium">
-              {skill.name}
+            <span className="font-general text-sm text-paper font-medium">
+              <SkillLabel text={skill.name} />
             </span>
-            <span className="font-mono text-[12px] text-zinc-600 uppercase tracking-widest mt-1">
+            <span className="font-mono text-[12px] text-paper uppercase tracking-widest mt-1">
               {skill.desc}
             </span>
           </div>
@@ -59,17 +106,6 @@ const Skills = () => {
         duration: 1,
         stagger: 0.2,
         ease: "power3.out",
-      });
-
-      gsap.to(".skills-statue", {
-        y: -80,
-        ease: "none",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-        },
       });
     }, containerRef);
 
@@ -109,36 +145,31 @@ const Skills = () => {
     <section
       ref={containerRef}
       id="skills"
-      className="min-h-screen bg-[#0a0a0a] py-32 px-4 md:px-10 relative z-10 border-t border-white/5 overflow-hidden"
+      className="skills-surface relative z-10 min-h-screen overflow-hidden px-4 py-32 md:px-10"
     >
+      <div aria-hidden="true" className="skills-blend" />
       <img
-        src="/img/laocoon.png"
+        src="/img/skills-architecture-cutout.png"
         alt=""
-        aria-hidden="true"
-        className="skills-statue pointer-events-none absolute right-4 md:right-16 bottom-8 h-[55%] object-contain opacity-[0.035] select-none filter invert grayscale will-change-transform"
+        loading="lazy"
+        decoding="async"
+        className="skills-architecture pointer-events-none absolute inset-y-0 right-0 h-full w-[85%] max-w-3xl object-contain object-right [image-rendering:pixelated]"
       />
 
-      <div className="mb-20 flex flex-col items-start border-b border-white/10 pb-8">
+      <h2 className="relative mb-20 font-zentry text-6xl uppercase text-paper md:text-8xl">
+        <SkillLabel text="Technical Stack" />
+      </h2>
 
-        <h2 className="font-zentry text-6xl text-white uppercase md:text-8xl opacity-90">
-          Technical Stack
-        </h2>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-12">
-        {skillSets.map((set, i) => (
+      <div className="relative grid w-full grid-cols-1 gap-20 lg:grid-cols-2 lg:gap-12">
+        {skillSets.map((set) => (
           <SkillCategory
             key={set.title}
             title={set.title}
             icon={set.icon}
             skills={set.skills}
-            index={i}
           />
         ))}
       </div>
-
-
-      <div className="absolute inset-0 z-[-1] opacity-5 pointer-events-none bg-[url('/img/intricate_minimal.svg')] bg-center" />
     </section>
   );
 };

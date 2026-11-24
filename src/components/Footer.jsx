@@ -1,6 +1,32 @@
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import useReducedMotion from "../useReducedMotion";
 import { FiGithub, FiTwitter, FiLinkedin, FiArrowUp } from "react-icons/fi";
 
-const Footer = () => {
+const AeroShards = lazy(() => import("./footer-background"));
+
+const Footer = ({ colorful, ready }) => {
+  const reduced = useReducedMotion();
+  const footerRef = useRef(null);
+  const [nearFooter, setNearFooter] = useState(false);
+  const [shardsStatus, setShardsStatus] = useState("loading");
+  const useShards = ready && !reduced && shardsStatus !== "failed" && "gpu" in navigator;
+
+  useEffect(() => {
+    if (!useShards || nearFooter) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      setNearFooter(true);
+      observer.disconnect();
+    }, { rootMargin: "160px" });
+    observer.observe(footerRef.current);
+    return () => observer.disconnect();
+  }, [useShards, nearFooter]);
+
+  useEffect(() => {
+    if (reduced) setShardsStatus(status => status === "live" ? "loading" : status);
+  }, [reduced]);
+
+  const showShards = useShards && nearFooter;
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -27,8 +53,42 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="relative w-full overflow-hidden bg-black text-white border-t border-white/10 ">
-      <div className="relative w-full bg-[#0a0a0a]">
+    <footer ref={footerRef} className="relative isolate w-full overflow-hidden border-t border-paper/10 bg-ink text-paper">
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+        {/* Still frame rendered from Aero Shards for reduced motion and GPU fallback. */}
+        {(!showShards || shardsStatus !== "live") && (
+          <img
+            src="/img/aero-shards-still.webp"
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="absolute inset-0 size-full object-cover object-right opacity-40"
+          />
+        )}
+        {showShards && (
+          <Suspense fallback={null}>
+            <AeroShards
+              shardColor={colorful ? "#F8DBC1" : "#999999"}
+              accentColor={colorful ? "#EA4F88" : "#D4D4D4"}
+              placement="full"
+              material="chrome"
+              className="opacity-75"
+              count={420}
+              dpr={0.85}
+              speed={0.55}
+              glow={0.2}
+              grain={0}
+              intro={false}
+              pulseOnClick={false}
+              holdToGather={false}
+              onReady={() => setShardsStatus("live")}
+              onError={() => setShardsStatus("failed")}
+            />
+          </Suspense>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/55 to-ink/15" />
+      </div>
+      <div className="relative w-full">
 
         <div
           className="
@@ -45,10 +105,10 @@ const Footer = () => {
         >
           {/* Left micro marker */}
 
-          <div className="absolute left-0 top-0 h-3 w-3 border-l border-t border-white/20 transition-all duration-500 group-hover:h-5 group-hover:w-5" />
+          <div className="absolute left-0 top-0 h-3 w-3 border-l border-t border-paper/20 transition-all duration-500 group-hover:h-5 group-hover:w-5" />
 
           <div className="flex items-center gap-5">
-            <span className="h-px w-8 bg-zinc-700 transition-all duration-500 group-hover:w-14 group-hover:bg-white" />
+            <span className="h-px w-8 bg-accent transition-all duration-500 group-hover:w-14" />
 
             <span
               className="
@@ -56,10 +116,10 @@ const Footer = () => {
                 text-xs
                 uppercase
                 tracking-[0.3em]
-                text-zinc-500
+                text-paper
                 transition-colors
                 duration-300
-                group-hover:text-white
+                group-hover:text-paper
               "
             >
               Contact
@@ -74,7 +134,7 @@ const Footer = () => {
               text-[9px]
               uppercase
               tracking-[0.25em]
-              text-zinc-700
+              text-paper
               md:right-16
             "
           >
@@ -99,7 +159,7 @@ const Footer = () => {
             {/* Label */}
 
             <div className="flex min-w-[150px] items-center gap-5">
-              <span className="h-px w-8 bg-zinc-700 transition-all duration-500 group-hover:w-14 group-hover:bg-white" />
+              <span className="h-px w-8 bg-accent transition-all duration-500 group-hover:w-14" />
 
               <span
                 className="
@@ -107,10 +167,10 @@ const Footer = () => {
                   text-xs
                   uppercase
                   tracking-[0.3em]
-                  text-zinc-500
+                  text-paper
                   transition-colors
                   duration-300
-                  group-hover:text-white
+                  group-hover:text-paper
                 "
               >
                 Connect
@@ -132,10 +192,10 @@ const Footer = () => {
                     flex
                     items-center
                     gap-3
-                    text-zinc-400
+                    text-paper
                     transition-colors
                     duration-300
-                    hover:text-white
+                    hover:text-paper
                   "
                 >
                   <span
@@ -155,11 +215,11 @@ const Footer = () => {
                     className="
                       font-mono
                       text-[9px]
-                      text-zinc-700
+                      text-paper
                       transition-all
                       duration-300
                       group-hover/link:translate-x-1
-                      group-hover/link:text-zinc-300
+                      group-hover/link:text-paper
                     "
                   >
                     ↗
@@ -174,7 +234,7 @@ const Footer = () => {
                       left-0
                       h-px
                       w-0
-                      bg-white
+                      bg-accent
                       transition-all
                       duration-300
                       group-hover/link:w-full
@@ -198,7 +258,7 @@ const Footer = () => {
               hidden
               border-t
               border-dashed
-              border-white/5
+              border-paper/5
               md:block
             "
           />
@@ -213,18 +273,18 @@ const Footer = () => {
               right-0
               flex
               h-[135px]
-              w-[280px]
+              w-[min(280px,100%)]
               flex-col
               items-center
               justify-center
               overflow-hidden
-              bg-black
-              text-zinc-400
+              bg-ink
+              text-paper
               transition-all
               duration-500
               [clip-path:polygon(30%_0,100%_0,100%_100%,0_100%)]
-              hover:bg-white
-              hover:text-black
+              hover:bg-accent
+              hover:text-ink
               md:h-[155px]
               md:w-[340px]
             "
@@ -240,10 +300,10 @@ const Footer = () => {
                 w-[42%]
                 origin-left
                 -rotate-[29deg]
-                bg-white/10
+                bg-paper/25
                 transition-colors
                 duration-500
-                group-hover/top:bg-black/20
+                group-hover/top:bg-ink/20
               "
             />
 
@@ -277,11 +337,11 @@ const Footer = () => {
                 bottom-5
                 h-px
                 w-8
-                bg-zinc-700
+                bg-accent
                 transition-all
                 duration-500
                 group-hover/top:w-16
-                group-hover/top:bg-black
+                group-hover/top:bg-ink
               "
             />
           </button>
@@ -295,12 +355,12 @@ const Footer = () => {
             items-center
             justify-between
             border-t
-            border-white/10
+            border-paper/10
             px-8
             md:px-16
           "
         >
-          <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-zinc-600">
+          <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-paper">
             © {new Date().getFullYear()} Akash Purjalkar. All Rights Reserved.
           </span>
 

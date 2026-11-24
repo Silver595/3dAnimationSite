@@ -1,6 +1,6 @@
-import useSound from "use-sound";
+import { flushSync } from "react-dom";
 import useReducedMotion from "./useReducedMotion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
@@ -9,6 +9,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 import Loader from "./components/Loader";
 import SoundChoice from "./components/SoundChoice";
+import SoundEffects from "./components/SoundEffects";
 import NotFound from "./components/NotFound";
 import Hero from "./components/Hero.jsx";
 import About from "./components/About";
@@ -30,44 +31,45 @@ const textField = "input:not(:disabled), textarea:not(:disabled)";
 const App = () => {
   const reduced = useReducedMotion();
   const [audioEnabled, setAudioEnabled] = useState(false);
-  const [audioChoiceMade, setAudioChoiceMade] = useState(false);
+  const [choice, setChoice] = useState(null);
+  const colorful = choice === "colorful";
   const audioRef = useRef(null);
+  const heroMediaRef = useRef(null);
+  const heroSectionRef = useRef(null);
+  const effectsRef = useRef(null);
   const mainRef = useRef(null);
   const audioEnabledRef = useRef(false);
   const lastTypingCue = useRef(-Infinity);
-  // UISFX CC0 clips. Mechanical press, typing and send. Zen hover, focus and success.
-  const [playCue, { stop }] = useSound("/audio/interface.wav", {
-    volume: 0.32,
-    interrupt: true,
-    sprite: {
-      hover: [0, 122],
-      click: [160, 163],
-      focus: [360, 207],
-      typing: [600, 87],
-      submit: [720, 316],
-      sent: [1060, 571],
-    },
-  });
 
-  const updateAudio = (enabled) => {
+  useLayoutEffect(() => {
+    document.documentElement.dataset.theme = colorful ? "colorful" : "colorless";
+    document.querySelector('meta[name="theme-color"]').content = colorful ? "#1D646C" : "#0A0A0A";
+    document.getElementById("site-icon").href = colorful ? "/ap-colorful.svg" : "/vite.svg";
+  }, [colorful]);
+
+  const setAudio = (enabled) => {
     audioEnabledRef.current = enabled;
     setAudioEnabled(enabled);
-    if (enabled) {
-      audioRef.current.play().catch(() => {});
-    } else {
-      audioRef.current.pause();
-      stop();
-    }
+    if (!enabled) effectsRef.current?.stop();
   };
 
-  const chooseAudio = (enabled) => {
-    updateAudio(enabled);
-    setAudioChoiceMade(true);
+  const chooseExperience = (colorfulChoice) => {
+    // Commit the selected player before the user's audio activation expires.
+    flushSync(() => {
+      setChoice(colorfulChoice ? "colorful" : "colorless");
+      setAudio(colorfulChoice);
+    });
+    syncPlayback();
     mainRef.current.focus({ preventScroll: true });
   };
 
+  const updateAudio = (enabled) => {
+    setAudio(enabled);
+    syncPlayback();
+  };
+
   const playEffect = (id) => {
-    if (audioEnabledRef.current) playCue({ id });
+    if (audioEnabledRef.current) effectsRef.current?.play(id);
   };
 
   const playClick = (event) => {
@@ -96,13 +98,11 @@ const App = () => {
   };
 
   const [notFound, setNotFound] = useState(() => !isHomePath());
-  // No loader on the error page, and no loader when returning from it.
   useEffect(() => {
     if (!notFound) return;
     audioEnabledRef.current = false;
     setAudioEnabled(false);
-    stop();
-  }, [notFound, stop]);
+  }, [notFound]);
 
   const [loading, setLoading] = useState(() => isHomePath());
   const [heroReady, setHeroReady] = useState(() => !isHomePath());
@@ -124,7 +124,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    if (notFound || loading || !audioChoiceMade || reduced) return;
+    if (notFound || loading || !choice || reduced) return;
 
     const lenis = new Lenis({
       duration: 1.2,
@@ -149,7 +149,45 @@ const App = () => {
       gsap.ticker.remove(updateTicker);
       lenis.destroy();
     };
-  }, [loading, audioChoiceMade, notFound, reduced]);
+  }, [loading, choice, notFound, reduced]);
+
+  function syncPlayback() {
+    const section = heroSectionRef.current;
+    if (!section) return;
+
+    const media = heroMediaRef.current;
+    const music = audioRef.current;
+    const { top, bottom } = section.getBoundingClientRect();
+    const inHero = bottom > 0 && top < window.innerHeight;
+    const foreground = document.visibilityState === "visible";
+    const audible = audioEnabledRef.current && foreground;
+    const playHero = inHero && foreground && (media?.tagName === "VIDEO" || audible);
+    const playLoop = !inHero && audible;
+
+    // Stop the outgoing track before starting the other one.
+    if (!playLoop) music?.pause();
+    if (media) {
+      media.muted = !inHero || !audible;
+      if (!playHero) media.pause();
+      else if (media.paused) media.play().catch(() => {});
+    }
+    if (playLoop && music?.paused) music.play().catch(() => {});
+  }
+
+  useEffect(() => {
+    if (!choice || notFound) return;
+    const selectedMedia = heroMediaRef.current;
+    const music = audioRef.current;
+    const observer = new IntersectionObserver(syncPlayback);
+    observer.observe(heroSectionRef.current);
+    document.addEventListener("visibilitychange", syncPlayback);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", syncPlayback);
+      selectedMedia?.pause();
+      music?.pause();
+    };
+  }, [choice, notFound, reduced]);
 
   if (notFound) {
     return <NotFound onHome={goHome} />;
@@ -164,8 +202,13 @@ const App = () => {
         />
       )}
 
-      {!loading && !audioChoiceMade && <SoundChoice onChoose={chooseAudio} />}
-      <audio ref={audioRef} src="/audio/loop.mp3" preload="none" loop />
+      {!loading && !choice && <SoundChoice onChoose={chooseExperience} />}
+      {colorful && (
+        <>
+          <SoundEffects ref={effectsRef} />
+          <audio ref={audioRef} src="/audio/loop.mp3" preload="none" loop />
+        </>
+      )}
 
       <main
         ref={mainRef}
@@ -175,15 +218,24 @@ const App = () => {
         onFocus={playFieldFocus}
         onInput={playTyping}
         onSubmitCapture={() => playEffect("submit")}
-        className="relative min-h-screen w-screen overflow-x-hidden bg-[#0a0a0a]"
+        className="relative min-h-screen w-full overflow-x-hidden bg-surface"
       >
-        <Navbar audioEnabled={audioEnabled} onToggleAudio={() => updateAudio(!audioEnabledRef.current)} />
-        <Hero isReady={heroReady} />
+        <Navbar
+          colorful={colorful}
+          audioEnabled={audioEnabled}
+          onToggleAudio={() => updateAudio(!audioEnabledRef.current)}
+        />
+        <Hero
+          isReady={heroReady}
+          choice={choice}
+          sectionRef={heroSectionRef}
+          mediaRef={heroMediaRef}
+        />
         <About />
         <Projects />
         <Skills />
         <Contact onSent={() => playEffect("sent")} />
-        <Footer />
+        <Footer colorful={colorful} ready={Boolean(choice)} />
       </main>
     </>
   );

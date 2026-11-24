@@ -1,47 +1,30 @@
 import useReducedMotion from "../useReducedMotion";
-import { useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Hero = ({ isReady }) => {
+const Hero = ({ isReady, choice, sectionRef, mediaRef }) => {
   const reduced = useReducedMotion();
-  const containerRef = useRef(null);
-  const videoRef = useRef(null);
+  const colorful = choice === "colorful";
+  const moving = choice && !reduced;
+  const poster = colorful ? "/img/madebykhua-still.webp" : "/img/hero-still.webp";
 
   useGSAP(
     () => {
       if (!isReady || reduced) return;
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-
-      tl.from(".hero-title-inner", { yPercent: 110, duration: 1.4 }, 0)
-        .from(
-          ".hero-fade",
-          { opacity: 0, y: 18, duration: 1.1, stagger: 0.15, ease: "power2.out" },
-          0.9
-        );
+      gsap.from(".hero-title-inner", { yPercent: 110, duration: 1.4, ease: "power3.out" });
 
       gsap.to(".hero-content", {
         y: -60,
-        opacity: 0.4,
         ease: "none",
         scrollTrigger: {
-          trigger: containerRef.current,
+          trigger: sectionRef.current,
           start: "top top",
           end: "bottom top",
           scrub: true,
         },
-      });
-
-      const video = videoRef.current;
-      ScrollTrigger.create({
-        trigger: containerRef.current,
-        start: "top top",
-        end: "bottom top",
-        onLeave: () => video?.pause(),
-        onEnterBack: () => video?.play().catch(() => {}),
       });
 
       const mm = gsap.matchMedia();
@@ -65,46 +48,52 @@ const Hero = ({ isReady }) => {
       });
       return () => mm.revert();
     },
-    { scope: containerRef, dependencies: [isReady, reduced], revertOnUpdate: true }
+    { scope: sectionRef, dependencies: [isReady, reduced], revertOnUpdate: true }
   );
 
   return (
-    <div ref={containerRef} className="relative h-dvh w-screen overflow-x-hidden">
+    <div ref={sectionRef} className="relative h-dvh w-full overflow-x-hidden">
       <div
         id="video-frame"
-        className="relative z-10 h-dvh w-screen overflow-hidden bg-[#0a0a0a] will-change-transform"
+        className="relative z-10 h-dvh w-full overflow-hidden bg-ink will-change-transform"
       >
-        {reduced ? (
-          <img src="/img/hero-still.webp" alt="" className="absolute inset-0 size-full object-cover opacity-30 grayscale contrast-125" />
-        ) : (
+        {moving ? (
           <video
-            ref={videoRef}
-            src="/videos/mixkit-4.mp4"
-            autoPlay
+            ref={mediaRef}
+            src={colorful ? "/videos/madebykhua.mp4" : "/videos/mixkit-4.mp4"}
+            poster={poster}
             loop
             muted
             playsInline
-            preload="auto"
-            className="absolute left-0 top-0 size-full object-cover object-center opacity-30 grayscale contrast-125"
+            preload="none"
+            className={`absolute inset-0 size-full object-cover ${colorful ? "" : "opacity-30 grayscale contrast-125"}`}
+          />
+        ) : (
+          <img
+            src={poster}
+            alt=""
+            className={`absolute inset-0 size-full object-cover ${colorful ? "" : "opacity-30 grayscale contrast-125"}`}
           />
         )}
+        {colorful && reduced && <audio ref={mediaRef} src="/audio/madebykhua.m4a" preload="none" loop />}
+        {!colorful && (
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-ink/80 to-ink" />
+        )}
 
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a0a0a]/80 to-[#0a0a0a]" />
-
-        <div className="hero-content absolute inset-0 z-40 flex flex-col justify-end px-6 pb-14 md:px-20 md:pb-20">
+        <div className="hero-content absolute inset-0 z-40 flex flex-col justify-end px-6 pb-14 md:px-20 md:pb-20 [text-shadow:0_2px_8px_rgb(var(--ink)),0_1px_2px_rgb(var(--ink))]">
 
           <div className="overflow-hidden pb-2">
-            <h1 className="hero-heading hero-title-inner text-white">
+            <h1 className="hero-heading hero-title-inner text-paper">
               AKASH
             </h1>
           </div>
 
           <div className="mt-6 flex flex-col gap-8 md:flex-row md:items-end md:justify-between">
             <div className="max-w-md space-y-4">
-              <p className="hero-fade font-general text-lg font-light uppercase tracking-wide text-zinc-300 md:text-xl">
-                Developer <span className="mx-2 text-zinc-600">&#9752;</span> Human
+              <p className="font-general text-lg font-light uppercase tracking-wide text-paper md:text-xl">
+                Developer <span className="hero-tone mx-2 text-accent">&#9752;&#65038;</span> Human
               </p>
-              <p className="hero-fade text-sm leading-relaxed text-zinc-400 md:text-base">
+              <p className="text-sm leading-relaxed text-paper md:text-base">
                 Somewhere, my Vinland still waits. I&apos;m still searching for the
                 road that leads there.
               </p>

@@ -70,14 +70,9 @@ const Loader = ({ onExitStart, onComplete }) => {
     // Asset checkpoints
     document.fonts?.ready.then(() => advance(60));
 
-    const onLoad = () => advance(85);
+    const onLoad = () => advance(100);
     if (document.readyState === "complete") onLoad();
     else window.addEventListener("load", onLoad, { once: true });
-
-    const video = document.querySelector("#video-frame video");
-    const onVideoReady = () => advance(100);
-    if (video?.readyState >= 2) onVideoReady();
-    else video?.addEventListener("loadeddata", onVideoReady, { once: true });
 
     // Safety net so it never stalls
     const safety = setTimeout(() => advance(100), 2500);
@@ -86,7 +81,6 @@ const Loader = ({ onExitStart, onComplete }) => {
       exited = true;
       clearTimeout(safety);
       window.removeEventListener("load", onLoad);
-      video?.removeEventListener("loadeddata", onVideoReady);
       exitTimeline?.kill();
       gsap.killTweensOf(state);
     };
@@ -97,7 +91,7 @@ const Loader = ({ onExitStart, onComplete }) => {
       ref={panelRef}
       role="status"
       aria-label="Loading site"
-      className="pointer-events-none fixed inset-0 z-[9999] select-none overflow-hidden bg-[#0a0a0a]"
+      className="pointer-events-none fixed inset-0 z-[9999] select-none overflow-hidden bg-ink"
     >
       <div
         ref={contentRef}
@@ -110,19 +104,19 @@ const Loader = ({ onExitStart, onComplete }) => {
             <img
               src="/img/sphere.gif"
               alt="Loading"
-              className="size-28 md:size-36 object-contain opacity-85 filter drop-shadow-[0_0_24px_rgba(255,255,255,0.18)]"
+              className="size-28 md:size-36 object-contain opacity-85 filter drop-shadow-[0_0_24px_rgba(248,219,193,0.18)]"
             />
-            <div className="pointer-events-none absolute inset-0 bg-white/10 rounded-full blur-2xl opacity-30" />
+            <div className="pointer-events-none absolute inset-0 bg-paper/10 rounded-full blur-2xl opacity-30" />
           </div>
 
           <div className="flex items-baseline gap-1">
             <span
               ref={countRef}
-              className="text-7xl md:text-9xl font-extralight tracking-tighter text-white tabular-nums font-mono leading-none"
+              className="text-7xl md:text-9xl font-extralight tracking-tighter text-paper tabular-nums font-mono leading-none"
             >
               00
             </span>
-            <span className="font-mono text-xl md:text-2xl text-zinc-600 font-light">
+            <span className="font-mono text-xl md:text-2xl text-paper font-light">
               %
             </span>
           </div>
@@ -132,7 +126,7 @@ const Loader = ({ onExitStart, onComplete }) => {
       </div>
       <div
         ref={lineRef}
-        className="absolute bottom-0 left-0 h-px w-full origin-left bg-white/60"
+        className="absolute bottom-0 left-0 h-px w-full origin-left bg-accent"
         style={{ transform: "scaleX(0)" }}
       />
     </div>
