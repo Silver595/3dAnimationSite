@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { flushSync } from "react-dom";
+import useReducedMotion from "./useReducedMotion";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
@@ -6,6 +8,8 @@ import { ScrollTrigger } from "gsap/all";
 gsap.registerPlugin(ScrollTrigger);
 
 import Loader from "./components/Loader";
+import SoundChoice from "./components/SoundChoice";
+import SoundEffects from "./components/SoundEffects";
 import NotFound from "./components/NotFound";
 import Hero from "./components/Hero.jsx";
 import About from "./components/About";
@@ -21,9 +25,85 @@ const isHomePath = () => {
   return path === "/" || path === "/index.html";
 };
 
+const clickable = "a[href], button:not(:disabled)";
+const textField = "input:not(:disabled), textarea:not(:disabled)";
+
 const App = () => {
+  const reduced = useReducedMotion();
+  const [audioEnabled, setAudioEnabled] = useState(false);
+  const [choice, setChoice] = useState(null);
+  const colorful = choice === "colorful";
+  const audioRef = useRef(null);
+  const heroMediaRef = useRef(null);
+  const heroSectionRef = useRef(null);
+  const effectsRef = useRef(null);
+  const mainRef = useRef(null);
+  const audioEnabledRef = useRef(false);
+  const lastTypingCue = useRef(-Infinity);
+
+  useLayoutEffect(() => {
+    document.documentElement.dataset.theme = colorful ? "colorful" : "colorless";
+    document.querySelector('meta[name="theme-color"]').content = colorful ? "#1D646C" : "#0A0A0A";
+    document.getElementById("site-icon").href = colorful ? "/ap-colorful.svg" : "/vite.svg";
+  }, [colorful]);
+
+  const setAudio = (enabled) => {
+    audioEnabledRef.current = enabled;
+    setAudioEnabled(enabled);
+    if (!enabled) effectsRef.current?.stop();
+  };
+
+  const chooseExperience = (colorfulChoice) => {
+    // Commit the selected player before the user's audio activation expires.
+    flushSync(() => {
+      setChoice(colorfulChoice ? "colorful" : "colorless");
+      setAudio(colorfulChoice);
+    });
+    syncPlayback();
+    mainRef.current.focus({ preventScroll: true });
+  };
+
+  const updateAudio = (enabled) => {
+    setAudio(enabled);
+    syncPlayback();
+  };
+
+  const playEffect = (id) => {
+    if (audioEnabledRef.current) effectsRef.current?.play(id);
+  };
+
+  const playClick = (event) => {
+    const control = event.target.closest(clickable);
+    if (control && !control.matches("[data-audio-toggle], button[type=submit]")) {
+      playEffect("click");
+    }
+  };
+
+  const playHover = (event) => {
+    if (event.pointerType !== "mouse" || event.buttons) return;
+    const control = event.target.closest(clickable);
+    if (control && !control.contains(event.relatedTarget)) playEffect("hover");
+  };
+
+  const playFieldFocus = (event) => {
+    if (event.target.matches(textField)) playEffect("focus");
+  };
+
+  const playTyping = (event) => {
+    if (!audioEnabledRef.current || !event.target.matches(textField)) return;
+    const now = performance.now();
+    if (now - lastTypingCue.current < 120) return;
+    lastTypingCue.current = now;
+    playEffect("typing");
+  };
+
   const [notFound, setNotFound] = useState(() => !isHomePath());
-  // No loader on the error page, and no loader when returning from it.
+  useEffect(() => {
+    if (!notFound) return;
+    audioEnabledRef.current = false;
+    setAudioEnabled(false);
+  }, [notFound]);
+
   const [loading, setLoading] = useState(() => isHomePath());
   const [heroReady, setHeroReady] = useState(() => !isHomePath());
 
@@ -44,7 +124,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    if (notFound || loading) return;
+    if (notFound || loading || !choice || reduced) return;
 
     const lenis = new Lenis({
       duration: 1.2,
@@ -69,7 +149,45 @@ const App = () => {
       gsap.ticker.remove(updateTicker);
       lenis.destroy();
     };
-  }, [loading, notFound]);
+  }, [loading, choice, notFound, reduced]);
+
+  function syncPlayback() {
+    const section = heroSectionRef.current;
+    if (!section) return;
+
+    const media = heroMediaRef.current;
+    const music = audioRef.current;
+    const { top, bottom } = section.getBoundingClientRect();
+    const inHero = bottom > 0 && top < window.innerHeight;
+    const foreground = document.visibilityState === "visible";
+    const audible = audioEnabledRef.current && foreground;
+    const playHero = inHero && foreground && (media?.tagName === "VIDEO" || audible);
+    const playLoop = !inHero && audible;
+
+    // Stop the outgoing track before starting the other one.
+    if (!playLoop) music?.pause();
+    if (media) {
+      media.muted = !inHero || !audible;
+      if (!playHero) media.pause();
+      else if (media.paused) media.play().catch(() => {});
+    }
+    if (playLoop && music?.paused) music.play().catch(() => {});
+  }
+
+  useEffect(() => {
+    if (!choice || notFound) return;
+    const selectedMedia = heroMediaRef.current;
+    const music = audioRef.current;
+    const observer = new IntersectionObserver(syncPlayback);
+    observer.observe(heroSectionRef.current);
+    document.addEventListener("visibilitychange", syncPlayback);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", syncPlayback);
+      selectedMedia?.pause();
+      music?.pause();
+    };
+  }, [choice, notFound, reduced]);
 
   if (notFound) {
     return <NotFound onHome={goHome} />;
@@ -84,14 +202,40 @@ const App = () => {
         />
       )}
 
-      <main className="relative min-h-screen w-screen overflow-x-hidden bg-[#0a0a0a]">
-        <Navbar />
-        <Hero isReady={heroReady} />
+      {!loading && !choice && <SoundChoice onChoose={chooseExperience} />}
+      {colorful && (
+        <>
+          <SoundEffects ref={effectsRef} />
+          <audio ref={audioRef} src="/audio/loop.mp3" preload="none" loop />
+        </>
+      )}
+
+      <main
+        ref={mainRef}
+        tabIndex={-1}
+        onClickCapture={playClick}
+        onPointerOver={playHover}
+        onFocus={playFieldFocus}
+        onInput={playTyping}
+        onSubmitCapture={() => playEffect("submit")}
+        className="relative min-h-screen w-full overflow-x-hidden bg-surface"
+      >
+        <Navbar
+          colorful={colorful}
+          audioEnabled={audioEnabled}
+          onToggleAudio={() => updateAudio(!audioEnabledRef.current)}
+        />
+        <Hero
+          isReady={heroReady}
+          choice={choice}
+          sectionRef={heroSectionRef}
+          mediaRef={heroMediaRef}
+        />
         <About />
         <Projects />
         <Skills />
-        <Contact />
-        <Footer />
+        <Contact onSent={() => playEffect("sent")} />
+        <Footer colorful={colorful} ready={Boolean(choice)} />
       </main>
     </>
   );

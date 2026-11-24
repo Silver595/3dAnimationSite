@@ -1,0 +1,167 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Portfolio browser smoke test</title>
+<pre id="result">Running</pre>
+<iframe title="Portfolio" width="1024" height="600"></iframe>
+<script type="module">
+  const frame = document.querySelector("iframe");
+  const tick = () => new Promise(resolve => setTimeout(resolve, 50));
+  const check = (ok, description) => { if (!ok) throw new Error(description); };
+  async function run() {
+    const win = frame.contentWindow;
+    const doc = frame.contentDocument;
+    await doc.fonts.ready;
+    let dialog = doc.querySelector("dialog[open]");
+    for (let attempt = 0; !dialog && attempt < 100; attempt++) {
+      await tick();
+      dialog = doc.querySelector("dialog[open]");
+    }
+    check(dialog, "Sound choice did not open");
+    check(doc.activeElement.textContent.trim() === "Colorless", "Silent choice lacks initial focus");
+    frame.width = 320;
+    await tick();
+    const [withSound, withoutSound] = dialog.querySelectorAll("button");
+    const left = withSound.getBoundingClientRect();
+    const right = withoutSound.getBoundingClientRect();
+    check(dialog.textContent.replace(/\s/g, "") === "ColorfulColorless", "Unexpected visible dialog copy");
+    check(left.top === right.top && left.width === right.width && right.right <= win.innerWidth, "Sound choices are misaligned");
+    check(right.left - left.right >= 24, "Sound choices are too close");
+    check(win.getComputedStyle(withSound).borderTopLeftRadius === "3px", "Sound choice corners should have a 3px radius");
+    frame.width = 1024;
+    await tick();
+
+    const audioToggle = doc.querySelector("[data-audio-toggle]");
+    check(!doc.querySelector("video, audio") && audioToggle.disabled, "Media was mounted before choosing");
+    check(win.getComputedStyle(doc.body).backgroundColor === "rgb(10, 10, 10)", "Entry starts in color");
+    const audioRequests = () => win.performance.getEntriesByType("resource")
+      .map(entry => new URL(entry.name).pathname);
+    check(audioRequests().every(path => !path.startsWith("/audio/") && !path.startsWith("/videos/")),
+      "Audio or video loaded before choosing");
+
+    const choice = new URLSearchParams(window.location.search).get("sound");
+    const colorful = choice === "on";
+    const reduced = win.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (choice === "escape") {
+      dialog.dispatchEvent(new win.Event("cancel", {cancelable: true}));
+    } else {
+      dialog.querySelectorAll("button")[colorful ? 0 : 1].click();
+    }
+    await new Promise(resolve => setTimeout(resolve, 200));
+    check(!doc.querySelector("dialog[open]"), "Theme choice did not close");
+    check(doc.activeElement === doc.querySelector("main"), "Focus did not return to the page");
+    check(doc.querySelector('link[rel="icon"]').getAttribute("href") === (colorful ? "/ap-colorful.svg" : "/vite.svg"), "Wrong tab icon");
+    check(doc.documentElement.dataset.theme === (colorful ? "colorful" : "colorless"), "Theme choice was ignored");
+    check(audioToggle.getAttribute("aria-pressed") === String(colorful), "Sound choice was ignored");
+    check(audioToggle.disabled !== colorful, "Audio toggle is in the wrong mode");
+
+    const video = doc.querySelector("#video-frame video");
+    const heroMedia = doc.querySelector("#video-frame video, #video-frame audio");
+    check(doc.querySelectorAll("video").length === (reduced ? 0 : 1), "Wrong number of active hero videos");
+    if (video) {
+      check(win.getComputedStyle(video).transform === "none", "Hero video scales");
+      check(video.src.endsWith(colorful ? "/madebykhua.mp4" : "/mixkit-4.mp4"), "Wrong video selected");
+    }
+    const heroStyle = win.getComputedStyle(video || doc.querySelector("#video-frame img"));
+    check((heroStyle.filter === "none") === colorful, "Hero media has the wrong color treatment");
+
+    const nav = doc.querySelector("nav");
+    check(win.getComputedStyle(nav.querySelector(".font-zentry")).textDecorationLine === "none", "Navbar mark is underlined");
+    const navbar = nav.closest(".fixed");
+    check(win.getComputedStyle(navbar).backgroundColor === "rgba(0, 0, 0, 0)", "Navbar overlays the hero with a fill");
+    check(win.getComputedStyle(doc.body).backgroundColor === (colorful ? "rgb(248, 219, 193)" : "rgb(10, 10, 10)"), "Wrong body color");
+    const submit = doc.querySelector("#contact button[type=submit]");
+    const submitColor = colorful ? "rgb(234, 79, 136)" : "rgb(255, 255, 255)";
+    for (let attempt = 0; attempt < 20 && win.getComputedStyle(submit).backgroundColor !== submitColor; attempt++) {
+      await tick();
+    }
+    check(win.getComputedStyle(submit).backgroundColor === submitColor, "Wrong contact action color");
+
+    const heading = doc.querySelector("h1");
+    check((await doc.fonts.load("900 48px zentry")).length === 1, "Zentry unavailable");
+    check(win.getComputedStyle(heading).fontFamily.startsWith("zentry"), "Hero heading should use Zentry");
+    check(win.getComputedStyle(heading).color === (colorful ? "rgb(248, 219, 193)" : "rgb(255, 255, 255)"), "Wrong hero heading color");
+
+    if (colorful) {
+      const loop = doc.querySelector('audio[src$="loop.mp3"]');
+      check(heroMedia && !heroMedia.paused && !heroMedia.muted && loop.paused, "The hero does not have exclusive audio");
+      check(!audioRequests().includes("/audio/loop.mp3"), "Loop fetched while the hero is in view");
+      win.scrollTo(0, doc.querySelector("#video-frame").parentElement.offsetHeight + 40);
+      await new Promise(resolve => setTimeout(resolve, 300));
+      check(heroMedia.paused && heroMedia.muted && !loop.paused, "Loop did not take over after the hero");
+      win.scrollTo(0, 0);
+      await new Promise(resolve => setTimeout(resolve, 300));
+      check(!heroMedia.paused && !heroMedia.muted && loop.paused, "Hero did not take over again");
+      audioToggle.click();
+      await tick();
+      check(loop.paused && heroMedia.muted && audioToggle.getAttribute("aria-pressed") === "false", "Navigation toggle did not mute");
+    } else {
+      check(!doc.querySelector("audio") && (!video || video.muted), "Audio enabled in Colorless");
+      check(audioRequests().every(path => !path.startsWith("/audio/") && !path.includes("madebykhua")), "Colorless fetched colorful media");
+    }
+
+    const projects = doc.querySelector("#projects");
+    const bottom = projects.getBoundingClientRect().bottom;
+    for (const link of projects.querySelectorAll("a")) {
+      check(link.getBoundingClientRect().bottom <= bottom + 1, "Clipped project link");
+    }
+    const hoverPreviews = win.matchMedia("(min-width: 768px) and (any-hover: hover) and (any-pointer: fine) and (prefers-reduced-motion: no-preference)").matches;
+    const inlinePreview = projects.querySelector(".project-inline-preview");
+    check((inlinePreview.getBoundingClientRect().height > 0) === !hoverPreviews, "Project covers unavailable for this input mode");
+    const form = doc.querySelector("form");
+    check([...form.querySelectorAll("label")].every(label => label.control), "Unassociated label");
+
+    frame.width = 320;
+    await tick();
+    const titleRange = doc.createRange();
+    titleRange.selectNodeContents(heading);
+    const titleBounds = titleRange.getBoundingClientRect();
+    check(titleBounds.left >= 0 && titleBounds.right <= win.innerWidth, "Hero title clips on mobile");
+    for (const link of doc.querySelectorAll("nav a")) {
+      const rect = link.getBoundingClientRect();
+      check(Math.round(rect.height) >= 24, "Mobile navigation target is too short");
+      check(rect.left >= 0 && rect.right <= win.innerWidth, "Hidden mobile link");
+    }
+    const directEmail = doc.querySelector('#contact a[href^="mailto:"]');
+    check(directEmail.scrollWidth <= directEmail.clientWidth + 1, "Contact address clips on mobile");
+    const audioBounds = audioToggle.getBoundingClientRect();
+    check(audioBounds.left >= 0 && audioBounds.right <= win.innerWidth, "Audio toggle clips on mobile");
+    if (win.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      check(!doc.querySelector("#video-frame video"), "Autoplay in reduced motion");
+      const panels = [...doc.querySelectorAll(".about-panel")];
+      check(panels[2].offsetTop > panels[1].offsetTop, "About panels overlap");
+    }
+    for (const [name, value] of Object.entries({name: "Visitor", email: "visitor@example.org", message: "Hello"})) {
+      const field = form.elements[name];
+      Object.getOwnPropertyDescriptor(Object.getPrototypeOf(field), "value").set.call(field, value);
+      field.dispatchEvent(new win.Event("input", {bubbles: true}));
+    }
+    for (const accepted of [false, true]) {
+      win.fetch = async () => Response.json(accepted ? {data: {id: "mock"}} : {data: null, error: {}});
+      form.requestSubmit();
+      await tick();
+      check(form.elements.message.value === (accepted ? "" : "Hello"), "Incorrect draft state");
+      check(accepted ? !!form.querySelector('[role=status]').textContent : !!form.querySelector('[role=alert]'), "Missing submission feedback");
+    }
+    const skills = doc.querySelector("#skills");
+    const skillsStyle = win.getComputedStyle(skills);
+    const blend = skills.querySelector(".skills-blend");
+    check(skillsStyle.borderTopWidth === "0px" && win.getComputedStyle(blend).filter.startsWith("blur")
+      && win.getComputedStyle(blend, "::before").clipPath.startsWith("polygon"), "Skills has a hard section edge");
+    const footerArtwork = doc.querySelector("footer img");
+    if (reduced) check(footerArtwork && !doc.querySelector("footer canvas"), "Reduced motion needs the still footer artwork");
+    const label = skills.querySelector(".skill-category .skill-label");
+    const originalLabel = label.textContent;
+    for (const eventType of ["pointerover", "pointerout"]) {
+      label.dispatchEvent(new win.PointerEvent(eventType, {bubbles: true, pointerType: "mouse"}));
+      await tick();
+      const cipher = label.querySelector(".skill-label-cipher");
+      check(reduced ? !cipher : cipher && cipher.textContent !== originalLabel, "Skill cipher ignored pointer or motion preference");
+      await new Promise(resolve => setTimeout(resolve, 250));
+      check(label.textContent === originalLabel, "Skill cipher did not resolve");
+    }
+    return "PASS";
+  }
+  frame.onload = () => run().then(value => result.textContent = value)
+    .catch(error => result.textContent = "FAIL " + error.message);
+  frame.src = "/";
+</script>

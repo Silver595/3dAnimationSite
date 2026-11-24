@@ -1,11 +1,13 @@
-import PropTypes from 'prop-types';
+import useReducedMotion from "../useReducedMotion";
 import {useEffect, useRef} from 'react'
 import gsap from 'gsap';
 
 const AnimatedTitle = ({title,containerClass}) => {
+  const reduced = useReducedMotion();
   const containerRef = useRef(null)
 
-    useEffect(() => {
+  useEffect(() => {
+    if (reduced) return;
     const ctx = gsap.context(() => {
         const titleAnimation = gsap.timeline({
           scrollTrigger: {
@@ -32,7 +34,7 @@ const AnimatedTitle = ({title,containerClass}) => {
     }, containerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [reduced]);
 
   return (
     <div
@@ -53,8 +55,4 @@ const AnimatedTitle = ({title,containerClass}) => {
     </div>
   );
 };
-AnimatedTitle.propTypes = {
-  title: PropTypes.string.isRequired,
-  containerClass: PropTypes.string.isRequired
-}
 export default AnimatedTitle
