@@ -16,7 +16,7 @@ const Footer = ({ colorful, ready }) => {
       if (!entry.isIntersecting) return;
       const styles = getComputedStyle(entry.target);
       const stops = colorful
-        ? ["--ink", "--risco"]
+        ? ["--accent", "--accent", "--paper", "--paper"]
         : ["--ink", "--risco", "--risco", "--muted", "--paper"];
       setPalette(stops.map(token => `rgb(${styles.getPropertyValue(token).trim()})`));
       observer.disconnect();
@@ -58,10 +58,6 @@ const Footer = ({ colorful, ready }) => {
             <GradientASCII
               colors={palette}
               cellSize={14}
-              lightMode={colorful}
-              gradientOpacity={colorful ? 0 : 0.9}
-              glyphOpacity={colorful ? 0.55 : 0.85}
-              grain={colorful ? 0.025 : 0.08}
               intro={false}
               dpr={1}
             />
@@ -75,7 +71,7 @@ const Footer = ({ colorful, ready }) => {
             href={link.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex min-h-11 flex-col items-center justify-center gap-2 font-general text-sm text-paper underline-offset-4 hover:underline focus-visible:underline"
+            className="flex min-h-11 flex-col items-center justify-center gap-2 font-general text-sm underline-offset-4 hover:underline focus-visible:underline"
           >
             <span aria-hidden="true" className="text-3xl md:text-4xl">{link.icon}</span>
             {link.name}

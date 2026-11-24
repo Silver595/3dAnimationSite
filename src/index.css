@@ -206,9 +206,13 @@ html:has(.sound-choice[open]) {
 }
 
 :root[data-theme="colorful"] .footer-background {
-  background:
-    radial-gradient(ellipse 20% 14% at 88% 63%, rgb(var(--accent) / 0.65), transparent),
-    linear-gradient(177deg, rgb(var(--paper)) 55%, rgb(var(--risco)) 69% 83%, rgb(var(--ink)) 100%);
+  background: radial-gradient(
+    ellipse 85% 76% at 50% 0%,
+    rgb(var(--paper)),
+    color-mix(in srgb, rgb(var(--accent)) 55%, rgb(var(--paper))) 42%,
+    rgb(var(--accent)) 55%,
+    oklch(from rgb(var(--accent)) calc(l * 0.45) calc(c * 0.62) h) 100%
+  );
 }
 
 .footer-socials a { filter: drop-shadow(0 1px 3px rgb(var(--ink))); }
@@ -217,7 +221,7 @@ html:has(.sound-choice[open]) {
 
 :root[data-theme="colorful"] .footer-socials a:nth-child(-n + 2) {
   color: rgb(var(--content));
-  filter: none;
+  filter: drop-shadow(0 1px 2px rgb(var(--paper) / 0.85));
 }
 
 .skills-surface {
