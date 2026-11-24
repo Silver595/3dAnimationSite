@@ -64,7 +64,7 @@ const NavBar = ({ colorful, audioEnabled, onToggleAudio }) => {
               type="button"
               onClick={onToggleAudio}
               data-audio-toggle
-              aria-label={colorful ? "Toggle music and sound effects" : "Sound is off in Colorless"}
+              aria-label={colorful ? "Toggle background audio" : "Sound is off in Colorless"}
               disabled={!colorful}
               aria-pressed={audioEnabled}
               className="ml-2 flex min-h-8 min-w-7 shrink-0 items-center justify-center space-x-0.5 drop-shadow-[0_1px_2px_#102024] focus-visible:outline-paper max-[359px]:ml-1 md:ml-10 md:mr-4"

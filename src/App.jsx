@@ -50,7 +50,6 @@ const App = () => {
   const setAudio = (enabled) => {
     audioEnabledRef.current = enabled;
     setAudioEnabled(enabled);
-    if (!enabled) effectsRef.current?.stop();
   };
 
   const chooseExperience = (colorfulChoice) => {
@@ -59,6 +58,7 @@ const App = () => {
       setChoice(colorfulChoice ? "colorful" : "colorless");
       setAudio(colorfulChoice);
     });
+    if (colorfulChoice) effectsRef.current?.enable();
     syncPlayback();
     mainRef.current.focus({ preventScroll: true });
   };
@@ -69,19 +69,19 @@ const App = () => {
   };
 
   const playEffect = (id) => {
-    if (audioEnabledRef.current) effectsRef.current?.play(id);
+    effectsRef.current?.play(id);
   };
 
   const playClick = (event) => {
     const control = event.target.closest(clickable);
-    if (control && !control.matches("[data-audio-toggle], button[type=submit]")) {
+    if (control && !control.matches("button[type=submit]")) {
       playEffect("click");
     }
   };
 
   const playHover = (event) => {
     if (event.pointerType !== "mouse" || event.buttons) return;
-    const control = event.target.closest(clickable);
+    const control = event.target.closest(`${clickable}, ${textField}`);
     if (control && !control.contains(event.relatedTarget)) playEffect("hover");
   };
 
@@ -90,9 +90,9 @@ const App = () => {
   };
 
   const playTyping = (event) => {
-    if (!audioEnabledRef.current || !event.target.matches(textField)) return;
+    if (!colorful || !event.target.matches(textField)) return;
     const now = performance.now();
-    if (now - lastTypingCue.current < 120) return;
+    if (now - lastTypingCue.current < 45) return;
     lastTypingCue.current = now;
     playEffect("typing");
   };
@@ -167,11 +167,15 @@ const App = () => {
     // Stop the outgoing track before starting the other one.
     if (!playLoop) music?.pause();
     if (media) {
+      media.volume = 0.32;
       media.muted = !inHero || !audible;
       if (!playHero) media.pause();
       else if (media.paused) media.play().catch(() => {});
     }
-    if (playLoop && music?.paused) music.play().catch(() => {});
+    if (playLoop && music?.paused) {
+      music.volume = 0.3;
+      music.play().catch(() => {});
+    }
   }
 
   useEffect(() => {

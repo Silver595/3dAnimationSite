@@ -35,8 +35,12 @@
   filter: grayscale(1) invert(1);
 }
 
-:root[data-theme="colorful"] .about-interest-mark {
-  filter: grayscale(1) invert(1);
+:root[data-theme="colorful"] :is(#about, #contact, #skills) img[src$=".gif"] {
+  opacity: 1;
+}
+
+:root[data-theme="colorful"] :is(#about, #contact) img[src$=".gif"] {
+  filter: brightness(0) invert(30%) sepia(54%) saturate(642%) hue-rotate(135deg) brightness(90%) contrast(92%);
 }
 
 body {

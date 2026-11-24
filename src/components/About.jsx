@@ -153,7 +153,7 @@ const About = () => {
                     decoding="async"
                     alt=""
                     aria-hidden="true"
-                    className="about-interest-mark size-6 object-contain opacity-70"
+                    className="size-6 object-contain opacity-70"
                   />
                 </span>
                 <span className="font-mono text-xs text-content uppercase tracking-widest">
@@ -168,7 +168,7 @@ const About = () => {
                     decoding="async"
                     alt=""
                     aria-hidden="true"
-                    className="about-interest-mark size-6 object-contain opacity-70"
+                    className="size-6 object-contain opacity-70"
                   />
                 </span>
                 <span className="font-mono text-xs text-content uppercase tracking-widest">
@@ -183,7 +183,7 @@ const About = () => {
                     decoding="async"
                     alt=""
                     aria-hidden="true"
-                    className="about-interest-mark h-4 w-8 object-contain opacity-70"
+                    className="h-4 w-8 object-contain opacity-70"
                   />
                 </span>
                 <span className="font-mono text-xs text-content uppercase tracking-widest">

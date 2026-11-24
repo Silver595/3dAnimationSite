@@ -93,7 +93,21 @@
       check(!heroMedia.paused && !heroMedia.muted && loop.paused, "Hero did not take over again");
       audioToggle.click();
       await tick();
-      check(loop.paused && heroMedia.muted && audioToggle.getAttribute("aria-pressed") === "false", "Navigation toggle did not mute");
+      check(loop.paused && heroMedia.muted && audioToggle.getAttribute("aria-pressed") === "false", "Navigation toggle did not mute background audio");
+      const source = win.AudioBufferSourceNode.prototype;
+      const start = source.start;
+      let hoverPlayed = false;
+      try {
+        source.start = function (when, offset, ...args) {
+          if (offset === 0 && args[0] === 0.122) hoverPlayed = true;
+          return start.call(this, when, offset, ...args);
+        };
+        nav.querySelector("a").dispatchEvent(new win.PointerEvent("pointerover", {bubbles: true, pointerType: "mouse"}));
+        await tick();
+        check(hoverPlayed, "Muting background audio also muted hover sounds");
+      } finally {
+        source.start = start;
+      }
     } else {
       check(!doc.querySelector("audio") && (!video || video.muted), "Audio enabled in Colorless");
       check(audioRequests().every(path => !path.startsWith("/audio/") && !path.includes("madebykhua")), "Colorless fetched colorful media");
