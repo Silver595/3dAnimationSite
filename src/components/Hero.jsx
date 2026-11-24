@@ -60,7 +60,7 @@ const Hero = ({ isReady, choice, sectionRef, mediaRef }) => {
         {moving ? (
           <video
             ref={mediaRef}
-            src={colorful ? "/videos/madebykhua.mp4" : "/videos/mixkit-4.mp4"}
+            src={colorful ? "/videos/madebykhua1080.mp4" : "/videos/mixkit-4.mp4"}
             poster={poster}
             loop
             muted
