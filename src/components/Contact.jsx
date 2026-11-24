@@ -6,7 +6,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
 
-const Contact = () => {
+const Contact = ({ onSent }) => {
   const [formState, setFormState] = useState({ name: "", email: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSent, setIsSent] = useState(false);
@@ -41,6 +41,7 @@ const Contact = () => {
       const result = await response.json();
       if (response.ok && result?.data?.id && !result.error) {
         setIsSent(true);
+        onSent();
         setFormState({ name: "", email: "", message: "" });
       } else {
         throw new Error('Server reported an error');

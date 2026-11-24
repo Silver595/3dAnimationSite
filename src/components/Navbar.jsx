@@ -1,32 +1,11 @@
 import gsap from "gsap";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const navItems = ["Projects", "Skills", "About", "Contact"];
 
-const NavBar = () => {
-  const [isIndicatorActive, setIsIndicatorActive] = useState(false);
+const NavBar = ({ audioEnabled, onToggleAudio }) => {
 
-  const audioElementRef = useRef(null);
   const navContainerRef = useRef(null);
-
-  const toggleAudioIndicator = () => {
-    const audio = audioElementRef.current;
-    if (!audio) return;
-
-    if (audio.paused) {
-      audio
-        .play()
-        .then(() => {
-          setIsIndicatorActive(true);
-        })
-        .catch((error) => {
-          console.log("Audio playback blocked:", error);
-        });
-    } else {
-      audio.pause();
-      setIsIndicatorActive(false);
-    }
-  };
 
   // Passive scroll direction handler with zero React re-renders
   useEffect(() => {
@@ -80,23 +59,17 @@ const NavBar = () => {
               ))}
             </div>
 
-            <audio
-              ref={audioElementRef}
-              className="hidden"
-              src="/audio/loop.mp3"
-              loop
-            />
-
             <button
-              onClick={toggleAudioIndicator}
-              aria-label="Toggle background audio"
-              aria-pressed={isIndicatorActive}
+              onClick={onToggleAudio}
+              data-audio-toggle
+              aria-label="Toggle music and sound effects"
+              aria-pressed={audioEnabled}
               className="ml-2 flex min-h-8 min-w-7 items-center justify-center space-x-0.5 md:ml-10 md:mr-4"
             >
               {[1, 2, 3, 4].map((bar) => (
                 <div
                   key={bar}
-                  className={isIndicatorActive ? "indicator-line active" : "indicator-line"}
+                  className={audioEnabled ? "indicator-line active" : "indicator-line"}
                   style={{
                     animationDelay: `${bar * 0.1}s`,
                   }}

@@ -29,6 +29,12 @@ body {
 }
 
 @layer base {
+  @font-face {
+    font-family: "Departure Mono";
+    src: url("/fonts/departure-mono.woff2") format("woff2");
+    font-display: swap;
+  }
+
 
   @font-face {
     font-family: "general";
@@ -76,7 +82,11 @@ body {
   }
 
   .hero-heading {
-    @apply uppercase font-zentry font-black text-5xl sm:text-7xl md:text-9xl lg:text-[10rem] tracking-tighter leading-[0.85];
+    font-family: "Departure Mono", monospace;
+    font-size: clamp(3rem, 12vw, 9rem);
+    font-weight: 400;
+    letter-spacing: 0.025em;
+    line-height: 1.1;
   }
 
   .animated-title {
@@ -120,4 +130,13 @@ body {
   .animated-word { opacity: 1; transform: none; }
   img[src$=".gif"][aria-hidden="true"] { visibility: hidden; }
   .indicator-line.active { animation: none; transform: scaleY(1); }
+}
+
+html:has(.sound-choice[open]) {
+  overflow: hidden;
+}
+
+.sound-choice::backdrop {
+  background: radial-gradient(ellipse at center, rgb(0 0 0 / 76%), rgb(0 0 0 / 94%));
+  backdrop-filter: blur(4px);
 }

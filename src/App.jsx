@@ -1,5 +1,6 @@
+import useSound from "use-sound";
 import useReducedMotion from "./useReducedMotion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
@@ -7,6 +8,7 @@ import { ScrollTrigger } from "gsap/all";
 gsap.registerPlugin(ScrollTrigger);
 
 import Loader from "./components/Loader";
+import SoundChoice from "./components/SoundChoice";
 import NotFound from "./components/NotFound";
 import Hero from "./components/Hero.jsx";
 import About from "./components/About";
@@ -22,10 +24,86 @@ const isHomePath = () => {
   return path === "/" || path === "/index.html";
 };
 
+const clickable = "a[href], button:not(:disabled)";
+const textField = "input:not(:disabled), textarea:not(:disabled)";
+
 const App = () => {
   const reduced = useReducedMotion();
+  const [audioEnabled, setAudioEnabled] = useState(false);
+  const [audioChoiceMade, setAudioChoiceMade] = useState(false);
+  const audioRef = useRef(null);
+  const mainRef = useRef(null);
+  const audioEnabledRef = useRef(false);
+  const lastTypingCue = useRef(-Infinity);
+  // UISFX CC0 clips. Mechanical press, typing and send. Zen hover, focus and success.
+  const [playCue, { stop }] = useSound("/audio/interface.wav", {
+    volume: 0.32,
+    interrupt: true,
+    sprite: {
+      hover: [0, 122],
+      click: [160, 163],
+      focus: [360, 207],
+      typing: [600, 87],
+      submit: [720, 316],
+      sent: [1060, 571],
+    },
+  });
+
+  const updateAudio = (enabled) => {
+    audioEnabledRef.current = enabled;
+    setAudioEnabled(enabled);
+    if (enabled) {
+      audioRef.current.play().catch(() => {});
+    } else {
+      audioRef.current.pause();
+      stop();
+    }
+  };
+
+  const chooseAudio = (enabled) => {
+    updateAudio(enabled);
+    setAudioChoiceMade(true);
+    mainRef.current.focus({ preventScroll: true });
+  };
+
+  const playEffect = (id) => {
+    if (audioEnabledRef.current) playCue({ id });
+  };
+
+  const playClick = (event) => {
+    const control = event.target.closest(clickable);
+    if (control && !control.matches("[data-audio-toggle], button[type=submit]")) {
+      playEffect("click");
+    }
+  };
+
+  const playHover = (event) => {
+    if (event.pointerType !== "mouse" || event.buttons) return;
+    const control = event.target.closest(clickable);
+    if (control && !control.contains(event.relatedTarget)) playEffect("hover");
+  };
+
+  const playFieldFocus = (event) => {
+    if (event.target.matches(textField)) playEffect("focus");
+  };
+
+  const playTyping = (event) => {
+    if (!audioEnabledRef.current || !event.target.matches(textField)) return;
+    const now = performance.now();
+    if (now - lastTypingCue.current < 120) return;
+    lastTypingCue.current = now;
+    playEffect("typing");
+  };
+
   const [notFound, setNotFound] = useState(() => !isHomePath());
   // No loader on the error page, and no loader when returning from it.
+  useEffect(() => {
+    if (!notFound) return;
+    audioEnabledRef.current = false;
+    setAudioEnabled(false);
+    stop();
+  }, [notFound, stop]);
+
   const [loading, setLoading] = useState(() => isHomePath());
   const [heroReady, setHeroReady] = useState(() => !isHomePath());
 
@@ -46,7 +124,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    if (notFound || loading || reduced) return;
+    if (notFound || loading || !audioChoiceMade || reduced) return;
 
     const lenis = new Lenis({
       duration: 1.2,
@@ -71,7 +149,7 @@ const App = () => {
       gsap.ticker.remove(updateTicker);
       lenis.destroy();
     };
-  }, [loading, notFound, reduced]);
+  }, [loading, audioChoiceMade, notFound, reduced]);
 
   if (notFound) {
     return <NotFound onHome={goHome} />;
@@ -86,13 +164,25 @@ const App = () => {
         />
       )}
 
-      <main className="relative min-h-screen w-screen overflow-x-hidden bg-[#0a0a0a]">
-        <Navbar />
+      {!loading && !audioChoiceMade && <SoundChoice onChoose={chooseAudio} />}
+      <audio ref={audioRef} src="/audio/loop.mp3" preload="none" loop />
+
+      <main
+        ref={mainRef}
+        tabIndex={-1}
+        onClickCapture={playClick}
+        onPointerOver={playHover}
+        onFocus={playFieldFocus}
+        onInput={playTyping}
+        onSubmitCapture={() => playEffect("submit")}
+        className="relative min-h-screen w-screen overflow-x-hidden bg-[#0a0a0a]"
+      >
+        <Navbar audioEnabled={audioEnabled} onToggleAudio={() => updateAudio(!audioEnabledRef.current)} />
         <Hero isReady={heroReady} />
         <About />
         <Projects />
         <Skills />
-        <Contact />
+        <Contact onSent={() => playEffect("sent")} />
         <Footer />
       </main>
     </>

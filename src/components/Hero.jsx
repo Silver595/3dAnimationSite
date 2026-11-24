@@ -16,15 +16,7 @@ const Hero = ({ isReady }) => {
       if (!isReady || reduced) return;
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-      tl.fromTo(
-        videoRef.current,
-        { scale: 1.1 },
-        { scale: 1, duration: 3, ease: "power1.out" },
-        0
-      )
-
-        .from(".hero-title-inner", { yPercent: 110, duration: 1.4 }, 0.3)
-
+      tl.from(".hero-title-inner", { yPercent: 110, duration: 1.4 }, 0)
         .from(
           ".hero-fade",
           { opacity: 0, y: 18, duration: 1.1, stagger: 0.15, ease: "power2.out" },
@@ -71,6 +63,7 @@ const Hero = ({ isReady }) => {
           },
         });
       });
+      return () => mm.revert();
     },
     { scope: containerRef, dependencies: [isReady, reduced], revertOnUpdate: true }
   );
@@ -92,7 +85,7 @@ const Hero = ({ isReady }) => {
             muted
             playsInline
             preload="auto"
-            className="absolute left-0 top-0 size-full object-cover object-center opacity-30 grayscale contrast-125 will-change-transform"
+            className="absolute left-0 top-0 size-full object-cover object-center opacity-30 grayscale contrast-125"
           />
         )}
 
@@ -101,8 +94,8 @@ const Hero = ({ isReady }) => {
         <div className="hero-content absolute inset-0 z-40 flex flex-col justify-end px-6 pb-14 md:px-20 md:pb-20">
 
           <div className="overflow-hidden pb-2">
-            <h1 className="special-font hero-heading hero-title-inner text-white opacity-90">
-              Akash
+            <h1 className="hero-heading hero-title-inner text-white">
+              AKASH
             </h1>
           </div>
 
@@ -111,7 +104,7 @@ const Hero = ({ isReady }) => {
               <p className="hero-fade font-general text-lg font-light uppercase tracking-wide text-zinc-300 md:text-xl">
                 Developer <span className="mx-2 text-zinc-600">&#9752;</span> Human
               </p>
-              <p className="hero-fade text-sm leading-relaxed text-zinc-500 md:text-base">
+              <p className="hero-fade text-sm leading-relaxed text-zinc-400 md:text-base">
                 Somewhere, my Vinland still waits. I&apos;m still searching for the
                 road that leads there.
               </p>

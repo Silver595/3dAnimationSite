@@ -11,6 +11,51 @@
     const win = frame.contentWindow;
     const doc = frame.contentDocument;
     await doc.fonts.ready;
+    let dialog = doc.querySelector("dialog[open]");
+    for (let attempt = 0; !dialog && attempt < 100; attempt++) {
+      await tick();
+      dialog = doc.querySelector("dialog[open]");
+    }
+    check(dialog, "Sound choice did not open");
+    check(doc.activeElement.textContent.trim() === "Without sound", "Silent choice lacks initial focus");
+    frame.width = 320;
+    await tick();
+    const [withSound, withoutSound] = dialog.querySelectorAll("button");
+    const left = withSound.getBoundingClientRect();
+    const right = withoutSound.getBoundingClientRect();
+    check(dialog.textContent.replace(/\s/g, "") === "WithsoundWithoutsound", "Unexpected visible dialog copy");
+    check(left.top === right.top && left.width === right.width && right.right <= win.innerWidth, "Sound choices are misaligned");
+    check(right.left - left.right >= 24, "Sound choices are too close");
+    check(win.getComputedStyle(withSound).borderTopLeftRadius === "3px", "Sound choice corners should have a 3px radius");
+    frame.width = 1024;
+    await tick();
+
+    const music = doc.querySelector("audio");
+    const audioToggle = doc.querySelector("[data-audio-toggle]");
+    check(music.paused && audioToggle.getAttribute("aria-pressed") === "false", "Audio enabled before choice");
+
+    const choice = new URLSearchParams(window.location.search).get("sound");
+    if (choice === "escape") {
+      dialog.dispatchEvent(new win.Event("cancel", {cancelable: true}));
+    } else {
+      dialog.querySelectorAll("button")[choice === "on" ? 0 : 1].click();
+    }
+    await tick();
+    check(!doc.querySelector("dialog[open]"), "Sound choice did not close");
+    check(doc.activeElement === doc.querySelector("main"), "Focus did not return to the page");
+    check(audioToggle.getAttribute("aria-pressed") === String(choice === "on"), "Sound choice was ignored");
+    if (choice !== "on") check(music.paused, "Music playing in silent mode");
+    if (choice === "on") {
+      audioToggle.click();
+      await tick();
+      check(music.paused && audioToggle.getAttribute("aria-pressed") === "false", "Navigation toggle did not mute");
+    }
+
+    const heading = doc.querySelector("h1");
+    check((await doc.fonts.load('48px "Departure Mono"')).length === 1, "Departure Mono unavailable");
+    const video = doc.querySelector("#video-frame video");
+    if (video) check(win.getComputedStyle(video).transform === "none", "Hero video scales");
+
     const projects = doc.querySelector("#projects");
     const bottom = projects.getBoundingClientRect().bottom;
     for (const link of projects.querySelectorAll("a")) {
@@ -21,6 +66,10 @@
 
     frame.width = 320;
     await tick();
+    const titleRange = doc.createRange();
+    titleRange.selectNodeContents(heading);
+    const titleBounds = titleRange.getBoundingClientRect();
+    check(titleBounds.left >= 0 && titleBounds.right <= win.innerWidth, "Hero title clips on mobile");
     for (const link of doc.querySelectorAll("nav a")) {
       const rect = link.getBoundingClientRect();
       check(rect.width > 0 && rect.left >= 0 && rect.right <= win.innerWidth, "Hidden mobile link");
