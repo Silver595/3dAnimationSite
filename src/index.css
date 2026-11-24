@@ -205,9 +205,20 @@ html:has(.sound-choice[open]) {
     linear-gradient(to bottom, transparent calc(var(--footer-blend) * 0.35), #000 var(--footer-blend));
 }
 
+:root[data-theme="colorful"] .footer-background {
+  background:
+    radial-gradient(ellipse 20% 14% at 88% 63%, rgb(var(--accent) / 0.65), transparent),
+    linear-gradient(177deg, rgb(var(--paper)) 55%, rgb(var(--risco)) 69% 83%, rgb(var(--ink)) 100%);
+}
+
 .footer-socials a { filter: drop-shadow(0 1px 3px rgb(var(--ink))); }
 .footer-socials a:nth-child(2) { grid-area: 2 / 2; }
 .footer-socials a:nth-child(3) { grid-area: 3 / 3; }
+
+:root[data-theme="colorful"] .footer-socials a:nth-child(-n + 2) {
+  color: rgb(var(--content));
+  filter: none;
+}
 
 .skills-surface {
   @apply bg-surface;

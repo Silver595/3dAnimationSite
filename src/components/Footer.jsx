@@ -15,7 +15,9 @@ const Footer = ({ colorful, ready }) => {
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting) return;
       const styles = getComputedStyle(entry.target);
-      const stops = ["--ink", "--risco", "--risco", colorful ? "--accent" : "--muted", "--paper"];
+      const stops = colorful
+        ? ["--ink", "--risco"]
+        : ["--ink", "--risco", "--risco", "--muted", "--paper"];
       setPalette(stops.map(token => `rgb(${styles.getPropertyValue(token).trim()})`));
       observer.disconnect();
     }, { rootMargin: "160px" });
@@ -56,6 +58,10 @@ const Footer = ({ colorful, ready }) => {
             <GradientASCII
               colors={palette}
               cellSize={14}
+              lightMode={colorful}
+              gradientOpacity={colorful ? 0 : 0.9}
+              glyphOpacity={colorful ? 0.55 : 0.85}
+              grain={colorful ? 0.025 : 0.08}
               intro={false}
               dpr={1}
             />
