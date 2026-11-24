@@ -59,7 +59,7 @@
     check(doc.querySelectorAll("video").length === (reduced ? 0 : 1), "Wrong number of active hero videos");
     if (video) {
       check(win.getComputedStyle(video).transform === "none", "Hero video scales");
-      check(video.src.endsWith(colorful ? "/madebykhua.mp4" : "/mixkit-4.mp4"), "Wrong video selected");
+      check(video.src.endsWith(colorful ? "/madebykhua1080.mp4" : "/mixkit-4.mp4"), "Wrong video selected");
     }
     const heroStyle = win.getComputedStyle(video || doc.querySelector("#video-frame img"));
     check((heroStyle.filter === "none") === colorful, "Hero media has the wrong color treatment");
@@ -147,8 +147,11 @@
     const blend = skills.querySelector(".skills-blend");
     check(skillsStyle.borderTopWidth === "0px" && win.getComputedStyle(blend).filter.startsWith("blur")
       && win.getComputedStyle(blend, "::before").clipPath.startsWith("polygon"), "Skills has a hard section edge");
-    const footerArtwork = doc.querySelector("footer img");
-    if (reduced) check(footerArtwork && !doc.querySelector("footer canvas"), "Reduced motion needs the still footer artwork");
+    const footerBackground = doc.querySelector(".footer-background");
+    if (reduced) {
+      check(win.getComputedStyle(footerBackground).backgroundImage !== "none" && !footerBackground.querySelector("canvas"),
+        "Reduced motion needs the static footer gradient");
+    }
     const label = skills.querySelector(".skill-category .skill-label");
     const originalLabel = label.textContent;
     for (const eventType of ["pointerover", "pointerout"]) {

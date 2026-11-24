@@ -2,31 +2,27 @@ import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import useReducedMotion from "../useReducedMotion";
 import { FiGithub, FiTwitter, FiLinkedin, FiArrowUp } from "react-icons/fi";
 
-const AeroShards = lazy(() => import("./footer-background"));
+const GradientASCII = lazy(() => import("./footer-background.jsx"));
 
 const Footer = ({ colorful, ready }) => {
   const reduced = useReducedMotion();
   const footerRef = useRef(null);
-  const [nearFooter, setNearFooter] = useState(false);
-  const [shardsStatus, setShardsStatus] = useState("loading");
-  const useShards = ready && !reduced && shardsStatus !== "failed" && "gpu" in navigator;
+  const [palette, setPalette] = useState(null);
+  const animateBackground = ready && !reduced;
 
   useEffect(() => {
-    if (!useShards || nearFooter) return;
+    if (!animateBackground || palette) return;
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting) return;
-      setNearFooter(true);
+      const styles = getComputedStyle(entry.target);
+      const stops = ["--ink", "--risco", "--risco", colorful ? "--accent" : "--muted", "--paper"];
+      setPalette(stops.map(token => `rgb(${styles.getPropertyValue(token).trim()})`));
       observer.disconnect();
     }, { rootMargin: "160px" });
     observer.observe(footerRef.current);
     return () => observer.disconnect();
-  }, [useShards, nearFooter]);
+  }, [animateBackground, colorful, palette]);
 
-  useEffect(() => {
-    if (reduced) setShardsStatus(status => status === "live" ? "loading" : status);
-  }, [reduced]);
-
-  const showShards = useShards && nearFooter;
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -36,7 +32,7 @@ const Footer = ({ colorful, ready }) => {
 
   const socialLinks = [
     {
-      name: "Github",
+      name: "GitHub",
       icon: <FiGithub />,
       href: "https://github.com/silver595",
     },
@@ -53,317 +49,53 @@ const Footer = ({ colorful, ready }) => {
   ];
 
   return (
-    <footer ref={footerRef} className="relative isolate w-full overflow-hidden border-t border-paper/10 bg-ink text-paper">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        {/* Still frame rendered from Aero Shards for reduced motion and GPU fallback. */}
-        {(!showShards || shardsStatus !== "live") && (
-          <img
-            src="/img/aero-shards-still.webp"
-            alt=""
-            loading="lazy"
-            decoding="async"
-            className="absolute inset-0 size-full object-cover object-right opacity-40"
-          />
-        )}
-        {showShards && (
+    <footer ref={footerRef} className="relative isolate grid min-h-[580px] w-full grid-rows-[1fr_auto] text-paper md:min-h-[670px]">
+      <div aria-hidden="true" className="footer-background pointer-events-none absolute inset-x-0 bottom-0">
+        {animateBackground && palette && (
           <Suspense fallback={null}>
-            <AeroShards
-              shardColor={colorful ? "#F8DBC1" : "#999999"}
-              accentColor={colorful ? "#EA4F88" : "#D4D4D4"}
-              placement="full"
-              material="chrome"
-              className="opacity-75"
-              count={420}
-              dpr={0.85}
-              speed={0.55}
-              glow={0.2}
-              grain={0}
+            <GradientASCII
+              colors={palette}
+              cellSize={14}
               intro={false}
-              pulseOnClick={false}
-              holdToGather={false}
-              onReady={() => setShardsStatus("live")}
-              onError={() => setShardsStatus("failed")}
+              dpr={1}
             />
           </Suspense>
         )}
-        <div className="absolute inset-0 bg-gradient-to-r from-ink/90 via-ink/55 to-ink/15" />
       </div>
-      <div className="relative w-full">
-
-        <div
-          className="
-            group
-            relative
-            flex
-            min-h-[110px]
-            items-center
-            border-b
-            border-none
-            px-8
-            md:px-16
-          "
-        >
-          {/* Left micro marker */}
-
-          <div className="absolute left-0 top-0 h-3 w-3 border-l border-t border-paper/20 transition-all duration-500 group-hover:h-5 group-hover:w-5" />
-
-          <div className="flex items-center gap-5">
-            <span className="h-px w-8 bg-accent transition-all duration-500 group-hover:w-14" />
-
-            <span
-              className="
-                font-mono
-                text-xs
-                uppercase
-                tracking-[0.3em]
-                text-paper
-                transition-colors
-                duration-300
-                group-hover:text-paper
-              "
-            >
-              Contact
-            </span>
-          </div>
-
-          <span
-            className="
-              absolute
-              right-8
-              font-mono
-              text-[9px]
-              uppercase
-              tracking-[0.25em]
-              text-paper
-              md:right-16
-            "
+      <nav aria-label="Social links" className="footer-socials relative grid grid-cols-3 grid-rows-3 place-items-center gap-3 px-6 md:px-16">
+        {socialLinks.map((link) => (
+          <a
+            key={link.name}
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex min-h-11 flex-col items-center justify-center gap-2 font-general text-sm text-paper underline-offset-4 hover:underline focus-visible:underline"
           >
-            AVAILABLE
-          </span>
-        </div>
+            <span aria-hidden="true" className="text-3xl md:text-4xl">{link.icon}</span>
+            {link.name}
+          </a>
+        ))}
+      </nav>
 
-        <div
-          className="
-            group
-            relative
-            flex
-            min-h-[110px]
-            items-center
-            border-b
-            border-none
-            px-8
-            md:px-16
-          "
-        >
-          <div className="flex w-full flex-col gap-7 md:flex-row md:items-center">
-            {/* Label */}
-
-            <div className="flex min-w-[150px] items-center gap-5">
-              <span className="h-px w-8 bg-accent transition-all duration-500 group-hover:w-14" />
-
-              <span
-                className="
-                  font-mono
-                  text-xs
-                  uppercase
-                  tracking-[0.3em]
-                  text-paper
-                  transition-colors
-                  duration-300
-                  group-hover:text-paper
-                "
-              >
-                Connect
-              </span>
-            </div>
-
-            {/* Social links */}
-
-            <div className="flex flex-wrap items-center gap-x-10 gap-y-5">
-              {socialLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="
-                    group/link
-                    relative
-                    flex
-                    items-center
-                    gap-3
-                    text-paper
-                    transition-colors
-                    duration-300
-                    hover:text-paper
-                  "
-                >
-                  <span
-                    className="
-                      text-lg
-                      transition-transform
-                      duration-300
-                      group-hover/link:-translate-y-1
-                    "
-                  >
-                    {link.icon}
-                  </span>
-
-                  <span className="font-general text-sm">{link.name}</span>
-
-                  <span
-                    className="
-                      font-mono
-                      text-[9px]
-                      text-paper
-                      transition-all
-                      duration-300
-                      group-hover/link:translate-x-1
-                      group-hover/link:text-paper
-                    "
-                  >
-                    ↗
-                  </span>
-
-                  {/* Hover underline */}
-
-                  <span
-                    className="
-                      absolute
-                      -bottom-2
-                      left-0
-                      h-px
-                      w-0
-                      bg-accent
-                      transition-all
-                      duration-300
-                      group-hover/link:w-full
-                    "
-                  />
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="relative h-[300px] md:h-[390px]">
-          {/* Horizontal measurement line */}
-
-          <div
-            className="
-              absolute
-              left-8
-              right-8
-              top-1/2
-              hidden
-              border-t
-              border-dashed
-              border-paper/5
-              md:block
-            "
-          />
-
+      <div className="relative grid min-h-[60px] items-center gap-1 px-6 py-2 font-mono text-[10px] uppercase tracking-wider sm:flex sm:justify-between sm:gap-5 md:px-16">
+        <span>© {new Date().getFullYear()} Akash Purjalkar. All Rights Reserved.</span>
+        <div className="flex items-center justify-self-end gap-5 whitespace-nowrap">
+          <a
+            href="https://www.instagram.com/madebykhua/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-8 items-center underline decoration-paper/60 underline-offset-4 hover:decoration-paper"
+          >
+            Video Credit
+          </a>
           <button
+            type="button"
             onClick={scrollToTop}
-            aria-label="Return to top"
-            className="
-              group/top
-              absolute
-              bottom-0
-              right-0
-              flex
-              h-[135px]
-              w-[min(280px,100%)]
-              flex-col
-              items-center
-              justify-center
-              overflow-hidden
-              bg-ink
-              text-paper
-              transition-all
-              duration-500
-              [clip-path:polygon(30%_0,100%_0,100%_100%,0_100%)]
-              hover:bg-accent
-              hover:text-ink
-              md:h-[155px]
-              md:w-[340px]
-            "
+            className="group flex min-h-8 items-center gap-2 uppercase underline-offset-4 hover:underline focus-visible:underline"
           >
-
-            <span
-              className="
-                pointer-events-none
-                absolute
-                left-0
-                top-0
-                h-px
-                w-[42%]
-                origin-left
-                -rotate-[29deg]
-                bg-paper/25
-                transition-colors
-                duration-500
-                group-hover/top:bg-ink/20
-              "
-            />
-
-            <FiArrowUp
-              className="
-                mb-4
-                text-4xl
-                transition-all
-                duration-500
-                group-hover/top:-translate-y-2
-                group-hover/top:scale-110
-              "
-            />
-
-            <span
-              className="
-                text-[9px]
-                uppercase
-                tracking-[0.35em]
-                transition-all
-                duration-500
-                group-hover/top:tracking-[0.45em]
-              "
-            >
-              Return to Top
-            </span>
-
-            <span
-              className="
-                absolute
-                bottom-5
-                h-px
-                w-8
-                bg-accent
-                transition-all
-                duration-500
-                group-hover/top:w-16
-                group-hover/top:bg-ink
-              "
-            />
+            Return to Top
+            <FiArrowUp aria-hidden="true" className="size-4 motion-safe:transition-transform motion-safe:group-hover:-translate-y-0.5" />
           </button>
-        </div>
-
-        <div
-          className="
-            flex
-            min-h-[60px]
-            w-full
-            items-center
-            justify-between
-            border-t
-            border-paper/10
-            px-8
-            md:px-16
-          "
-        >
-          <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-paper">
-            © {new Date().getFullYear()} Akash Purjalkar. All Rights Reserved.
-          </span>
-
         </div>
       </div>
     </footer>

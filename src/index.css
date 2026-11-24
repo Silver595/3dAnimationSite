@@ -190,6 +190,25 @@ html:has(.sound-choice[open]) {
   backdrop-filter: blur(4px);
 }
 
+.footer-background {
+  --footer-blend: clamp(9rem, 17vw, 15rem);
+  top: calc(-1 * clamp(4.5rem, 8vw, 6.5rem));
+  background: radial-gradient(
+    ellipse 85% 64% at 50% 0%,
+    color-mix(in srgb, rgb(var(--paper)) 45%, rgb(var(--risco))),
+    rgb(var(--risco)) 54%,
+    rgb(var(--ink)) 100%
+  );
+  mask-image:
+    radial-gradient(ellipse 45% var(--footer-blend) at 19% var(--footer-blend), #000 16%, transparent 100%),
+    radial-gradient(ellipse 35% calc(var(--footer-blend) * 0.8) at 94% var(--footer-blend), #000 12%, transparent 100%),
+    linear-gradient(to bottom, transparent calc(var(--footer-blend) * 0.35), #000 var(--footer-blend));
+}
+
+.footer-socials a { filter: drop-shadow(0 1px 3px rgb(var(--ink))); }
+.footer-socials a:nth-child(2) { grid-area: 2 / 2; }
+.footer-socials a:nth-child(3) { grid-area: 3 / 3; }
+
 .skills-surface {
   @apply bg-surface;
 }

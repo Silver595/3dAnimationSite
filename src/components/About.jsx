@@ -1,7 +1,6 @@
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import AnimatedTitle from "./AnimatedTitle";
 import { useRef } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -94,13 +93,14 @@ const About = () => {
           </div>
 
           <div className="relative z-10 text-center w-full max-w-5xl mx-auto px-4">
-            <p className="font-mono text-sm uppercase text-muted tracking-[0.3em] mb-6">
-              About Me
-            </p>
-            <AnimatedTitle
-              title="we<b>b</b> designer <br /> & <b>d</b>eveloper"
-              containerClass="mt-2 text-center text-content"
-            />
+            <h2 className="animated-title mt-2 text-center text-content">
+              <span className="flex-center flex-wrap gap-x-4 md:gap-x-6">
+                <span className="special-font">We<b>b</b></span> <span>Designer</span>
+              </span>{" "}
+              <span className="flex-center flex-wrap gap-x-4 md:gap-x-6">
+                <span>&amp;</span> <span className="special-font"><b>D</b>eveloper</span>
+              </span>
+            </h2>
             <div className="mt-12 flex flex-col items-center gap-6">
               <p className="font-general text-lg sm:text-xl text-content max-w-2xl leading-relaxed">
                 I am a DevOps Engineer and Full Stack Developer dedicated to
@@ -135,9 +135,6 @@ const About = () => {
         {/* PANEL 2: PHILOSOPHY */}
         <div className="about-panel relative flex items-center justify-between gap-6 px-6 py-8 sm:px-12 sm:py-16 md:gap-12 md:px-16 lg:px-28 overflow-hidden">
           <div className="flex flex-col flex-1 min-w-0 items-start z-10 max-w-xl">
-            <p className="font-mono text-sm uppercase text-muted tracking-[0.3em] mb-6">
-              Interests
-            </p>
             <h3 className="font-zentry text-5xl sm:text-6xl md:text-6xl lg:text-7xl xl:text-8xl text-content mb-8 tracking-tight uppercase leading-[0.95] break-words">
               Simple <br /> Everyday <br /> Things
             </h3>
@@ -226,9 +223,6 @@ const About = () => {
 
           <div className="about-learning-layout relative z-10 w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 lg:gap-24 items-center">
             <div className="min-w-0">
-              <p className="font-mono text-sm uppercase text-muted tracking-[0.3em] mb-6">
-                LEARNING
-              </p>
               <h3 className="font-zentry text-5xl md:text-6xl lg:text-7xl text-content mb-6 tracking-tight uppercase leading-[0.9] break-words">
                 IN <br /> PROGRESS
               </h3>

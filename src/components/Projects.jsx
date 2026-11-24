@@ -206,9 +206,6 @@ const Projects = () => {
 
       <div className="relative z-10 flex w-full flex-1 flex-col">
         <div className="mb-6 flex flex-col items-start pb-4">
-          <p className="font-mono text-xs uppercase tracking-[0.3em] text-muted mb-2">
-            Selected
-          </p>
           <h2 className="font-zentry text-4xl sm:text-6xl md:text-7xl text-content uppercase leading-[0.9] tracking-tight">
             Featured
           </h2>

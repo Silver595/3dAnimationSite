@@ -92,7 +92,7 @@ const Contact = ({ onSent }) => {
   }, { scope: containerRef, dependencies: [reduced], revertOnUpdate: true });
 
   return (
-    <div id="contact" ref={containerRef} className="relative min-h-screen w-full bg-surface pt-24 pb-10 overflow-hidden">
+    <div id="contact" ref={containerRef} className="relative min-h-screen w-full bg-surface pt-24 pb-[7.5rem] overflow-hidden">
 
       {/* Background Texture & Silhouette */}
       <div className="absolute inset-0 bg-[url('/img/intricate_minimal.svg')] bg-center opacity-5 pointer-events-none" />
@@ -222,8 +222,6 @@ const Contact = ({ onSent }) => {
         </div>
       </div>
 
-      {/* Decorative Footer Line */}
-      <div className="w-full h-px bg-muted/25 mt-20" />
     </div>
   );
 };
