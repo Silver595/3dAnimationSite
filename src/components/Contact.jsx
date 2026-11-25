@@ -152,7 +152,7 @@ const Contact = ({ onSent }) => {
           <div className="min-w-0 w-full md:w-2/3">
             <form onSubmit={handleSubmit} className="space-y-12">
               <div className="contact-field group relative">
-                <label htmlFor="contact-name" className="block font-mono text-xs text-muted uppercase tracking-widest mb-2 group-focus-within:text-content transition-colors">Identify Yourself</label>
+                <label htmlFor="contact-name" className="block font-mono text-xs text-muted uppercase tracking-widest mb-2 group-focus-within:text-content transition-colors"></label>
                 <input
                   type="text"
                   autoComplete="name"
@@ -163,13 +163,13 @@ const Contact = ({ onSent }) => {
                   value={formState.name}
                   onChange={handleChange}
                   required
-                  placeholder="ENTER NAME_"
+                  placeholder="ENTER NAME._."
                   className="w-full bg-transparent border-b border-muted py-4 text-3xl md:text-5xl text-content placeholder-muted focus:border-content outline-none transition-all uppercase"
                 />
               </div>
 
               <div className="contact-field group relative">
-                <label htmlFor="contact-email" className="block font-mono text-xs text-muted uppercase tracking-widest mb-2 group-focus-within:text-content transition-colors">Email address</label>
+                <label htmlFor="contact-email" className="block font-mono text-xs text-muted uppercase tracking-widest mb-2 group-focus-within:text-content transition-colors"></label>
                 <input
                   type="email"
                   autoComplete="email"
@@ -180,13 +180,13 @@ const Contact = ({ onSent }) => {
                   value={formState.email}
                   onChange={handleChange}
                   required
-                  placeholder="ENTER EMAIL_"
+                  placeholder="ENTER EMAIL -_-"
                   className="w-full bg-transparent border-b border-muted py-4 text-3xl md:text-5xl text-content placeholder-muted focus:border-content outline-none transition-all"
                 />
               </div>
 
               <div className="contact-field group relative">
-                <label htmlFor="contact-message" className="block font-mono text-xs text-muted uppercase tracking-widest mb-2 group-focus-within:text-content transition-colors">Transmission Data</label>
+                <label htmlFor="contact-message" className="block font-mono text-xs text-muted uppercase tracking-widest mb-2 group-focus-within:text-content transition-colors"></label>
                 <textarea
                   id="contact-message"
                   name="message"
@@ -196,7 +196,7 @@ const Contact = ({ onSent }) => {
                   onChange={handleChange}
                   required
                   rows="2"
-                  placeholder="ENTER MESSAGE_"
+                  placeholder="ENTER MESSAGE -.-"
                   className="w-full bg-transparent border-b border-muted py-4 text-3xl md:text-5xl  text-content placeholder-muted focus:border-content outline-none transition-all resize-none  leading-tight"
                 />
               </div>
