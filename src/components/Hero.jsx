@@ -9,10 +9,10 @@ gsap.registerPlugin(ScrollTrigger);
 const Hero = ({ isReady, choice, sectionRef, mediaRef }) => {
   const reduced = useReducedMotion();
   const colorful = choice === "colorful";
-  const moving = choice && !reduced;
+  const moving = choice === "colorless" && !reduced;
 
   const poster = colorful
-    ? "/img/madebykhua-still.webp"
+    ? "/img/background2.jpg"
     : "/img/hero-still.webp";
 
   useGSAP(
@@ -78,19 +78,13 @@ const Hero = ({ isReady, choice, sectionRef, mediaRef }) => {
         {moving ? (
           <video
             ref={mediaRef}
-            src={
-              colorful
-                ? "/videos/madebykhua1080.mp4"
-                : "/videos/mixkit-4.mp4"
-            }
+            src="/videos/mixkit-4.mp4"
             poster={poster}
             loop
             muted
             playsInline
             preload="none"
-            className={`absolute inset-0 size-full object-cover ${
-              colorful ? "" : "opacity-30 grayscale contrast-125"
-            }`}
+            className="absolute inset-0 size-full object-cover opacity-30 grayscale contrast-125"
           />
         ) : (
           <img
@@ -102,7 +96,7 @@ const Hero = ({ isReady, choice, sectionRef, mediaRef }) => {
           />
         )}
 
-        {colorful && reduced && (
+        {colorful && (
           <audio
             ref={mediaRef}
             src="/audio/madebykhua.m4a"

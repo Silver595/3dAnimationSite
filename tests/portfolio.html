@@ -54,14 +54,24 @@
     check(audioToggle.getAttribute("aria-pressed") === String(colorful), "Sound choice was ignored");
     check(audioToggle.disabled !== colorful, "Audio toggle is in the wrong mode");
 
-    const video = doc.querySelector("#video-frame video");
-    const heroMedia = doc.querySelector("#video-frame video, #video-frame audio");
-    check(doc.querySelectorAll("video").length === (reduced ? 0 : 1), "Wrong number of active hero videos");
+    const heroFrame = doc.querySelector("#video-frame");
+    const video = heroFrame.querySelector("video");
+    const heroMedia = heroFrame.querySelector("audio");
+    const heroImage = heroFrame.querySelector("img");
+    check(Boolean(video) === (!colorful && !reduced), "Wrong hero video state");
     if (video) {
       check(win.getComputedStyle(video).transform === "none", "Hero video scales");
-      check(video.src.endsWith(colorful ? "/madebykhua1080.mp4" : "/mixkit-4.mp4"), "Wrong video selected");
+      check(video.src.endsWith("/videos/mixkit-4.mp4") && video.poster.endsWith("/img/hero-still.webp"), "Wrong Colorless video or poster");
+    } else {
+      check(heroImage.src.endsWith(colorful ? "/img/background.jpg" : "/img/hero-still.webp"), "Wrong hero image selected");
+      await heroImage.decode();
     }
-    const heroStyle = win.getComputedStyle(video || doc.querySelector("#video-frame img"));
+    if (colorful) {
+      check(audioRequests().every(path => !path.startsWith("/videos/")), "Colorful requested a hero video");
+    } else {
+      check(!audioRequests().includes("/img/background.jpg"), "Colorless requested the Colorful hero image");
+    }
+    const heroStyle = win.getComputedStyle(video || heroImage);
     check((heroStyle.filter === "none") === colorful, "Hero media has the wrong color treatment");
 
     const nav = doc.querySelector("nav");
