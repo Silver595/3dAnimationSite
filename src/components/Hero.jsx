@@ -12,7 +12,7 @@ const Hero = ({ isReady, choice, sectionRef, mediaRef }) => {
   const moving = choice === "colorless" && !reduced;
 
   const poster = colorful
-    ? "/img/background2.jpg"
+    ? "/img/background2.webp"
     : "/img/hero-still.webp";
 
   useGSAP(
@@ -88,6 +88,7 @@ const Hero = ({ isReady, choice, sectionRef, mediaRef }) => {
           />
         ) : (
           <img
+            key={poster}
             src={poster}
             alt=""
             className={`absolute inset-0 size-full object-cover ${

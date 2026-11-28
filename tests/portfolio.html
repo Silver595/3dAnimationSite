@@ -41,6 +41,7 @@
     const choice = new URLSearchParams(window.location.search).get("sound");
     const colorful = choice === "on";
     const reduced = win.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const entryPoster = doc.querySelector("#video-frame img");
     if (choice === "escape") {
       dialog.dispatchEvent(new win.Event("cancel", {cancelable: true}));
     } else {
@@ -63,13 +64,14 @@
       check(win.getComputedStyle(video).transform === "none", "Hero video scales");
       check(video.src.endsWith("/videos/mixkit-4.mp4") && video.poster.endsWith("/img/hero-still.webp"), "Wrong Colorless video or poster");
     } else {
-      check(heroImage.src.endsWith(colorful ? "/img/background.jpg" : "/img/hero-still.webp"), "Wrong hero image selected");
+      check(heroImage.src.endsWith(colorful ? "/img/background2.webp" : "/img/hero-still.webp"), "Wrong hero image selected");
+      if (colorful) check(!entryPoster.isConnected, "Colorful retained the Colorless poster");
       await heroImage.decode();
     }
     if (colorful) {
       check(audioRequests().every(path => !path.startsWith("/videos/")), "Colorful requested a hero video");
     } else {
-      check(!audioRequests().includes("/img/background.jpg"), "Colorless requested the Colorful hero image");
+      check(!audioRequests().includes("/img/background2.webp"), "Colorless requested the Colorful hero image");
     }
     const heroStyle = win.getComputedStyle(video || heroImage);
     check((heroStyle.filter === "none") === colorful, "Hero media has the wrong color treatment");
